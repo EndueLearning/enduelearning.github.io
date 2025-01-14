@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endue Learning Lab</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Endue Learning Lab</h1>
+        <p id="current-time"></p>
+    </header>
+
+    <section id="hero">
+        <h2>Making Learning Fun and Stress-Free!</h2>
+        <button onclick="location.href='#learning-lab'">Explore Learning Lab</button>
+        <button onclick="location.href='#leaderboard'">Check Leaderboard</button>
+    </section>
+
+    <section id="learning-lab">
+        <h2>Learning Lab</h2>
+        <p>Explore games, quizzes, and interactive activities.</p>
+    </section>
+
+    <section id="leaderboard">
+        <h2>Leaderboard</h2>
+        <p>Top Players of the Week</p>
+        <!-- Future Leaderboard Content -->
+    </section>
+
+    <section id="current-affairs">
+        <h2>Current Affairs</h2>
+        <p>Stay updated with daily news!</p>
+    </section>
+
+    <footer>
+        <p>© 2025 Endue Learning</p>
+    </footer>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            document.getElementById('current-time').innerText = now.toLocaleDateString('en-US', options);
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+    </script>
+</body>
+</html>
