@@ -34,16 +34,29 @@ section {
 .side-by-side {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
     gap: 20px;
+    flex-wrap: wrap;
+    max-width: 100%;
 }
 
 .sub-section {
     flex: 1;
+    min-width: 45%;
     background: #ffffff;
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center;
+}
+
+@media (max-width: 768px) {
+    .side-by-side {
+        flex-direction: column;
+    }
+    .sub-section {
+        min-width: 100%;
+    }
 }
 
 /* Ensure YouTube video and thought are properly aligned */
