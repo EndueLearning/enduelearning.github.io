@@ -13,7 +13,10 @@ function updateDateTime() {
     const dateString = now.toLocaleDateString();
     const timeString = now.toLocaleTimeString();
     const dayString = now.toLocaleDateString(undefined, { weekday: 'long' });
-    document.getElementById("date-time").textContent = `${dayString}, ${dateString} ${timeString}`;
+    const dateTimeElement = document.getElementById("date-time");
+    if (dateTimeElement) {
+        dateTimeElement.textContent = `${dayString}, ${dateString} ${timeString}`;
+    }
 }
 
 // Fetch News Headlines
@@ -26,16 +29,18 @@ function fetchNews() {
         .then(data => {
             console.log("News API Response:", data); // Debugging Log
             const newsContainer = document.getElementById("news-headlines");
-            newsContainer.innerHTML = ""; // Clear previous content
-            
-            if (data.articles && data.articles.length > 0) {
-                data.articles.slice(0, 5).forEach(article => {
-                    let newsItem = document.createElement("p");
-                    newsItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-                    newsContainer.appendChild(newsItem);
-                });
-            } else {
-                newsContainer.innerHTML = "No news available.";
+            if (newsContainer) {
+                newsContainer.innerHTML = ""; // Clear previous content
+                
+                if (data.articles && data.articles.length > 0) {
+                    data.articles.slice(0, 5).forEach(article => {
+                        let newsItem = document.createElement("p");
+                        newsItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
+                        newsContainer.appendChild(newsItem);
+                    });
+                } else {
+                    newsContainer.innerHTML = "No news available.";
+                }
             }
         })
         .catch(error => console.error("Error fetching news:", error));
@@ -44,6 +49,7 @@ function fetchNews() {
 // Fetch Thought for the Day
 function fetchThoughtForTheDay() {
     const thoughtContainer = document.getElementById("thought-for-the-day");
+    if (!thoughtContainer) return;
     
     const thoughts = [
         { text: "The only way to do great work is to love what you do.", source: "Steve Jobs" },
@@ -52,12 +58,13 @@ function fetchThoughtForTheDay() {
     ];
     
     const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
-    thoughtContainer.innerHTML = `<p>\"${randomThought.text}\"</p><p><em>- ${randomThought.source}</em></p>`;
+    thoughtContainer.innerHTML = `<p>"${randomThought.text}"</p><p><em>- ${randomThought.source}</em></p>`;
 }
 
 // Fetch Puzzle for the Day
 function fetchPuzzleOfTheDay() {
     const puzzleContainer = document.getElementById("puzzle-of-the-day");
+    if (!puzzleContainer) return;
     
     const puzzles = [
         { question: "What comes once in a minute, twice in a moment, but never in a thousand years?", answer: "m" },
@@ -89,10 +96,9 @@ function fetchYouTubeVideo() {
         .then(data => {
             console.log("YouTube API Response:", data); // Debugging Log
             const videoContainer = document.getElementById("linguistic-highlight");
-            
-            if (data.items && data.items.length > 0) {
+            if (videoContainer && data.items && data.items.length > 0) {
                 const videoId = data.items[0].snippet.resourceId.videoId;
-                videoContainer.innerHTML = `<iframe width="300" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+                videoContainer.innerHTML = `<iframe width="300" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
             } else {
                 videoContainer.innerHTML = "No video available today.";
             }
