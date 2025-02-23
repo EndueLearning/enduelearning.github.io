@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     updateDateTime();
     fetchNews();
-    fetchYouTubeVideo();
+    fetchWordOfDay();
     fetchThoughtForTheDay();
     fetchPuzzleOfTheDay();
+    fetchYouTubeVideo();
 });
 
 function updateDateTime() {
@@ -15,7 +16,7 @@ function updateDateTime() {
 
 function fetchNews() {
     const apiKey = "11e1cc79175f4629be573aad5c48762d";
-    const url = `https://newsapi.org/v2/top-headlines?category=science&category=technology&category=education&apiKey=${apiKey}`;
+    const url = `https://newsapi.org/v2/top-headlines?category=science&apiKey=${apiKey}`;
 
     fetch(url)
         .then(response => response.json())
@@ -31,36 +32,21 @@ function fetchNews() {
         .catch(error => console.error("Error fetching news:", error));
 }
 
-function fetchYouTubeVideo() {
-    const apiKey = "AIzaSyCgTGUgdJXtf3Nh471kd0FUZvtPDnQuDhU";
-    const playlistId = "PLAi0MNHSgl9KVZ8Ao6r2r2-7wylEsIUbT";
-    const url = `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId=${playlistId}&key=${apiKey}`;
-
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            if (data.items.length > 0) {
-                const randomVideo = data.items[Math.floor(Math.random() * data.items.length)];
-                const videoId = randomVideo.snippet.resourceId.videoId;
-                document.getElementById("youtubeVideo").src = `https://www.youtube.com/embed/${videoId}`;
-            }
-        })
-        .catch(error => console.error("Error fetching YouTube video:", error));
+function fetchWordOfDay() {
+    const words = ["Curiosity", "Imagination", "Innovation", "Perseverance"];
+    const randomWord = words[Math.floor(Math.random() * words.length)];
+    document.getElementById("wordOfDay").innerText = randomWord;
 }
 
 function fetchThoughtForTheDay() {
-    const url = "https://api.api-ninjas.com/v1/quotes?category=inspirational";
-    const apiKey = "YOUR_API_NINJAS_KEY";
+    const thoughts = [
+        { quote: "Believe in yourself and all that you are.", author: "Christian D. Larson" },
+        { quote: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt" }
+    ];
 
-    fetch(url, { headers: { 'X-Api-Key': apiKey } })
-        .then(response => response.json())
-        .then(data => {
-            if (data.length > 0) {
-                document.getElementById("thoughtText").innerText = `"${data[0].quote}"`;
-                document.getElementById("thoughtSource").innerText = `- ${data[0].author}`;
-            }
-        })
-        .catch(error => console.error("Error fetching thought:", error));
+    const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
+    document.getElementById("thoughtText").innerText = `"${randomThought.quote}"`;
+    document.getElementById("thoughtSource").innerText = `- ${randomThought.author}`;
 }
 
 function fetchPuzzleOfTheDay() {
@@ -83,4 +69,14 @@ function checkPuzzleAnswer() {
     } else {
         alert("Try again!");
     }
+}
+
+function fetchYouTubeVideo() {
+    const videos = [
+        "https://www.youtube.com/embed/dQw4w9WgXcQ",
+        "https://www.youtube.com/embed/l482T0yNkeo"
+    ];
+
+    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+    document.getElementById("youtubeVideo").src = randomVideo;
 }
