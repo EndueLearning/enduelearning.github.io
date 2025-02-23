@@ -1,4 +1,4 @@
-const newsApiKey = "YOUR_NEWS_API_KEY";
+const newsApiKey = "11e1cc79175f4629be573aad5c48762d";
 const youtubeApiKey = "AIzaSyCgTGUgdJXtf3Nh471kd0FUZvtPDnQuDhU";
 const youtubePlaylistId = "PLAi0MNHSgl9KVZ8Ao6r2r2-7wylEsIUbT";
 
