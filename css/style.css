@@ -1,0 +1,54 @@
+/* General Styles */
+body {
+    font-family: sans-serif;
+    background: linear-gradient(135deg, #f8f9fa, #e3f2fd);
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background: linear-gradient(90deg, #ff6f61, #ff9068);
+    color: white;
+    padding: 20px 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Sections */
+section {
+    background: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 80%;
+}
+
+/* Buttons */
+button {
+    background: #ff6f61;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff9068;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    padding: 10px;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
