@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Update Date and Time
-type="text/javascript"function updateDateTime() {
+function updateDateTime() {
     const now = new Date();
     const dateString = now.toLocaleDateString();
     const timeString = now.toLocaleTimeString();
@@ -18,7 +18,7 @@ type="text/javascript"function updateDateTime() {
 
 // Fetch News Headlines
 function fetchNews() {
-    const apiKey = "11e1cc79175f4629be573aad5c48762d";
+    const apiKey = "YOUR_NEWS_API_KEY";
     const url = `https://newsapi.org/v2/top-headlines?category=science&apiKey=${apiKey}`;
     
     fetch(url)
@@ -28,14 +28,14 @@ function fetchNews() {
             const newsContainer = document.getElementById("news-headlines");
             newsContainer.innerHTML = ""; // Clear previous content
             
-            if (data.articles) {
+            if (data.articles && data.articles.length > 0) {
                 data.articles.slice(0, 5).forEach(article => {
                     let newsItem = document.createElement("p");
                     newsItem.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
                     newsContainer.appendChild(newsItem);
                 });
             } else {
-                newsContainer.innerHTML = "Failed to load news.";
+                newsContainer.innerHTML = "No news available.";
             }
         })
         .catch(error => console.error("Error fetching news:", error));
@@ -45,7 +45,6 @@ function fetchNews() {
 function fetchThoughtForTheDay() {
     const thoughtContainer = document.getElementById("thought-for-the-day");
     
-    // Simulating fetching thought from an array
     const thoughts = [
         { text: "The only way to do great work is to love what you do.", source: "Steve Jobs" },
         { text: "Education is the most powerful weapon which you can use to change the world.", source: "Nelson Mandela" },
@@ -60,7 +59,6 @@ function fetchThoughtForTheDay() {
 function fetchPuzzleOfTheDay() {
     const puzzleContainer = document.getElementById("puzzle-of-the-day");
     
-    // Example puzzle - Can be fetched from an API or a predefined set
     const puzzles = [
         { question: "What comes once in a minute, twice in a moment, but never in a thousand years?", answer: "The letter M" },
         { question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "An Echo" }
@@ -92,9 +90,9 @@ function fetchYouTubeVideo() {
             console.log("YouTube API Response:", data); // Debugging Log
             const videoContainer = document.getElementById("linguistic-highlight");
             
-            if (data.items.length > 0) {
+            if (data.items && data.items.length > 0) {
                 const videoId = data.items[0].snippet.resourceId.videoId;
-                videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+                videoContainer.innerHTML = `<iframe width="300" height="200" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
             } else {
                 videoContainer.innerHTML = "No video available today.";
             }
