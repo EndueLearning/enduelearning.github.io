@@ -8,8 +8,8 @@
 </head>
 <body>
     <header>
-        <h1 class="left-align">Welcome to Endue Learning</h1>
-        <p id="dateTime" class="small-text"></p>
+        <h1>Welcome to Endue Learning</h1>
+        <p id="dateTime"></p>
     </header>
 
     <main>
@@ -18,28 +18,30 @@
             <ul id="newsList"></ul>
         </section>
 
-        <div class="side-by-side">
-            <section class="sub-section">
-                <h2>Linguistic Highlights</h2>
-                <iframe id="youtubeVideo" src="" allowfullscreen></iframe>
+        <div class="container">
+            <section class="box">
+                <h2>Word of the Day</h2>
+                <p id="wordOfDay">Loading...</p>
             </section>
-            <section class="sub-section">
+
+            <section class="box">
                 <h2>Thought for the Day</h2>
                 <p id="thoughtText">Loading...</p>
                 <p id="thoughtSource" class="small-text"></p>
             </section>
         </div>
 
-        <div class="side-by-side">
-            <section class="sub-section">
+        <div class="container">
+            <section class="box">
                 <h2>Puzzle for the Day</h2>
                 <p id="puzzleText">Loading...</p>
                 <input type="text" id="puzzleAnswer" placeholder="Your answer">
                 <button onclick="checkPuzzleAnswer()">Check Answer</button>
             </section>
-            <section class="sub-section">
-                <h2>Memory Game</h2>
-                <div id="memoryGame"></div>
+
+            <section class="box">
+                <h2>Random YouTube Video</h2>
+                <iframe id="youtubeVideo" src="" allowfullscreen></iframe>
             </section>
         </div>
     </main>
