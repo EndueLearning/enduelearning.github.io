@@ -4,49 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Endue Learning</title>
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/script.js" defer></script>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1 class="left-align">Welcome to Endue Learning</h1>
-        <p id="date-time" class="small-text"></p>
+        <div id="date-time" class="small-text"></div>
     </header>
-    
-    <section id="news">
-        <h2>Latest News (Science, Education, Tech)</h2>
-        <ul id="news-list"></ul>
-    </section>
-    
-    <section id="word-thought" class="side-by-side">
-        <div class="sub-section">
-            <h2>Linguistic Highlights</h2>
-            <p>Featured video from Endue Learning:</p>
-            <iframe id="youtube-video" width="100%" height="200" src="https://www.youtube.com/embed/" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div class="sub-section">
-            <h2>Thought for the Day</h2>
-            <p id="thought-of-day">Loading...</p>
-        </div>
-    </section>
-    
-    <section id="puzzle-game" class="side-by-side">
-        <div class="sub-section">
-            <h2>Puzzle of the Day</h2>
-            <div id="puzzle-content">Loading...</div>
-            <input type="text" id="puzzle-answer" placeholder="Enter your answer">
-            <button onclick="checkPuzzleAnswer()">Check Answer</button>
-            <p id="puzzle-result"></p>
-        </div>
-        <div class="sub-section">
-            <h2>Memory Game</h2>
-            <button onclick="startMemoryGame()">Play Game</button>
-            <div id="game-area"></div>
-        </div>
-    </section>
-    
-    <footer>
-        <p>&copy; 2025 Endue Learning. All rights reserved.</p>
-    </footer>
+
+    <main>
+        <section id="news">
+            <h2>Latest News</h2>
+            <div id="news-headlines">Loading...</div>
+        </section>
+
+        <section id="linguistic-thought" class="side-by-side">
+            <div class="sub-section">
+                <h2>Linguistic Highlights</h2>
+                <div id="linguistic-highlight">Loading...</div>
+            </div>
+            <div class="sub-section">
+                <h2>Thought for the Day</h2>
+                <div id="thought-for-the-day">Loading...</div>
+            </div>
+        </section>
+
+        <section id="puzzle-memory" class="side-by-side">
+            <div class="sub-section">
+                <h2>Puzzle for the Day</h2>
+                <div id="puzzle-of-the-day">Loading...</div>
+            </div>
+            <div class="sub-section">
+                <h2>Memory Game</h2>
+                <div id="memory-game">Loading...</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            updateDateTime();
+            fetchNews();
+            fetchThoughtForTheDay();
+            fetchPuzzleOfTheDay();
+            fetchYouTubeVideo();
+            setInterval(updateDateTime, 60000); // Update time every minute
+        });
+    </script>
 </body>
 </html>
