@@ -9,50 +9,41 @@
 <body>
     <header>
         <h1 class="left-align">Welcome to Endue Learning</h1>
-        <div id="date-time" class="small-text"></div>
+        <p id="dateTime" class="small-text"></p>
     </header>
 
     <main>
         <section id="news">
             <h2>Latest News</h2>
-            <div id="news-headlines">Loading...</div>
+            <ul id="newsList"></ul>
         </section>
 
-        <section id="linguistic-thought" class="side-by-side">
-            <div class="sub-section">
+        <div class="side-by-side">
+            <section class="sub-section">
                 <h2>Linguistic Highlights</h2>
-                <div id="linguistic-highlight">
-                    <iframe id="youtube-video" width="300" height="200" frameborder="0" allowfullscreen></iframe>
-                </div>
-            </div>
-            <div class="sub-section">
+                <iframe id="youtubeVideo" src="" allowfullscreen></iframe>
+            </section>
+            <section class="sub-section">
                 <h2>Thought for the Day</h2>
-                <div id="thought-for-the-day">Loading...</div>
-            </div>
-        </section>
+                <p id="thoughtText">Loading...</p>
+                <p id="thoughtSource" class="small-text"></p>
+            </section>
+        </div>
 
-        <section id="puzzle-memory" class="side-by-side">
-            <div class="sub-section">
+        <div class="side-by-side">
+            <section class="sub-section">
                 <h2>Puzzle for the Day</h2>
-                <div id="puzzle-of-the-day">Loading...</div>
-            </div>
-            <div class="sub-section">
+                <p id="puzzleText">Loading...</p>
+                <input type="text" id="puzzleAnswer" placeholder="Your answer">
+                <button onclick="checkPuzzleAnswer()">Check Answer</button>
+            </section>
+            <section class="sub-section">
                 <h2>Memory Game</h2>
-                <div id="memory-game">Loading...</div>
-            </div>
-        </section>
+                <div id="memoryGame"></div>
+            </section>
+        </div>
     </main>
 
     <script src="script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            updateDateTime();
-            fetchNews();
-            fetchThoughtForTheDay();
-            fetchPuzzleOfTheDay();
-            fetchYouTubeVideo();
-            setInterval(updateDateTime, 60000); // Update time every minute
-        });
-    </script>
 </body>
 </html>
