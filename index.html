@@ -9,8 +9,8 @@
 </head>
 <body>
     <header>
-        <h1>Welcome to Endue Learning</h1>
-        <p id="date-time"></p>
+        <h1 class="left-align">Welcome to Endue Learning</h1>
+        <p id="date-time" class="small-text"></p>
     </header>
     
     <section id="news">
@@ -18,28 +18,32 @@
         <ul id="news-list"></ul>
     </section>
     
-    <section id="word-of-the-day">
-        <h2>Word for the Day</h2>
-        <p id="word-of-day">Loading...</p>
+    <section id="word-thought">
+        <div class="sub-section">
+            <h2>Word for the Day</h2>
+            <p id="word-of-day">Loading...</p>
+            <p id="word-meaning">Loading meaning...</p>
+            <p id="word-usage">Loading usage...</p>
+        </div>
+        <div class="sub-section">
+            <h2>Thought for the Day</h2>
+            <p id="thought-of-day">Loading...</p>
+        </div>
     </section>
     
-    <section id="thought-of-the-day">
-        <h2>Thought for the Day</h2>
-        <p id="thought-of-day">Loading...</p>
-    </section>
-    
-    <section id="puzzle">
-        <h2>Puzzle of the Day</h2>
-        <div id="puzzle-content">Loading...</div>
-        <input type="text" id="puzzle-answer" placeholder="Enter your answer">
-        <button onclick="checkPuzzleAnswer()">Check Answer</button>
-        <p id="puzzle-result"></p>
-    </section>
-    
-    <section id="game">
-        <h2>Memory Game</h2>
-        <button onclick="startMemoryGame()">Play Game</button>
-        <div id="game-area"></div>
+    <section id="puzzle-game">
+        <div class="sub-section">
+            <h2>Puzzle of the Day</h2>
+            <div id="puzzle-content">Loading...</div>
+            <input type="text" id="puzzle-answer" placeholder="Enter your answer">
+            <button onclick="checkPuzzleAnswer()">Check Answer</button>
+            <p id="puzzle-result"></p>
+        </div>
+        <div class="sub-section">
+            <h2>Memory Game</h2>
+            <button onclick="startMemoryGame()">Play Game</button>
+            <div id="game-area"></div>
+        </div>
     </section>
     
     <footer>
