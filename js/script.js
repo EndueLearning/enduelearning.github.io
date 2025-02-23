@@ -18,7 +18,7 @@ function updateDateTime() {
 
 // Fetch News Headlines
 function fetchNews() {
-    const apiKey = "YOUR_NEWS_API_KEY";
+    const apiKey = "11e1cc79175f4629be573aad5c48762d";
     const url = `https://newsapi.org/v2/top-headlines?category=science&apiKey=${apiKey}`;
     
     fetch(url)
