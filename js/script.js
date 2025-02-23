@@ -52,7 +52,7 @@ function fetchThoughtForTheDay() {
     ];
     
     const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
-    thoughtContainer.innerHTML = `<p>"${randomThought.text}"</p><p><em>- ${randomThought.source}</em></p>`;
+    thoughtContainer.innerHTML = `<p>\"${randomThought.text}\"</p><p><em>- ${randomThought.source}</em></p>`;
 }
 
 // Fetch Puzzle for the Day
@@ -60,8 +60,8 @@ function fetchPuzzleOfTheDay() {
     const puzzleContainer = document.getElementById("puzzle-of-the-day");
     
     const puzzles = [
-        { question: "What comes once in a minute, twice in a moment, but never in a thousand years?", answer: "The letter M" },
-        { question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "An Echo" }
+        { question: "What comes once in a minute, twice in a moment, but never in a thousand years?", answer: "m" },
+        { question: "I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?", answer: "echo" }
     ];
     
     const randomPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
