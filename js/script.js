@@ -1,82 +1,80 @@
-document.addEventListener("DOMContentLoaded", function () {
-    updateDateTime();
-    fetchNews();
-    fetchWordOfDay();
-    fetchThoughtForTheDay();
-    fetchPuzzleOfTheDay();
-    fetchYouTubeVideo();
-});
-
+// Function to update date, day, and time dynamically
 function updateDateTime() {
     const now = new Date();
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-    document.getElementById("dateTime").innerHTML = now.toLocaleDateString("en-US", options);
-    setTimeout(updateDateTime, 60000);
+    const dateTimeString = now.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    }) + " | " + now.toLocaleTimeString();
+    
+    document.getElementById("date-time").innerHTML = dateTimeString;
 }
 
-function fetchNews() {
-    const apiKey = "11e1cc79175f4629be573aad5c48762d";
-    const url = `https://newsapi.org/v2/top-headlines?category=science&apiKey=${apiKey}`;
+// Call updateDateTime every second
+setInterval(updateDateTime, 1000);
+updateDateTime();
 
-    fetch(url)
-        .then(response => response.json())
-        .then(data => {
-            const newsList = document.getElementById("newsList");
-            newsList.innerHTML = "";
-            data.articles.forEach(article => {
-                const li = document.createElement("li");
-                li.innerHTML = `<a href="${article.url}" target="_blank">${article.title}</a>`;
-                newsList.appendChild(li);
-            });
-        })
-        .catch(error => console.error("Error fetching news:", error));
-}
-
-function fetchWordOfDay() {
-    const words = ["Curiosity", "Imagination", "Innovation", "Perseverance"];
-    const randomWord = words[Math.floor(Math.random() * words.length)];
-    document.getElementById("wordOfDay").innerText = randomWord;
-}
-
-function fetchThoughtForTheDay() {
-    const thoughts = [
-        { quote: "Believe in yourself and all that you are.", author: "Christian D. Larson" },
-        { quote: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt" }
-    ];
-
-    const randomThought = thoughts[Math.floor(Math.random() * thoughts.length)];
-    document.getElementById("thoughtText").innerText = `"${randomThought.quote}"`;
-    document.getElementById("thoughtSource").innerText = `- ${randomThought.author}`;
-}
-
-function fetchPuzzleOfTheDay() {
-    const puzzles = [
-        { question: "What has to be broken before you can use it?", answer: "egg" },
-        { question: "I’m tall when I’m young, and I’m short when I’m old. What am I?", answer: "candle" }
-    ];
-
-    const randomPuzzle = puzzles[Math.floor(Math.random() * puzzles.length)];
-    document.getElementById("puzzleText").innerText = randomPuzzle.question;
-    document.getElementById("puzzleAnswer").dataset.answer = randomPuzzle.answer;
-}
-
-function checkPuzzleAnswer() {
-    const userAnswer = document.getElementById("puzzleAnswer").value.toLowerCase();
-    const correctAnswer = document.getElementById("puzzleAnswer").dataset.answer;
-
-    if (userAnswer === correctAnswer) {
-        alert("Correct!");
-    } else {
-        alert("Try again!");
+// Function to fetch Thought for the Day from JSON
+async function fetchThoughtForTheDay() {
+    try {
+        const response = await fetch('thoughts.json');
+        const data = await response.json();
+        const todayIndex = new Date().getDate() % data.thoughts.length;
+        document.getElementById("thought-content").innerHTML = `"${data.thoughts[todayIndex]}"`;
+    } catch (error) {
+        console.error("Error fetching Thought for the Day:", error);
+        document.getElementById("thought-content").innerHTML = "Stay Positive and Keep Learning!";
     }
 }
 
-function fetchYouTubeVideo() {
-    const videos = [
-        "https://www.youtube.com/embed/dQw4w9WgXcQ",
-        "https://www.youtube.com/embed/l482T0yNkeo"
-    ];
-
-    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
-    document.getElementById("youtubeVideo").src = randomVideo;
+// Function to fetch Puzzle of the Day from JSON
+async function fetchPuzzleOfTheDay() {
+    try {
+        const response = await fetch('puzzles.json');
+        const data = await response.json();
+        const todayIndex = new Date().getDate() % data.puzzles.length;
+        document.getElementById("puzzle-content").innerHTML = `Puzzle: ${data.puzzles[todayIndex].question}`;
+    } catch (error) {
+        console.error("Error fetching Puzzle of the Day:", error);
+        document.getElementById("puzzle-content").innerHTML = "Solve this: What comes after 10?";
+    }
 }
+
+// Function to fetch News from News API
+async function fetchNews() {
+    const apiKey = 'YOUR_NEWSAPI_KEY';
+    const newsContainer = document.getElementById("news-content");
+
+    try {
+        const response = await fetch(`https://newsapi.org/v2/top-headlines?category=science&apiKey=${apiKey}`);
+        const data = await response.json();
+
+        if (data.articles.length > 0) {
+            newsContainer.innerHTML = data.articles
+                .slice(0, 5)
+                .map(article => `<p><a href="${article.url}" target="_blank">${article.title}</a></p>`)
+                .join('');
+        } else {
+            newsContainer.innerHTML = "<p>No news available.</p>";
+        }
+    } catch (error) {
+        console.error("Error fetching news:", error);
+        newsContainer.innerHTML = "<p>Unable to fetch news at the moment.</p>";
+    }
+}
+
+// Function to load YouTube video dynamically
+function loadYouTubeVideo() {
+    const videoFrame = document.getElementById("youtube-video");
+    const playlistId = "YOUR_YOUTUBE_PLAYLIST_ID";
+    videoFrame.src = `https://www.youtube.com/embed?listType=playlist&list=${playlistId}`;
+}
+
+// Initialize all functions
+document.addEventListener("DOMContentLoaded", function () {
+    fetchThoughtForTheDay();
+    fetchPuzzleOfTheDay();
+    fetchNews();
+    loadYouTubeVideo();
+});
