@@ -3,49 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Endue Learning</title>
+    <title>Endue Learning - Where Learning Meets Fun</title>
     <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
 </head>
 <body>
     <header>
-        <h1>Welcome to Endue Learning</h1>
-        <p id="dateTime"></p>
+        <h1>Endue Learning</h1>
+        <p id="date-time"></p>
+        <p id="thought-for-the-day"></p>
     </header>
-
+    
+    <nav>
+        <ul>
+            <li><a href="#">Math</a></li>
+            <li><a href="#">Science</a></li>
+            <li><a href="#">English</a></li>
+            <li><a href="#">Computer</a></li>
+        </ul>
+    </nav>
+    
     <main>
-        <section id="news">
-            <h2>Latest News</h2>
-            <ul id="newsList"></ul>
+        <section id="hero">
+            <h2>Explore Fun Simulations</h2>
+            <p>Learn through interactive simulations and games.</p>
+            <button onclick="alert('Explore coming soon!')">Explore Now</button>
         </section>
-
-        <div class="container">
-            <section class="box">
-                <h2>Word of the Day</h2>
-                <p id="wordOfDay">Loading...</p>
-            </section>
-
-            <section class="box">
-                <h2>Thought for the Day</h2>
-                <p id="thoughtText">Loading...</p>
-                <p id="thoughtSource" class="small-text"></p>
-            </section>
-        </div>
-
-        <div class="container">
-            <section class="box">
-                <h2>Puzzle for the Day</h2>
-                <p id="puzzleText">Loading...</p>
-                <input type="text" id="puzzleAnswer" placeholder="Your answer">
-                <button onclick="checkPuzzleAnswer()">Check Answer</button>
-            </section>
-
-            <section class="box">
-                <h2>Random YouTube Video</h2>
-                <iframe id="youtubeVideo" src="" allowfullscreen></iframe>
-            </section>
-        </div>
+        
+        <section id="featured-content">
+            <h2>Featured Content</h2>
+            <div class="carousel" id="carousel-container"></div>
+        </section>
+        
+        <section id="news">
+            <h2>Latest Educational News</h2>
+            <ul id="news-list"></ul>
+        </section>
+        
+        <section id="daily-puzzle">
+            <h2>Puzzle of the Day</h2>
+            <p id="puzzle"></p>
+        </section>
+        
+        <section id="video-feature">
+            <h2>Word & Video of the Day</h2>
+            <div id="youtube-video"></div>
+        </section>
     </main>
-
-    <script src="script.js"></script>
+    
+    <footer>
+        <p>&copy; 2025 Endue Learning. All rights reserved.</p>
+    </footer>
 </body>
 </html>
