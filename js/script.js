@@ -78,3 +78,6 @@ document.addEventListener("DOMContentLoaded", function () {
     fetchNews();
     loadYouTubeVideo();
 });
+
+fetch('data/thoughts.json') 
+fetch('data/puzzles.json') 
