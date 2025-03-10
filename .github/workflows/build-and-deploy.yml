@@ -31,4 +31,7 @@ jobs:
           git add .
           git commit -m "Deploy React app to GitHub Pages"
           git push origin gh-pages
+          echo "Deployment output:"
+          git status
+          git branch -a
         shell: bash
