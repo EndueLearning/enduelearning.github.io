@@ -7,7 +7,6 @@ try {
 
 /** @type {import('next').NextConfig} */
 const config = {
-  target: 'serverless',
   eslint: {
     ignoreDuringBuilds: true,
   },
