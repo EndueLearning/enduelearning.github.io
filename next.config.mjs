@@ -46,3 +46,22 @@ function mergeConfig(nextConfig, userConfig) {
 }
 
 export default nextConfig
+
+
+const nextConfig = {
+  target: 'serverless',
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    unoptimized: true,
+  },
+  experimental: {
+    webpackBuildWorker: true,
+    parallelServerBuildTraces: true,
+    parallelServerCompiles: true,
+  },
+}
