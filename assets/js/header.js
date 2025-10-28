@@ -1,16 +1,21 @@
 // assets/js/header.js
 document.addEventListener("DOMContentLoaded", () => {
-  // Detect path for GitHub Pages or local
-  const baseURL = window.location.hostname.includes("github.io")
-    ? `${window.location.origin}/components/header.html`
-    : "components/header.html";
+  const headerContainer = document.getElementById("header");
 
-  fetch(baseURL)
+  // Dynamically load header HTML
+  fetch("components/header.html")
     .then(res => res.text())
     .then(data => {
-      const headerContainer = document.getElementById("header");
-      if (headerContainer) {
-        headerContainer.innerHTML = data;
+      headerContainer.innerHTML = data;
+
+      // Once loaded, attach mobile toggle logic
+      const toggle = document.getElementById("menuToggle");
+      const nav = document.getElementById("navLinks");
+
+      if (toggle && nav) {
+        toggle.addEventListener("click", () => {
+          nav.classList.toggle("active");
+        });
       }
     })
     .catch(err => console.error("Header load error:", err));
