@@ -1,19 +1,20 @@
 // assets/js/daily.js
+// Picks a random word and thought daily from the library
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Calculate daily index based on date
-  const today = new Date();
-  const dayIndex = today.getDate() % wordsLibrary.length;
-  const thoughtIndex = today.getDate() % thoughtsLibrary.length;
+document.addEventListener("DOMContentLoaded", () => {
+  const wordDisplay = document.getElementById("word-of-day");
+  const thoughtDisplay = document.getElementById("thought-of-day");
 
-  // Pick today's word & thought
-  const todayWord = wordsLibrary[dayIndex];
-  const todayThought = thoughtsLibrary[thoughtIndex];
+  if (!wordDisplay || !thoughtDisplay) return;
 
-  // Update DOM elements
-  document.getElementById("word-of-day").innerHTML = `
-    <strong>${todayWord.word}</strong>: ${todayWord.meaning}
-  `;
+  // Get today's date number (so same word for everyone that day)
+  const daySeed = new Date().getDate();
 
-  document.getElementById("thought-of-day").textContent = todayThought;
+  // Pick word & thought based on date index
+  const wordData = wordLibrary[daySeed % wordLibrary.length];
+  const thoughtData = thoughtLibrary[daySeed % thoughtLibrary.length];
+
+  // Display content
+  wordDisplay.innerHTML = `<strong>${wordData.word}</strong><br>${wordData.meaning}`;
+  thoughtDisplay.textContent = thoughtData;
 });
