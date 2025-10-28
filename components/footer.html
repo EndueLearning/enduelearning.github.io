@@ -1,1 +1,92 @@
-<footer>FOOTER</footer>
+<!-- components/footer.html -->
+<footer class="main-footer">
+  <div class="footer-content">
+    <div class="footer-section about">
+      <h3>About Endue Learning</h3>
+      <p>Fun, interactive learning for kids — anytime, anywhere. Explore activities, worksheets, and games to make learning joyful!</p>
+    </div>
+
+    <div class="footer-section links">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="/activities.html">Activities</a></li>
+        <li><a href="/worksheets.html">Worksheets</a></li>
+        <li><a href="/games.html">Games</a></li>
+        <li><a href="/simulations.html">Simulations</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-section contact">
+      <h3>Contact Us</h3>
+      <p>Email: support@enduelearning.com</p>
+      <div class="social-icons">
+        <a href="#"><img src="/assets/images/facebook.svg" alt="Facebook"></a>
+        <a href="#"><img src="/assets/images/youtube.svg" alt="YouTube"></a>
+        <a href="#"><img src="/assets/images/twitter.svg" alt="Twitter"></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2025 Endue Learning | All Rights Reserved</p>
+  </div>
+</footer>
+
+<style>
+.main-footer {
+  background: #004d40;
+  color: #fff;
+  padding: 30px 20px 10px;
+  text-align: left;
+  font-family: 'Poppins', sans-serif;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.footer-section h3 {
+  color: #ffeb3b;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 5px 0;
+}
+
+.footer-section ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-section ul li a:hover {
+  color: #ffeb3b;
+}
+
+.social-icons img {
+  width: 30px;
+  margin-right: 10px;
+  transition: transform 0.3s ease;
+}
+
+.social-icons img:hover {
+  transform: scale(1.2);
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  text-align: center;
+  border-top: 1px solid #666;
+  padding-top: 10px;
+  font-size: 0.9rem;
+}
+</style>
