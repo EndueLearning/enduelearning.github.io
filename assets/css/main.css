@@ -1,2 +1,56 @@
-/* main css */
-body{padding-top:72px;}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2196f3;
+  color: white;
+  padding: 10px 20px;
+}
+
+.navbar .logo {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+#navMenu {
+  display: flex;
+  gap: 15px;
+}
+
+#navMenu a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Responsive menu */
+@media (max-width: 768px) {
+  #navMenu {
+    display: none;
+    flex-direction: column;
+    background: #1976d2;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    width: 180px;
+    border-radius: 10px;
+    padding: 10px;
+  }
+
+  #navMenu.show {
+    display: flex;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+}
