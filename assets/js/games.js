@@ -3,12 +3,7 @@ let currentQuestionIndex = 0;
 let knowledgeCoins = 0;
 let wrongAttempts = 0;
 
-const adImages = [
-  "assets/images/ad1.jpg",
-  "assets/images/ad2.jpg",
-  "assets/images/ad3.jpg"
-];
-
+const adImages = ["assets/images/ad1.jpg", "assets/images/ad2.jpg", "assets/images/ad3.jpg"];
 const mascots = ["📘", "✏️", "🧠", "🎈", "🖍️", "📗", "🪄"];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -40,7 +35,6 @@ async function startGame() {
 function loadQuestion() {
   const q = questions[currentQuestionIndex];
   document.getElementById("question").textContent = q.q;
-
   const optionsDiv = document.getElementById("options");
   optionsDiv.innerHTML = "";
   q.options.forEach(option => {
@@ -60,15 +54,12 @@ function checkAnswer(selected) {
     document.getElementById("donationProgress").textContent = `🎁 You’ve donated ${Math.floor(knowledgeCoins / 5)} virtual books!`;
     triggerMascot();
     changeAd();
-    wrongAttempts = 0; // reset wrong count
+    wrongAttempts = 0;
     nextQuestion();
   } else {
     wrongAttempts++;
     showFloatingMessage("Oops! Try again, you’ve got this! 💪");
-
-    if (wrongAttempts >= 3) {
-      showRobotTutor();
-    }
+    if (wrongAttempts >= 3) showRobotTutor();
   }
 }
 
@@ -100,7 +91,14 @@ function changeAd() {
   adImg.src = randomAd;
 }
 
+// 🤖 Tutor Bot animation
 function showRobotTutor() {
   const bot = document.getElementById("robotTutor");
+  const msg = document.getElementById("robotMessage");
   bot.classList.remove("hidden");
+  msg.classList.add("slide-in");
+
+  setTimeout(() => msg.classList.remove("hidden"), 100);
+  setTimeout(() => msg.classList.remove("slide-in"), 5500);
+  setTimeout(() => msg.classList.add("hidden"), 6500);
 }
