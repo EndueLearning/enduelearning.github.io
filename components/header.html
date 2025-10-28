@@ -2,49 +2,38 @@
 <header class="main-header">
   <nav class="navbar">
     <div class="logo-area">
-      <img src="/assets/images/logo.png" alt="Endue Learning Logo" class="logo">
+      <a href="/" class="logo-link">
+        <img src="assets/images/logo.png" alt="Endue Learning Logo" class="logo" />
+      </a>
       <h1 class="site-title">Endue Learning</h1>
     </div>
 
-    <button class="hamburger" id="menuToggle" aria-label="Toggle navigation">
-      ☰
-    </button>
+    <!-- Hamburger for mobile -->
+    <button class="hamburger" id="menuToggle" aria-label="Toggle navigation">☰</button>
 
+    <!-- Navigation Links -->
     <ul class="nav-links" id="navLinks">
-      <li><a href="/">Home</a></li>
-      <li><a href="/activities.html">Activities</a></li>
-      <li><a href="/worksheets.html">Worksheets</a></li>
-      <li><a href="/games.html">Games</a></li>
-      <li><a href="/simulations.html">Simulations</a></li>
-      <li><a href="/progress.html">Progress</a></li>
-      <li><a href="/contact.html">About / Contact</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="activities.html">Activities</a></li>
+      <li><a href="worksheets.html">Worksheets</a></li>
+      <li><a href="games.html">Games</a></li>
+      <li><a href="simulations.html">Simulations</a></li>
+      <li><a href="progress.html">Progress</a></li>
+      <li><a href="contact.html">About / Contact</a></li>
     </ul>
   </nav>
 </header>
 
-<script>
-// Mobile menu toggle
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("menuToggle");
-  const nav = document.getElementById("navLinks");
-  if (toggle) {
-    toggle.addEventListener("click", () => {
-      nav.classList.toggle("active");
-    });
-  }
-});
-</script>
-
 <style>
-/* Header styles */
+/* ---------------- Header Styles ---------------- */
 .main-header {
   background: linear-gradient(90deg, #4bc0c8, #c779d0, #feac5e);
   color: white;
-  padding: 10px 0;
   position: sticky;
   top: 0;
-  z-index: 999;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  z-index: 1000;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+  width: 100%;
 }
 
 .navbar {
@@ -53,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
   justify-content: space-between;
   width: 90%;
   margin: 0 auto;
+  padding: 10px 0;
 }
 
 .logo-area {
@@ -62,19 +52,21 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
 }
 
 .site-title {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-family: 'Poppins', sans-serif;
+  font-weight: 600;
 }
 
 .nav-links {
   display: flex;
   list-style: none;
   gap: 20px;
+  margin: 0;
 }
 
 .nav-links li a {
@@ -89,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   color: #ffe082;
 }
 
+/* Hamburger for mobile */
 .hamburger {
   display: none;
   font-size: 26px;
@@ -98,22 +91,40 @@ document.addEventListener("DOMContentLoaded", () => {
   cursor: pointer;
 }
 
+/* ------------- Responsive Navbar ------------- */
 @media (max-width: 768px) {
   .nav-links {
     position: absolute;
     top: 70px;
     right: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.9);
     flex-direction: column;
-    width: 200px;
+    width: 220px;
     padding: 15px;
     display: none;
+    border-radius: 10px 0 0 10px;
   }
+
   .nav-links.active {
     display: flex;
   }
+
   .hamburger {
     display: block;
   }
 }
 </style>
+
+<script>
+// ✅ Handle mobile menu toggle inside header
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("menuToggle");
+  const nav = document.getElementById("navLinks");
+
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      nav.classList.toggle("active");
+    });
+  }
+});
+</script>
