@@ -9,14 +9,31 @@ const adImages = [
   "assets/images/ad3.jpg"
 ];
 
-async function loadQuestions() {
+const mascots = ["📘", "✏️", "🧠", "🎈", "🖍️", "📗", "🪄"];
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("startGameBtn").addEventListener("click", startGame);
+});
+
+async function startGame() {
+  const subject = document.getElementById("subjectSelect").value;
+  if (!subject) {
+    alert("Please select a subject to start!");
+    return;
+  }
+
   try {
-    const response = await fetch("assets/data/questions.json");
+    const response = await fetch(`assets/data/questions_${subject}.json`);
     questions = await response.json();
+
+    document.querySelector(".subject-select").classList.add("hidden");
+    document.getElementById("gameBox").classList.remove("hidden");
+    document.getElementById("adSection").classList.remove("hidden");
+
     loadQuestion();
   } catch (error) {
-    console.error("Failed to load questions:", error);
-    document.getElementById("question").innerText = "Error loading questions.";
+    console.error("Error loading questions:", error);
+    document.getElementById("question").textContent = "Error loading questions.";
   }
 }
 
@@ -43,14 +60,14 @@ function checkAnswer(selected) {
     document.getElementById("donationProgress").textContent = `🎁 You’ve donated ${Math.floor(knowledgeCoins / 5)} virtual books!`;
     triggerMascot();
     changeAd();
+    wrongAttempts = 0; // reset wrong count
     nextQuestion();
   } else {
     wrongAttempts++;
-    showFloatingMessage("Oops! Keep trying, you’ll get it! 💪");
+    showFloatingMessage("Oops! Try again, you’ve got this! 💪");
 
-    if (wrongAttempts === 3) {
-      showFloatingMessage("💡 Learn more from our resources and come back stronger!");
-      wrongAttempts = 0; // reset after message
+    if (wrongAttempts >= 3) {
+      showRobotTutor();
     }
   }
 }
@@ -62,8 +79,10 @@ function nextQuestion() {
 
 function triggerMascot() {
   const mascot = document.getElementById("mascot");
+  const randomMascot = mascots[Math.floor(Math.random() * mascots.length)];
+  mascot.textContent = randomMascot;
   mascot.classList.add("celebrate");
-  setTimeout(() => mascot.classList.remove("celebrate"), 1000);
+  setTimeout(() => mascot.classList.remove("celebrate"), 800);
 }
 
 function showFloatingMessage(text) {
@@ -72,8 +91,7 @@ function showFloatingMessage(text) {
   msg.className = "floating-message";
   msg.textContent = text;
   container.appendChild(msg);
-
-  setTimeout(() => msg.remove(), 2000);
+  setTimeout(() => msg.remove(), 2500);
 }
 
 function changeAd() {
@@ -82,4 +100,7 @@ function changeAd() {
   adImg.src = randomAd;
 }
 
-document.addEventListener("DOMContentLoaded", loadQuestions);
+function showRobotTutor() {
+  const bot = document.getElementById("robotTutor");
+  bot.classList.remove("hidden");
+}
