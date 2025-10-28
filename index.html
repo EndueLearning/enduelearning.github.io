@@ -1,46 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endue Learning - Fun Learning Anywhere!</title>
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/main.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-
-  <!-- JS: Header/Footer injection -->
-  <script src="assets/js/header.js" defer></script>
-  <script src="assets/js/footer.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Endue Learning</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
 </head>
-  
+
 <body>
-  <!-- Header dynamically loaded -->
+  <!-- ✅ Header should be the first thing inside body -->
   <div id="header"></div>
 
-  <main>
-    <section class="hero">
-      <h1>Welcome to Endue Learning!</h1>
-      <p>Explore interactive worksheets, fun activities, and educational games.</p>
-    </section>
+  <!-- Now your hero/banner section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to Endue Learning — Fun Learning Anywhere!</h1>
+      <p>Explore activities, worksheets, games, and more!</p>
+    </div>
+  </section>
 
-    <!-- Daily Word & Thought -->
-    <section id="daily-updates" class="daily-box">
-      <h3>🌸 Word of the Day</h3>
-      <p id="word-of-day">Loading...</p>
+  <!-- The rest of your homepage sections here -->
+  <section id="daily-highlights"> ... </section>
+  <section id="interactive-learning"> ... </section>
+  <section id="featured-resource"> ... </section>
 
-      <h3>💡 Thought of the Day</h3>
-      <p id="thought-of-day">Loading...</p>
-    </section>
-
-    <!-- Add more homepage content here -->
-  </main>
-
-  <!-- Footer dynamically loaded -->
   <div id="footer"></div>
 
-  <!-- Data + Logic -->
-  <script src="assets/data/library.js"></script>
-  <script src="assets/js/daily.js" defer></script>
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/footer.js" defer></script>
 </body>
 </html>
