@@ -35,3 +35,13 @@ body {
   from {opacity: 0; transform: translateY(10px);}
   to {opacity: 1; transform: translateY(0);}
 }
+
+.main-header {
+  background: linear-gradient(90deg, #4bc0c8, #c779d0, #feac5e);
+  color: white;
+  padding: 8px 0; /* ↓ smaller height */
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
