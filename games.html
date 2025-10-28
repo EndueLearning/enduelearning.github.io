@@ -4,53 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Learn + Charity | Endue Learning</title>
-
-  <link rel="stylesheet" href="assets/css/main.css" />
   <link rel="stylesheet" href="assets/css/games.css" />
   <script src="assets/js/header.js" defer></script>
   <script src="assets/js/footer.js" defer></script>
+  <script src="assets/js/games.js" defer></script>
 </head>
-
 <body>
   <div id="header"></div>
 
   <main class="game-container">
-  <h1>🎯 Learn & Donate!</h1>
-  <p>Answer questions correctly to donate virtual books to children in need. 💖</p>
+    <h1>🎓 Learn + Charity Game</h1>
 
-  <div class="question-box">
-    <h2 id="question">Loading question...</h2>
-    <div class="options" id="options"></div>
-  </div>
+    <div class="game-box">
+      <div class="question-box">
+        <p id="question">Loading question...</p>
+        <div id="options"></div>
+      </div>
 
-  <div class="progress-area">
-    <p id="donation-text">🎁 You've donated <span id="bookCount">0</span> knowledge coins!</p>
-    <div class="progress-bar">
-      <div id="progressFill"></div>
+      <div class="status-bar">
+        <div id="coinDisplay">🪙 Knowledge Coins: 0</div>
+        <div id="donationProgress">🎁 You’ve donated 0 virtual books!</div>
+      </div>
     </div>
-  </div>
 
-  <div id="ad-area">
-    <!-- Replace with your AdSense code -->
-    <p class="ad-placeholder">[ Ad will appear here — changes every correct answer ]</p>
-  </div>
+    <div class="mascot" id="mascot">📚</div>
+    <div id="floatingMessageContainer"></div>
 
-  <div class="mascot" id="mascot"></div>
-
-  <div id="messageBox" class="hidden">
-    <h3>💡 Keep Learning!</h3>
-    <p>Don’t worry, mistakes help you grow! Explore our fun resources and try again soon.</p>
-    <div class="msg-buttons">
-      <a href="worksheets.html" class="msg-btn">📘 Worksheets</a>
-      <a href="simulations.html" class="msg-btn">🎮 Simulations</a>
+    <div class="ad-section">
+      <h3>✨ Sponsored Learning Ad ✨</h3>
+      <div id="adBox">
+        <img id="adImage" src="assets/images/ad1.jpg" alt="Ad" />
+      </div>
     </div>
-  </div>
-</main>
-
+  </main>
 
   <div id="footer"></div>
-
-  <script src="assets/js/confetti.js"></script>
-  <script src="assets/js/games.js"></script>
 </body>
 </html>
