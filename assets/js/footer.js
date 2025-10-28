@@ -1,14 +1,14 @@
 // assets/js/footer.js
 document.addEventListener("DOMContentLoaded", () => {
-  const basePath = window.location.hostname.includes("github.io")
+  const baseURL = window.location.hostname.includes("github.io")
     ? `${window.location.origin}/components/footer.html`
     : "components/footer.html";
 
-  fetch(basePath)
+  fetch(baseURL)
     .then(res => res.text())
     .then(data => {
-      const footerEl = document.getElementById("footer");
-      if (footerEl) footerEl.innerHTML = data;
+      const footerContainer = document.getElementById("footer");
+      if (footerContainer) footerContainer.innerHTML = data;
     })
     .catch(err => console.error("Footer load error:", err));
 });
