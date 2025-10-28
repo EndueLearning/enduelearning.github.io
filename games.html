@@ -15,29 +15,38 @@
   <div id="header"></div>
 
   <main class="game-container">
-    <h1>🎮 Learn + Charity</h1>
-    <p class="subtitle">Every right answer helps others learn too!</p>
+  <h1>🎯 Learn & Donate!</h1>
+  <p>Answer questions correctly to donate virtual books to children in need. 💖</p>
 
-    <div id="game-area">
-      <div id="question-box">
-        <h2 id="question">Loading...</h2>
-        <div id="options"></div>
-      </div>
+  <div class="question-box">
+    <h2 id="question">Loading question...</h2>
+    <div class="options" id="options"></div>
+  </div>
 
-      <div class="score-area">
-        <p>💰 Knowledge Coins: <span id="score">0</span></p>
-      </div>
-
-      <button id="next-btn" class="next-btn">Next</button>
+  <div class="progress-area">
+    <p id="donation-text">🎁 You've donated <span id="bookCount">0</span> knowledge coins!</p>
+    <div class="progress-bar">
+      <div id="progressFill"></div>
     </div>
+  </div>
 
-    <div id="result" class="result hidden">
-      <h2>🌟 Awesome!</h2>
-      <p>You earned <span id="final-score"></span> Knowledge Coins today!</p>
-      <p>Keep learning — every bit of knowledge you gain helps the world!</p>
-      <button id="restart-btn" class="restart-btn">Play Again</button>
+  <div id="ad-area">
+    <!-- Replace with your AdSense code -->
+    <p class="ad-placeholder">[ Ad will appear here — changes every correct answer ]</p>
+  </div>
+
+  <div class="mascot" id="mascot"></div>
+
+  <div id="messageBox" class="hidden">
+    <h3>💡 Keep Learning!</h3>
+    <p>Don’t worry, mistakes help you grow! Explore our fun resources and try again soon.</p>
+    <div class="msg-buttons">
+      <a href="worksheets.html" class="msg-btn">📘 Worksheets</a>
+      <a href="simulations.html" class="msg-btn">🎮 Simulations</a>
     </div>
-  </main>
+  </div>
+</main>
+
 
   <div id="footer"></div>
 
