@@ -1,6 +1,12 @@
-// assets/js/header.js
+// ✅ header.js
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("components/header.html")
+  const pathPrefix = window.location.pathname.includes("/components/")
+    ? "" 
+    : window.location.pathname.includes("/") 
+    ? "./" 
+    : "";
+
+  fetch(`${pathPrefix}components/header.html`)
     .then(res => res.text())
     .then(data => {
       document.getElementById("header").innerHTML = data;
