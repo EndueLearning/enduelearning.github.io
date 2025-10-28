@@ -1,13 +1,15 @@
-// assets/js/footer.js
-document.addEventListener("DOMContentLoaded", async () => {
-  const footer = document.getElementById("footer");
-  if (!footer) return;
+// ✅ footer.js
+document.addEventListener("DOMContentLoaded", () => {
+  const pathPrefix = window.location.pathname.includes("/components/")
+    ? ""
+    : window.location.pathname.includes("/")
+    ? "./"
+    : "";
 
-  try {
-    const res = await fetch("components/footer.html");
-    if (!res.ok) throw new Error("Footer not found");
-    footer.innerHTML = await res.text();
-  } catch (err) {
-    console.error("Footer load error:", err);
-  }
+  fetch(`${pathPrefix}components/footer.html`)
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    })
+    .catch(err => console.error("Footer load error:", err));
 });
