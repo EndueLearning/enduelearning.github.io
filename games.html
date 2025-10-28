@@ -15,7 +15,20 @@
   <main class="game-container">
     <h1>🎓 Learn + Charity Game</h1>
 
-    <div class="game-box">
+    <div class="subject-select">
+      <h3>Select a Subject:</h3>
+      <select id="subjectSelect">
+        <option value="">-- Choose a subject --</option>
+        <option value="science">Science</option>
+        <option value="math">Math</option>
+        <option value="english">English</option>
+        <option value="gk">General Knowledge</option>
+        <option value="history">History</option>
+      </select>
+      <button id="startGameBtn">Start Game</button>
+    </div>
+
+    <div id="gameBox" class="game-box hidden">
       <div class="question-box">
         <p id="question">Loading question...</p>
         <div id="options"></div>
@@ -25,18 +38,26 @@
         <div id="coinDisplay">🪙 Knowledge Coins: 0</div>
         <div id="donationProgress">🎁 You’ve donated 0 virtual books!</div>
       </div>
+
+      <div class="mascot" id="mascot">📚</div>
+      <div id="floatingMessageContainer"></div>
     </div>
 
-    <div class="mascot" id="mascot">📚</div>
-    <div id="floatingMessageContainer"></div>
-
-    <div class="ad-section">
+    <div class="ad-section hidden" id="adSection">
       <h3>✨ Sponsored Learning Ad ✨</h3>
       <div id="adBox">
         <img id="adImage" src="assets/images/ad1.jpg" alt="Ad" />
       </div>
     </div>
   </main>
+
+  <div id="robotTutor" class="hidden">
+    <img src="assets/images/robot-icon.png" alt="Tutor Bot" />
+    <div id="robotMessage" class="hidden">
+      <p>💡 Need help? Watch our video to learn this concept better!</p>
+      <a href="https://www.youtube.com/@EndueLearning" target="_blank">📺 Go to YouTube</a>
+    </div>
+  </div>
 
   <div id="footer"></div>
 </body>
