@@ -1,3 +1,6 @@
+/* main css */
+body{padding-top:72px;}
+
 .navbar {
   display: flex;
   justify-content: space-between;
