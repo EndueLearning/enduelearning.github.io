@@ -37,23 +37,29 @@ body{padding-top:72px;}
 
 /* Responsive menu */
 @media (max-width: 768px) {
-  #navMenu {
-    display: none;
-    flex-direction: column;
-    background: #1976d2;
+  .nav-links {
     position: absolute;
-    top: 60px;
+    top: 65px;
     right: 10px;
-    width: 180px;
-    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.95);
+    flex-direction: column;
+    width: 200px;
+    border-radius: 8px;
     padding: 10px;
+    display: none;
+    animation: slideDown 0.3s ease forwards;
   }
 
-  #navMenu.show {
+  .nav-links.active {
     display: flex;
   }
 
-  .menu-toggle {
+  .hamburger {
     display: block;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
