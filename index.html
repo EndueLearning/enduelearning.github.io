@@ -1,35 +1,47 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home</title>
-<link rel="stylesheet" href="assets/css/main.css">
-<script src="assets/js/header.js" defer></script>
-<script src="assets/js/footer.js" defer></script>
-<script src="assets/js/dynamic-content.js" defer></script>
-</head><body><div id="header"></div><div class="container">
-<section class="hero">
-  <div class="floating-icons">
-    <div class="mascot-wrap"><object data="assets/mascots/mascot1.svg" type="image/svg+xml" class="mascot"></object></div>
-    <div class="mascot-wrap"><object data="assets/mascots/mascot2.svg" type="image/svg+xml" class="mascot"></object></div>
-  </div>
-  <h1>Welcome to <strong>Endue Learning</strong></h1>
-  <p>Fun Learning Anywhere!</p>
-  <div class="carousel">
-    <div class="slide"><h3>📖 Word of the Day: <span id="home-word">Loading…</span></h3></div>
-    <div class="slide"><h3>💭 Thought of the Day</h3><p id="home-thought">Loading…</p></div>
-    <div class="slide"><h3>🎨 Featured Activity</h3><p>Try our “Color the Solar System” worksheet today!</p></div>
-  </div>
-</section>
-<section class="daily-highlights">
-  <div class="card"><h3>Word for the Day</h3><div id="wordOfDay">Loading…</div></div>
-  <div class="card"><h3>Thought for the Day</h3><div id="thoughtOfDay">Loading…</div></div>
-</section>
-  <section id="daily-updates" class="daily-box">
-  <h3>🌸 Word of the Day</h3>
-  <p id="word-of-day">Loading...</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Endue Learning - Learn, Play & Grow</title>
 
-  <h3>💡 Thought of the Day</h3>
-  <p id="thought-of-day">Loading...</p>
-</section>
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/animations.css">
 
-<script src="/assets/data/library.js"></script>
-<script src="/assets/js/daily.js" defer></script>
+  <!-- Scripts -->
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/footer.js" defer></script>
+</head>
 
-</div><div id="footer"></div></body></html>
+<body>
+  <!-- Header dynamically loaded -->
+  <div id="header"></div>
+
+  <main>
+    <section class="hero">
+      <h1>Welcome to Endue Learning!</h1>
+      <p>Explore interactive worksheets, fun activities, and educational games.</p>
+    </section>
+
+    <!-- Daily Word & Thought -->
+    <section id="daily-updates" class="daily-box">
+      <h3>🌸 Word of the Day</h3>
+      <p id="word-of-day">Loading...</p>
+
+      <h3>💡 Thought of the Day</h3>
+      <p id="thought-of-day">Loading...</p>
+    </section>
+
+    <!-- Add more homepage content here -->
+  </main>
+
+  <!-- Footer dynamically loaded -->
+  <div id="footer"></div>
+
+  <!-- Data + Logic -->
+  <script src="assets/data/library.js"></script>
+  <script src="assets/js/daily.js" defer></script>
+</body>
+</html>
