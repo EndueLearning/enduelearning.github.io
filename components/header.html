@@ -1,1 +1,121 @@
-<nav>HEADER</nav>
+<!-- components/header.html -->
+<header class="main-header">
+  <nav class="navbar">
+    <div class="logo-area">
+      <img src="/assets/images/logo.png" alt="Endue Learning Logo" class="logo">
+      <h1 class="site-title">Endue Learning</h1>
+    </div>
+
+    <button class="hamburger" id="menuToggle" aria-label="Toggle navigation">
+      ☰
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/activities.html">Activities</a></li>
+      <li><a href="/worksheets.html">Worksheets</a></li>
+      <li><a href="/games.html">Games</a></li>
+      <li><a href="/simulations.html">Simulations</a></li>
+      <li><a href="/word.html">Word for the Day</a></li>
+      <li><a href="/thought.html">Thought for the Day</a></li>
+      <li><a href="/progress.html">Progress</a></li>
+      <li><a href="/contact.html">About / Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+// Mobile menu toggle
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("menuToggle");
+  const nav = document.getElementById("navLinks");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      nav.classList.toggle("active");
+    });
+  }
+});
+</script>
+
+<style>
+/* Header styles */
+.main-header {
+  background: linear-gradient(90deg, #4bc0c8, #c779d0, #feac5e);
+  color: white;
+  padding: 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 50px;
+  height: 50px;
+}
+
+.site-title {
+  font-size: 1.4rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-links li a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.nav-links li a:hover {
+  text-decoration: underline;
+  color: #ffe082;
+}
+
+.hamburger {
+  display: none;
+  font-size: 26px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: rgba(0,0,0,0.8);
+    flex-direction: column;
+    width: 200px;
+    padding: 15px;
+    display: none;
+  }
+  .nav-links.active {
+    display: flex;
+  }
+  .hamburger {
+    display: block;
+  }
+}
+</style>
