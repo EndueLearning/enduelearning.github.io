@@ -1,0 +1,27 @@
+[
+  {
+    "q": "Which organ pumps blood in your body?",
+    "options": ["Lungs", "Brain", "Heart", "Kidneys"],
+    "answer": "Heart"
+  },
+  {
+    "q": "Which planet is known as the Red Planet?",
+    "options": ["Earth", "Mars", "Jupiter", "Venus"],
+    "answer": "Mars"
+  },
+  {
+    "q": "Water freezes at what temperature (Celsius)?",
+    "options": ["0°C", "10°C", "100°C", "-10°C"],
+    "answer": "0°C"
+  },
+  {
+    "q": "Which is the largest mammal?",
+    "options": ["Elephant", "Blue Whale", "Giraffe", "Shark"],
+    "answer": "Blue Whale"
+  },
+  {
+    "q": "What gas do plants release during photosynthesis?",
+    "options": ["Carbon Dioxide", "Oxygen", "Nitrogen", "Helium"],
+    "answer": "Oxygen"
+  }
+]
