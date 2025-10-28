@@ -1,0 +1,17 @@
+[
+  {
+    "q": "Which planet is known as the Red Planet?",
+    "options": ["Earth", "Mars", "Jupiter", "Venus"],
+    "answer": "Mars"
+  },
+  {
+    "q": "Which organ pumps blood in your body?",
+    "options": ["Lungs", "Brain", "Heart", "Kidneys"],
+    "answer": "Heart"
+  },
+  {
+    "q": "What gas do plants release during photosynthesis?",
+    "options": ["Carbon Dioxide", "Oxygen", "Nitrogen", "Helium"],
+    "answer": "Oxygen"
+  }
+]
