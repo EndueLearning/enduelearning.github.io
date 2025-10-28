@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded', ()=>{ const p=document.getElementById('footer'); if(!p) return; fetch('components/footer.html').then(r=>r.text()).then(t=>p.innerHTML=t); });

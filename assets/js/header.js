@@ -1,0 +1,1 @@
+document.addEventListener('DOMContentLoaded', ()=>{ const p=document.getElementById('header'); if(!p) return; fetch('components/header.html').then(r=>r.text()).then(t=>p.innerHTML=t); });
