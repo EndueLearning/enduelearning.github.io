@@ -127,3 +127,59 @@ select, button {
   font-weight: 600;
   text-decoration: none;
 }
+
+/* 🤖 Tutor Bot Slide-in */
+#robotTutor {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+#robotTutor img {
+  width: 70px;
+  transition: transform 0.3s;
+}
+
+#robotTutor img:hover {
+  transform: scale(1.1);
+}
+
+#robotMessage {
+  position: absolute;
+  bottom: 100px;
+  right: 0;
+  background: #ffffff;
+  border: 2px solid #4caf50;
+  border-radius: 10px;
+  padding: 10px;
+  width: 230px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+#robotMessage.slide-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Make game fully mobile friendly */
+@media (max-width: 768px) {
+  .game-box {
+    width: 90%;
+  }
+
+  #options button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  #adBox img {
+    width: 90%;
+    height: auto;
+  }
+}
+
