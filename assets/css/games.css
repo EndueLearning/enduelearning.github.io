@@ -1,20 +1,35 @@
 body {
   font-family: 'Poppins', sans-serif;
-  background: #f0f9ff;
-  text-align: center;
+  background: #eef8ff;
   margin: 0;
   padding: 0;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
 }
 
 .game-container {
   padding: 20px;
 }
 
+.subject-select {
+  margin-bottom: 20px;
+}
+
+select, button {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
 .game-box {
-  background: white;
+  background: #fff;
+  padding: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  padding: 20px;
   display: inline-block;
   max-width: 500px;
 }
@@ -29,12 +44,11 @@ body {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
+  transition: 0.3s;
 }
 
 #options button:hover {
-  background-color: #45a049;
+  background-color: #388e3c;
 }
 
 .status-bar {
@@ -44,43 +58,72 @@ body {
 }
 
 .mascot {
-  font-size: 50px;
-  margin: 20px auto;
-  transition: transform 0.5s ease;
+  font-size: 55px;
+  margin-top: 15px;
+  transition: transform 0.3s;
 }
 
 .mascot.celebrate {
-  transform: rotate(15deg) scale(1.3);
+  transform: rotate(10deg) scale(1.3);
 }
 
 .floating-message {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  background: #ffd54f;
+  background: #ffe082;
   padding: 8px 15px;
   border-radius: 10px;
-  animation: floatUp 2s ease-out forwards;
+  animation: floatUp 2.5s ease-out forwards;
   color: #333;
   font-weight: 600;
 }
 
 @keyframes floatUp {
-  from { bottom: 50px; opacity: 1; }
+  from { bottom: 60px; opacity: 1; }
   to { bottom: 200px; opacity: 0; }
-}
-
-.ad-section {
-  margin-top: 30px;
-  padding: 15px;
-  background: #fff3cd;
-  border-radius: 10px;
 }
 
 #adBox img {
   width: 250px;
   height: 150px;
-  object-fit: cover;
   border-radius: 10px;
   margin-top: 10px;
+}
+
+/* 🧠 Robot Tutor */
+#robotTutor {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+#robotTutor img {
+  width: 80px;
+  transition: transform 0.3s;
+}
+
+#robotTutor img:hover {
+  transform: scale(1.1);
+}
+
+#robotMessage {
+  position: absolute;
+  bottom: 100px;
+  right: 0;
+  background: #ffffff;
+  border: 2px solid #4caf50;
+  border-radius: 10px;
+  padding: 10px;
+  width: 220px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+#robotMessage a {
+  display: inline-block;
+  margin-top: 5px;
+  color: #2196f3;
+  font-weight: 600;
+  text-decoration: none;
 }
