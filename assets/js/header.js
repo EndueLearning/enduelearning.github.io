@@ -1,19 +1,19 @@
-// ✅ header.js
+// assets/js/header.js
 document.addEventListener("DOMContentLoaded", () => {
-  const pathPrefix = window.location.pathname.includes("/components/")
-    ? "" 
-    : window.location.pathname.includes("/") 
-    ? "./" 
-    : "";
+  // Automatically detect correct path for GitHub Pages or local
+  const basePath = window.location.hostname.includes("github.io")
+    ? `${window.location.origin}/components/header.html`
+    : "components/header.html";
 
-  fetch(`${pathPrefix}components/header.html`)
+  fetch(basePath)
     .then(res => res.text())
     .then(data => {
-      document.getElementById("header").innerHTML = data;
+      const headerEl = document.getElementById("header");
+      if (headerEl) headerEl.innerHTML = data;
 
+      // Mobile toggle after header is loaded
       const toggle = document.getElementById("menuToggle");
       const nav = document.getElementById("navLinks");
-
       if (toggle && nav) {
         toggle.addEventListener("click", () => {
           nav.classList.toggle("active");
