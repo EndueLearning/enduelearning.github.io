@@ -1,32 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Endue Learning</title>
-
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/footer.css">
-  <link rel="stylesheet" href="assets/css/main.css">
-
-  <!-- JS for Header + Footer -->
-  <script src="assets/js/header.js" defer></script>
-  <script src="assets/js/footer.js" defer></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Endue Learning</title>
+<link rel="stylesheet" href="assets/css/header.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<script src="assets/js/header.js" defer></script>
+<script src="assets/js/footer.js" defer></script>
 </head>
 <body>
+<div id="header"></div>
 
-  <!-- Dynamic Header -->
-  <div id="header"></div>
+<main>
+  <section class="hero">
+    <h1>Welcome to Endue Learning — Fun Learning Anywhere!</h1>
+    <p>Interactive worksheets, games and more for kids.</p>
+  </section>
 
-  <!-- Page Content -->
-  <main>
-    <h2>Welcome to Endue Learning 🌈</h2>
-    <p>Learn. Play. Grow.</p>
-  </main>
+  <section class="daily-box">
+    <div id="word-of-day">Loading word...</div>
+    <div id="thought-of-day">Loading thought...</div>
+  </section>
 
-  <!-- Dynamic Footer -->
-  <div id="footer"></div>
+  <section class="container">
+    <h2>Highlights</h2>
+    <p>Try the Learn + Charity game from the Games menu.</p>
+  </section>
+</main>
 
+<div id="footer"></div>
+
+<script src="assets/data/library.js" defer></script>
+<script src="assets/js/dynamic-content.js" defer></script>
 </body>
 </html>
