@@ -1,104 +1,11 @@
-let questions = [];
-let currentQuestionIndex = 0;
-let knowledgeCoins = 0;
-let wrongAttempts = 0;
-
-const adImages = ["assets/images/ad1.jpg", "assets/images/ad2.jpg", "assets/images/ad3.jpg"];
-const mascots = ["📘", "✏️", "🧠", "🎈", "🖍️", "📗", "🪄"];
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("startGameBtn").addEventListener("click", startGame);
-});
-
-async function startGame() {
-  const subject = document.getElementById("subjectSelect").value;
-  if (!subject) {
-    alert("Please select a subject to start!");
-    return;
-  }
-
-  try {
-    const response = await fetch(`assets/data/questions_${subject}.json`);
-    questions = await response.json();
-
-    document.querySelector(".subject-select").classList.add("hidden");
-    document.getElementById("gameBox").classList.remove("hidden");
-    document.getElementById("adSection").classList.remove("hidden");
-
-    loadQuestion();
-  } catch (error) {
-    console.error("Error loading questions:", error);
-    document.getElementById("question").textContent = "Error loading questions.";
-  }
-}
-
-function loadQuestion() {
-  const q = questions[currentQuestionIndex];
-  document.getElementById("question").textContent = q.q;
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
-  q.options.forEach(option => {
-    const btn = document.createElement("button");
-    btn.textContent = option;
-    btn.onclick = () => checkAnswer(option);
-    optionsDiv.appendChild(btn);
-  });
-}
-
-function checkAnswer(selected) {
-  const q = questions[currentQuestionIndex];
-
-  if (selected === q.answer) {
-    knowledgeCoins++;
-    document.getElementById("coinDisplay").textContent = `🪙 Knowledge Coins: ${knowledgeCoins}`;
-    document.getElementById("donationProgress").textContent = `🎁 You’ve donated ${Math.floor(knowledgeCoins / 5)} virtual books!`;
-    triggerMascot();
-    changeAd();
-    wrongAttempts = 0;
-    nextQuestion();
-  } else {
-    wrongAttempts++;
-    showFloatingMessage("Oops! Try again, you’ve got this! 💪");
-    if (wrongAttempts >= 3) showRobotTutor();
-  }
-}
-
-function nextQuestion() {
-  currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-  loadQuestion();
-}
-
-function triggerMascot() {
-  const mascot = document.getElementById("mascot");
-  const randomMascot = mascots[Math.floor(Math.random() * mascots.length)];
-  mascot.textContent = randomMascot;
-  mascot.classList.add("celebrate");
-  setTimeout(() => mascot.classList.remove("celebrate"), 800);
-}
-
-function showFloatingMessage(text) {
-  const container = document.getElementById("floatingMessageContainer");
-  const msg = document.createElement("div");
-  msg.className = "floating-message";
-  msg.textContent = text;
-  container.appendChild(msg);
-  setTimeout(() => msg.remove(), 2500);
-}
-
-function changeAd() {
-  const adImg = document.getElementById("adImage");
-  const randomAd = adImages[Math.floor(Math.random() * adImages.length)];
-  adImg.src = randomAd;
-}
-
-// 🤖 Tutor Bot animation
-function showRobotTutor() {
-  const bot = document.getElementById("robotTutor");
-  const msg = document.getElementById("robotMessage");
-  bot.classList.remove("hidden");
-  msg.classList.add("slide-in");
-
-  setTimeout(() => msg.classList.remove("hidden"), 100);
-  setTimeout(() => msg.classList.remove("slide-in"), 5500);
-  setTimeout(() => msg.classList.add("hidden"), 6500);
-}
+// games.js - simplified version with features required
+let questions=[]; let currentIndex=0; let coins=Number(localStorage.getItem('endue_coins')||0); let wrong=0;
+const mascots=['📘','✏️','🧠','🎈','🖍️']; const ads=['assets/images/ad1.svg','assets/images/ad2.svg','assets/images/ad3.svg'];
+document.addEventListener('DOMContentLoaded', ()=>{ const btn=document.getElementById('startGameBtn'); if(btn) btn.addEventListener('click', startGame); const cd=document.getElementById('coinDisplay'); if(cd) cd.textContent=`🪙 Knowledge Coins: ${coins}`; });
+async function startGame(){ const subj=document.getElementById('subjectSelect').value; if(!subj){alert('Choose subject');return;} const res=await fetch(`assets/data/questions_${subj}.json`); questions=await res.json(); currentIndex=0; document.getElementById('gameBox').classList.remove('hidden'); document.getElementById('adSection').classList.remove('hidden'); loadQuestion(); }
+function loadQuestion(){ if(!questions.length) return; const q=questions[currentIndex]; document.getElementById('question').textContent=q.q; const opts=document.getElementById('options'); opts.innerHTML=''; q.options.forEach(o=>{ const b=document.createElement('button'); b.textContent=o; b.addEventListener('click', ()=>check(o)); opts.appendChild(b); }); }
+function check(selected){ const q=questions[currentIndex]; if(selected===q.answer){ coins++; localStorage.setItem('endue_coins', coins); document.getElementById('coinDisplay').textContent=`🪙 Knowledge Coins: ${coins}`; document.getElementById('donationProgress').textContent=`🎁 You’ve donated ${Math.floor(coins/5)} virtual books!`; showMascot(); rotateAd(); wrong=0; } else { wrong++; showFloating('Nice try!'); if(wrong>=3){ showRobot(); wrong=0;} } currentIndex=(currentIndex+1)%questions.length; setTimeout(loadQuestion,600); }
+function showMascot(){ const m=document.getElementById('mascot'); m.textContent=mascots[Math.floor(Math.random()*mascots.length)]; m.classList.add('celebrate'); setTimeout(()=>m.classList.remove('celebrate'),800); const cont=document.createElement('div'); cont.className='reward-container'; const icons=['✏️','📚','🖍️','📒','⭐']; for(let i=0;i<6;i++){ const s=document.createElement('span'); s.className='reward-icon'; s.textContent=icons[Math.floor(Math.random()*icons.length)]; s.style.left=(10+Math.random()*80)+'%'; cont.appendChild(s);} document.body.appendChild(cont); setTimeout(()=>cont.remove(),1400); }
+function showFloating(text){ const d=document.createElement('div'); d.className='floating-message'; d.textContent=text; document.body.appendChild(d); setTimeout(()=>d.remove(),2200); }
+function rotateAd(){ const img=document.getElementById('adImage'); img.src=ads[Math.floor(Math.random()*ads.length)]; }
+function showRobot(){ const bot=document.getElementById('robotTutor'); bot.style.display='block'; const msg=document.getElementById('robotMessage'); msg.style.display='block'; msg.classList.add('slide-in'); setTimeout(()=>{ msg.classList.remove('slide-in'); msg.style.display='none'; bot.style.display='none'; },6000); }
