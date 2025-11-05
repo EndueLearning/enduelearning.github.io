@@ -1,14 +1,9 @@
-// assets/js/footer.js
+// footer.js - loads footer
 document.addEventListener("DOMContentLoaded", () => {
-  const baseURL = window.location.hostname.includes("github.io")
-    ? `${window.location.origin}/components/footer.html`
-    : "components/footer.html";
-
-  fetch(baseURL)
-    .then(res => res.text())
-    .then(data => {
-      const footerContainer = document.getElementById("footer");
-      if (footerContainer) footerContainer.innerHTML = data;
-    })
-    .catch(err => console.error("Footer load error:", err));
+  const footerContainer = document.getElementById("footer");
+  if (!footerContainer) return;
+  const fetchUrl = window.location.hostname.includes("github.io")
+    ? `${window.location.origin}${window.location.pathname.split('/').filter(Boolean)[0] ? '/' + window.location.pathname.split('/').filter(Boolean)[0] : ''}/components/footer.html`
+    : 'components/footer.html';
+  fetch(fetchUrl).then(r=>r.text()).then(html=> footerContainer.innerHTML = html).catch(e=>console.error('Footer load error', e));
 });
