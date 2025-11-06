@@ -1,0 +1,2 @@
+// animations.js - confetti fallback
+function tinyConfetti(){ const c=document.createElement('div'); c.style.position='fixed'; c.style.left=0; c.style.top=0; c.style.width='100%'; c.style.height='100%'; c.style.pointerEvents='none'; c.style.zIndex=2200; for(let i=0;i<20;i++){ const s=document.createElement('div'); s.textContent='✨'; s.style.position='absolute'; s.style.left=(5+Math.random()*90)+'%'; s.style.top=(60+Math.random()*30)+'%'; s.style.fontSize=(12+Math.random()*24)+'px'; c.appendChild(s); } document.body.appendChild(c); setTimeout(()=>c.remove(),1400); }

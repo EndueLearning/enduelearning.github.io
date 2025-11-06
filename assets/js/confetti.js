@@ -1,1 +1,0 @@
-function startConfetti(){console.log('confetti')};
