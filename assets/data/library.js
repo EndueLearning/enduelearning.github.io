@@ -1,5 +1,5 @@
 // assets/data/library.js
-
+// word & thought library
 const wordsLibrary = [
   { word: "Empathy", meaning: "The ability to understand and share another's feelings." },
   { word: "Curiosity", meaning: "A strong desire to learn or know more." },
@@ -23,5 +23,8 @@ const thoughtsLibrary = [
   "Be kind, be curious, and you’ll go far.",
   "Mistakes are proof that you are trying.",
   "Dream big, start small, but start today.",
+  "Small steps each day lead to big results.",
+  "Share what you learn.",
+  "Be curious and kind.",
   "Your attitude determines your altitude!"
 ];
