@@ -1,1 +1,50 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Games - Endue Learning</title><link rel="stylesheet" href="assets/css/header.css"><link rel="stylesheet" href="assets/css/style.css"><link rel="stylesheet" href="assets/css/games.css"><script src="assets/js/header.js" defer></script><script src="assets/js/footer.js" defer></script><script src="assets/js/main.js" defer></script><script src="assets/js/games.js" defer></script></head><body><div id="header"></div><main class="container game-container"><h1>🎓 Learn + Charity</h1><div class="card"><label for="subjectSelect">Choose subject:</label><select id="subjectSelect"><option value="">--Select--</option><option value="science">Science</option><option value="math">Math</option><option value="gk">General Knowledge</option></select><button id="startGameBtn" class="btn">Start</button></div><div id="gameBox" class="card" style="display:none"><p id="question">Question will appear here</p><div id="options"></div><div class="status-bar"><div id="coinDisplay">🪙 Knowledge Coins: 0</div><div id="donationProgress">🎁 You’ve donated 0 virtual books!</div></div><div id="mascot" class="mascot">📚</div></div><div id="adSection" class="card" style="display:none"><h3>Sponsored</h3><div id="adBox"><img id="adImage" src="assets/images/ad1.svg" alt="ad" style="max-width:100%"></div></div><div id="robotTutor" style="display:none;position:fixed;right:18px;bottom:18px"><img src="assets/images/robot-icon.svg" alt="robot" width="72"></div><div id="robotMessage" style="display:none;position:fixed;right:100px;bottom:20px;background:#fff;padding:10px;border-radius:10px;border:2px solid #4caf50;box-shadow:0 6px 18px rgba(0,0,0,0.12)"><p>Need help? Watch our videos.</p><a href="https://www.youtube.com/@EndueLearning" target="_blank">Go to YouTube</a></div></main><div id="footer"></div></body></html>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Games - Endue Learning</title>
+    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/games.css">
+    <script src="assets/js/header.js" defer></script>
+    <script src="assets/js/footer.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/games.js" defer></script>
+  </head>
+  <body>
+    <div id="header"></div>
+    <main class="container game-container">
+      <h1>🎓 Learn + Charity</h1><div class="card">
+        <label for="subjectSelect">Choose subject:</label>
+        <select id="subjectSelect">
+          <option value="">--Select--</option>
+          <option value="science">Science</option>
+          <option value="math">Math</option>
+          <option value="gk">General Knowledge</option>
+        </select>
+        <button id="startGameBtn" class="btn">Start</button>
+      </div>
+      <div id="gameBox" class="card" style="display:none">
+        <p id="question">Question will appear here</p>
+        <div id="options"></div>
+        <div class="status-bar">
+          <div id="coinDisplay">🪙 Knowledge Coins: 0</div>
+          <div id="donationProgress">🎁 You’ve donated 0 virtual books!</div>
+        </div>
+        <div id="mascot" class="mascot">📚</div></div>
+      <div id="adSection" class="card" style="display:none">
+        <h3>Sponsored</h3>
+        <div id="adBox"><img id="adImage" src="assets/images/ad1.svg" alt="ad" style="max-width:100%"></div>
+      </div>
+      <div id="robotTutor" style="display:none;position:fixed;right:18px;bottom:18px">
+        <img src="assets/images/robot-icon.svg" alt="robot" width="72">
+      </div>
+      <div id="robotMessage" style="display:none;position:fixed;right:100px;bottom:20px;background:#fff;padding:10px;border-radius:10px;border:2px solid #4caf50;box-shadow:0 6px 18px rgba(0,0,0,0.12)">
+        <p>Need help? Watch our videos.</p>
+        <a href="https://www.youtube.com/@EndueLearning" target="_blank">Go to YouTube</a>
+      </div>
+    </main>
+    <div id="footer"></div>
+  </body>
+</html>
