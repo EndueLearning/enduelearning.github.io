@@ -1,0 +1,22 @@
+[
+  {
+    "q": "What color is the sky on a clear day?",
+    "options": [
+      "Green",
+      "Blue",
+      "Red",
+      "Yellow"
+    ],
+    "answer": "Blue"
+  },
+  {
+    "q": "How many legs does a spider have?",
+    "options": [
+      "6",
+      "8",
+      "4",
+      "10"
+    ],
+    "answer": "8"
+  }
+]
