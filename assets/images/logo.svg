@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Endue Learning logo">
+  <defs>
+    <linearGradient id="g1" x1="0" x2="1">
+      <stop offset="0" stop-color="#2b9cff"/>
+      <stop offset="1" stop-color="#5ad1e1"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" x2="1">
+      <stop offset="0" stop-color="#ffd166"/>
+      <stop offset="1" stop-color="#ffb86b"/>
+    </linearGradient>
+    <filter id="s" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+  <g filter="url(#s)">
+    <circle cx="120" cy="120" r="110" fill="url(#g1)"/>
+  </g>
+  <g>
+    <path d="M70 110 C95 70, 145 70, 170 110 C145 130, 95 130, 70 110 Z" fill="white" opacity="0.98"/>
+    <path d="M80 120 C105 90, 135 90, 160 120 C135 140, 105 140, 80 120 Z" fill="url(#g2)" opacity="0.98"/>
+    <rect x="168" y="60" width="14" height="28" rx="6" fill="#ffffff" transform="rotate(-22 175 74)"/>
+    <circle cx="186" cy="54" r="8" fill="#ffffff"/>
+    <path d="M86 150 q12 6 28 0" stroke="#08324a" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <rect x="120" y="132" width="8" height="30" rx="4" fill="#08324a"/>
+  </g>
+</svg>

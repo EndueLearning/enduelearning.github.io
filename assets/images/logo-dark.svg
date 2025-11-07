@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-label="Endue Learning logo dark">
+  <rect width="240" height="240" rx="20" fill="#062635"/>
+  <path d="M70 110 C95 70, 145 70, 170 110 C145 130, 95 130, 70 110 Z" fill="#5ad1e1"/>
+  <path d="M80 120 C105 90, 135 90, 160 120 C135 140, 105 140, 80 120 Z" fill="#ffb86b"/>
+  <path d="M86 150 q12 6 28 0" stroke="#00121a" stroke-width="6" fill="none" stroke-linecap="round"/>
+  <rect x="120" y="132" width="8" height="30" rx="4" fill="#00121a"/>
+</svg>
