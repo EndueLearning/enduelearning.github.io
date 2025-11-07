@@ -1,2 +1,0 @@
-// dynamic-content.js - load daily word/thought from library.js
-window.addEventListener('load', ()=>{ try{ if(typeof wordLibrary==='undefined') return; const day=new Date().getDate(); const w=wordLibrary[day%wordLibrary.length]; const t=thoughtLibrary[day%thoughtLibrary.length]; const we=document.getElementById('word-of-day'); const te=document.getElementById('thought-of-day'); if(we) we.innerHTML=`<strong>${w.word}</strong><br><small class='small'>${w.meaning}</small>`; if(te) te.textContent=t; }catch(e){console.error(e);} });
