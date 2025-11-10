@@ -115,3 +115,35 @@
     init();
   }
 })();
+
+
+// assets/js/daily.js  (extended)
+// ... (keep your existing code but add this small auto-refresh helper at bottom)
+
+// after render() and init() definitions in your existing daily.js add:
+
+// Store the date string currently displayed and re-check at interval to update on midnight
+(function midnightWatcher() {
+  function daysKey() {
+    const d = new Date();
+    return d.toISOString().slice(0,10); // YYYY-MM-DD
+  }
+  let shownKey = daysKey();
+
+  // run once at load (init() from existing code should set today's content)
+  setInterval(()=> {
+    const nowKey = daysKey();
+    if (nowKey !== shownKey) {
+      // date changed -> re-run init to refresh content
+      try {
+        if (typeof init === 'function') init(); // if your file has init() exported
+        else window.location.reload(); // fallback: reload page
+      } catch(e) {
+        console.warn('daily refresh failed, reloading', e);
+        window.location.reload();
+      }
+      shownKey = nowKey;
+    }
+  }, 60 * 1000); // check every minute
+})();
+
