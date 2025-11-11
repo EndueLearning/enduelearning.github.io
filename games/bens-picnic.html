@@ -5,95 +5,223 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ben's Picnic — Endue Learning</title>
 
-  <!-- shared site styles / header loader -->
+  <!-- site CSS & header loader (paths are relative because this file is in /games/) -->
   <link rel="stylesheet" href="../assets/css/header.css">
   <link rel="stylesheet" href="../assets/css/style.css">
 
-  <!-- load header/footer loader scripts (keeps global header/footer consistent) -->
   <script src="../assets/js/header.js" defer></script>
   <script src="../assets/js/footer.js" defer></script>
 
   <style>
     /* wrapper-specific styles */
-    .game-wrapper { max-width: 1100px; margin: 18px auto; padding: 12px; }
+    .game-wrapper { max-width:1100px; margin:18px auto; padding:12px; }
     .iframe-frame {
-      position: relative;
-      width: 100%;
-      padding-top: 56.25%; /* 16:9 aspect ratio; adjust if your exported stage is different */
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(12,45,80,0.08);
-      background: #000; /* behind iframe while loading */
+      position:relative;
+      width:100%;
+      padding-top:56.25%; /* 16:9 - change if your stage is different */
+      border-radius:10px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(12,45,80,0.08);
+      background:#000;
     }
     .iframe-frame iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
+
     .game-actions { display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; }
     .hint { color:#556; font-size:0.95rem; }
+
     .btn { background:#2b9cff; color:#fff; padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:700; display:inline-block; }
-    @media (max-width:640px) {
-      .iframe-frame { padding-top:75%; } /* taller on mobile for better fit */
+
+    /* Mobile virtual controls (fixed on screen) */
+    .mobile-ctrls {
+      position: fixed;
+      left: 12px;
+      bottom: 18px;
+      z-index: 2200;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      pointer-events: none;
+    }
+    .mobile-ctrls .ctrl-btn {
+      pointer-events: auto;
+      width: 60px;
+      height: 60px;
+      border-radius: 12px;
+      background: rgba(43,156,255,0.95);
+      color: #fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      font-weight:700;
+      box-shadow:0 8px 18px rgba(11,53,85,0.18);
+      user-select: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    .mobile-ctrls .ctrl-btn.small { width:46px; height:46px; font-size:18px; border-radius:10px; }
+    .mobile-ctrls .ctrl-btn:active { transform: translateY(2px) scale(.98); }
+
+    /* hide controls on larger screens */
+    @media(min-width:880px) {
+      .mobile-ctrls { display: none !important; }
     }
   </style>
 </head>
 <body>
-  <!-- header will be injected by header.js -->
+  <!-- header injected by header.js -->
   <div id="header"></div>
 
   <main class="container game-wrapper">
     <h1>Ben's Picnic</h1>
-    <p class="small">Enjoy the game below. Use the "Open full page" button for a fullscreen experience on mobile.</p>
+    <p class="small">Help Ben in his picnic adventure. Use arrow keys on desktop. On mobile, use the buttons below.</p>
 
-    <div class="iframe-frame" id="gameFrameWrap">
+    <div class="iframe-frame" id="gameFrameWrap" aria-live="polite">
+      <!-- NOTE: this src expects ben-picnic-full.html in the same /games/ folder -->
       <iframe
         id="gameIframe"
         src="ben-picnic-full.html"
         title="Ben's Picnic"
-        allowfullscreen
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
-        loading="lazy">
+        allow="autoplay; fullscreen; encrypted-media"
+        loading="lazy"
+        style="background:#000;">
       </iframe>
     </div>
 
     <div class="game-actions">
       <a class="btn" id="openFull" href="ben-picnic-full.html" target="_blank" rel="noopener">Open full page</a>
-      <span class="hint">If the game doesn't start, open full page or try removing the sandbox attribute while debugging.</span>
+      <span class="hint">If the game doesn't respond on mobile, open full page or tap inside the game area once to activate audio/control focus.</span>
     </div>
 
     <div class="card" style="margin-top:14px;">
       <h3>How to play</h3>
-      <p>Replace this help text with your game instructions (controls, objectives, scoring).</p>
+      <p>Use left/right arrow keys to move, up to jump. On mobile, use the on-screen buttons. Tap once inside the game area to enable sound if you can't hear it.</p>
     </div>
   </main>
 
+  <!-- footer injected by footer.js -->
   <div id="footer"></div>
 
-  <script>
-    // Optional: parent listener to receive messages from the iframe (postMessage)
-    // The exported Scratch runtime won't send messages by default, but you can add a small
-    // script into the exported HTML to post events (example below).
-    window.addEventListener('message', function (ev) {
-      // For security: check origin (optional)
-      // if (ev.origin !== window.location.origin) return;
-      try {
-        const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
-        if (!data || !data.type) return;
-        // Example handlers:
-        if (data.type === 'game-progress') {
-          console.log('Game progress message:', data);
-          // e.g., update coins, show confetti, save to localStorage etc.
-        } else if (data.type === 'game-complete') {
-          console.log('Game completed:', data);
-          // show reward UI / update donations etc.
-        }
-      } catch (e) {
-        console.warn('Invalid postMessage data', e);
-      }
-    }, false);
+  <!-- Mobile virtual controls (visible on small screens) -->
+  <div class="mobile-ctrls" id="mobileCtrls" aria-hidden="false" role="group" aria-label="Mobile game controls">
+    <button class="ctrl-btn" data-key="ArrowLeft" id="btnLeft" aria-label="Left">◀</button>
+    <button class="ctrl-btn" data-key="ArrowRight" id="btnRight" aria-label="Right">▶</button>
+    <button class="ctrl-btn small" data-key="ArrowUp" id="btnUp" aria-label="Up">▲</button>
+    <button class="ctrl-btn small" data-key="ArrowDown" id="btnDown" aria-label="Down">▼</button>
+    <button class="ctrl-btn small" data-key=" " id="btnSpace" aria-label="Action">␣</button>
+  </div>
 
-    // Improve mobile UX: when user clicks "Open full page", prefer to open the exported page with a query param,
-    // so the exported HTML (if you edit it) can detect it's in full mode (optional).
-    document.getElementById('openFull').addEventListener('click', function (ev) {
-      // no-op; the link already opens the exported page in a new tab
+  <!-- Scripts: audio unlock + virtual controls -> dispatch events into iframe -->
+  <script>
+  (function(){
+    const iframe = document.getElementById('gameIframe');
+    const wrap = document.getElementById('gameFrameWrap');
+
+    /* ---------------- Audio unlock on first gesture ----------------
+       Attempts to resume WebAudio/Howler and play audio tags inside iframe.
+       Works only if iframe is same-origin (your GitHub Pages site is same-origin).
+    ------------------------------------------------------------------*/
+    function tryUnlockAudio() {
+      // 1) send a postMessage to iframe asking it to resume audio (iframe may implement listener)
+      try { iframe.contentWindow.postMessage({ type: 'user-gesture' }, window.location.origin); } catch(e) {}
+
+      // 2) if same-origin, try to directly access and resume audio contexts and media
+      try {
+        const doc = iframe.contentWindow.document;
+        // unmute/play any audio/video elements
+        const media = doc.querySelectorAll('audio,video');
+        media.forEach(m => {
+          try { m.muted = false; m.volume = 1; m.play().catch(()=>{}); } catch(e){}
+        });
+
+        // Try Howler / web audio contexts if present
+        try {
+          const Howler = iframe.contentWindow.Howler || iframe.contentWindow.howler;
+          if (Howler && Howler.ctx && Howler.ctx.state === 'suspended') Howler.ctx.resume().catch(()=>{});
+          const ctx = iframe.contentWindow.__scratchAudioContext || iframe.contentWindow.audioContext || (Howler && Howler.ctx);
+          if (ctx && ctx.state === 'suspended') ctx.resume().catch(()=>{});
+        } catch(e){}
+      } catch(e) {
+        // cross-origin or inaccessible: ignore
+      }
+      // remove listeners after first gesture
+      wrap.removeEventListener('pointerdown', tryUnlockAudio);
+      wrap.removeEventListener('click', tryUnlockAudio);
+    }
+
+    // Attach gesture handlers to wrapper so first tap/click unlocks audio
+    wrap.addEventListener('pointerdown', tryUnlockAudio, { once: true });
+    wrap.addEventListener('click', tryUnlockAudio, { once: true });
+  })();
+  </script>
+
+  <script>
+  (function(){
+    // Virtual controls that dispatch KeyboardEvent into iframe (same-origin required)
+    const iframe = document.getElementById('gameIframe');
+    const controls = document.querySelectorAll('.mobile-ctrls .ctrl-btn');
+
+    if(!iframe) return;
+
+    // Helper: dispatch a keyboard event in the iframe window/document
+    function sendKeyToIframe(key, type = 'keydown') {
+      try {
+        const win = iframe.contentWindow;
+        if(!win) return;
+        // Create KeyboardEvent with reasonable properties
+        // Note: some browsers restrict constructing KeyboardEvent in certain ways;
+        // we still try and dispatch - TurboWarp/Scratch listens for key events on window/document.
+        const ev = new win.KeyboardEvent(type, { key: key === ' ' ? ' ' : key, code: key, bubbles: true, cancelable: true });
+        const target = win.document.activeElement || win.document.body || win.document;
+        target.dispatchEvent(ev);
+        win.dispatchEvent(ev);
+      } catch (err) {
+        // If same-origin dispatch fails (rare), try postMessage fallback
+        try { iframe.contentWindow.postMessage(JSON.stringify({ type: 'virtual-key', key, action: type }), '*'); } catch(e){}
+      }
+    }
+
+    // Attach press handlers that send repeated keydowns while held
+    controls.forEach(btn => {
+      const key = btn.getAttribute('data-key');
+      let holdInterval = null;
+
+      function pressStart(e){
+        e.preventDefault();
+        // send initial keydown
+        sendKeyToIframe(key, 'keydown');
+        // repeat while held
+        holdInterval = setInterval(()=> sendKeyToIframe(key, 'keydown'), 160);
+      }
+      function pressEnd(e){
+        e.preventDefault();
+        if(holdInterval) { clearInterval(holdInterval); holdInterval = null; }
+        sendKeyToIframe(key, 'keyup');
+      }
+
+      // pointer events (works for mouse and touch)
+      btn.addEventListener('pointerdown', pressStart);
+      btn.addEventListener('pointerup', pressEnd);
+      btn.addEventListener('pointerleave', pressEnd);
+
+      // touch fallback for some devices
+      btn.addEventListener('touchstart', pressStart, { passive: false });
+      btn.addEventListener('touchend', pressEnd);
+      btn.addEventListener('mousedown', pressStart);
+      btn.addEventListener('mouseup', pressEnd);
+
+      // prevent touch-scroll or double tap zoom
+      btn.addEventListener('touchmove', (ev) => ev.preventDefault(), { passive: false });
     });
+
+    // Auto-hide the mobile controls on desktop (redundant with CSS but safe)
+    function updateVisibility(){
+      const show = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      const el = document.getElementById('mobileCtrls');
+      if (el) el.style.display = show ? 'flex' : 'none';
+    }
+    updateVisibility();
+    window.addEventListener('resize', updateVisibility);
+  })();
   </script>
 </body>
 </html>
