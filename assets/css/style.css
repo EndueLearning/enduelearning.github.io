@@ -7,4 +7,29 @@
 .daily-box{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
 .card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(12,45,80,0.06);margin:12px 0}
 .btn{display:inline-block;background:var(--blue);color:#fff;padding:10px 16px;border-radius:12px;text-decoration:none;font-weight:700}
-.footer-bottom{text-align:center;padding:12px;background:#022f2f;color:#fff;margin-top:18px;border-radius:8px}
+.footer-bottom {
+  text-align:center;
+  padding:12px;
+  background:#022f2f;
+  color:#fff;
+  margin-top:18px;
+  border-radius:8px
+}
+
+/* layout-grid: main content + right sidebar */
+.layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+/* responsive: single column on small screens */
+@media (max-width: 880px) {
+  .layout-grid { grid-template-columns: 1fr; }
+}
+
+/* minor adjustments */
+.sidebar-col .card { margin-bottom: 14px; }
+.main-col .card { margin-bottom: 18px; }
