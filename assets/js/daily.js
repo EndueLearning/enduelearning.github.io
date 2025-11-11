@@ -1,7 +1,9 @@
-// assets/js/daily.js
-// Uses wordLibrary & thoughtLibrary from assets/data/library.js if present.
-// Falls back to assets/data/words.json and assets/data/thoughts.json.
-// Deterministic: changes once per calendar day (based on device date UTC).
+/**
+ * assets/js/daily.js
+ * Uses wordLibrary & thoughtLibrary from assets/data/library.js (preferred).
+ * Falls back to assets/data/words.json and assets/data/thoughts.json if needed.
+ * Deterministic: changes once per calendar day (based on UTC day), and auto-refreshes at midnight.
+ */
 
 (function () {
   'use strict';
@@ -20,12 +22,7 @@
 
   function escapeHtml(s) {
     if (!s && s !== 0) return '';
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
   }
 
   function render(wordObj, thoughtText) {
@@ -75,14 +72,13 @@
     }
   }
 
-  async function init() {
+  async function initDaily() {
     // Only run if placeholders exist
-    if (!document.getElementById('word-of-day') && !document.getElementById('thought-of-day')
-        && !document.getElementById('home-word') && !document.getElementById('home-thought')) {
+    if (!document.getElementById('word-of-day') && !document.getElementById('thought-of-day') && !document.getElementById('home-word') && !document.getElementById('home-thought')) {
       return;
     }
 
-    // Prefer library.js arrays if present
+    // If library.js provided arrays, use them (preferred)
     if (typeof window.wordLibrary !== 'undefined' && typeof window.thoughtLibrary !== 'undefined') {
       const wArr = Array.isArray(window.wordLibrary) ? window.wordLibrary : [];
       const tArr = Array.isArray(window.thoughtLibrary) ? window.thoughtLibrary : [];
@@ -93,6 +89,7 @@
       const wordObj = wArr[wi] || { word: 'Learn', meaning: 'Keep exploring new things.' };
       const thoughtText = tArr[ti] || 'Keep learning and keep smiling.';
 
+      // Persist today's choice in localStorage to avoid flicker on refresh
       const todayKey = new Date().toISOString().slice(0,10);
       try {
         const saved = JSON.parse(localStorage.getItem('endue_daily_shown_' + todayKey) || 'null');
@@ -105,45 +102,27 @@
       return;
     }
 
-    // Otherwise fall back to JSON files
+    // fallback to JSON files
     fetchFallbackAndRender();
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-
-
-// assets/js/daily.js  (extended)
-// ... (keep your existing code but add this small auto-refresh helper at bottom)
-
-// after render() and init() definitions in your existing daily.js add:
-
-// Store the date string currently displayed and re-check at interval to update on midnight
-(function midnightWatcher() {
-  function daysKey() {
-    const d = new Date();
-    return d.toISOString().slice(0,10); // YYYY-MM-DD
-  }
-  let shownKey = daysKey();
-
-  // run once at load (init() from existing code should set today's content)
-  setInterval(()=> {
-    const nowKey = daysKey();
-    if (nowKey !== shownKey) {
-      // date changed -> re-run init to refresh content
-      try {
-        if (typeof init === 'function') init(); // if your file has init() exported
-        else window.location.reload(); // fallback: reload page
-      } catch(e) {
-        console.warn('daily refresh failed, reloading', e);
-        window.location.reload();
+  // auto-refresh at date-change (midnight detection)
+  (function midnightWatcher() {
+    let shownKey = new Date().toISOString().slice(0,10);
+    setInterval(() => {
+      const nowKey = new Date().toISOString().slice(0,10);
+      if (nowKey !== shownKey) {
+        // Re-run the daily init (safe)
+        try { initDaily(); } catch (e) { console.warn('daily reload fallback -> full reload', e); window.location.reload(); }
+        shownKey = nowKey;
       }
-      shownKey = nowKey;
-    }
-  }, 60 * 1000); // check every minute
-})();
+    }, 60 * 1000);
+  })();
 
+  // run on DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initDaily);
+  } else {
+    initDaily();
+  }
+})();
