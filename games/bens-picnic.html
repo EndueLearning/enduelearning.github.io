@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ben's Picnic — Endue Learning</title>
+
+  <!-- shared site styles / header loader -->
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <!-- load header/footer loader scripts (keeps global header/footer consistent) -->
+  <script src="../assets/js/header.js" defer></script>
+  <script src="../assets/js/footer.js" defer></script>
+
+  <style>
+    /* wrapper-specific styles */
+    .game-wrapper { max-width: 1100px; margin: 18px auto; padding: 12px; }
+    .iframe-frame {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 aspect ratio; adjust if your exported stage is different */
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(12,45,80,0.08);
+      background: #000; /* behind iframe while loading */
+    }
+    .iframe-frame iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
+    .game-actions { display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+    .hint { color:#556; font-size:0.95rem; }
+    .btn { background:#2b9cff; color:#fff; padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:700; display:inline-block; }
+    @media (max-width:640px) {
+      .iframe-frame { padding-top:75%; } /* taller on mobile for better fit */
+    }
+  </style>
+</head>
+<body>
+  <!-- header will be injected by header.js -->
+  <div id="header"></div>
+
+  <main class="container game-wrapper">
+    <h1>Ben's Picnic</h1>
+    <p class="small">Enjoy the game below. Use the "Open full page" button for a fullscreen experience on mobile.</p>
+
+    <div class="iframe-frame" id="gameFrameWrap">
+      <iframe
+        id="gameIframe"
+        src="ben-picnic-full.html"
+        title="Ben's Picnic"
+        allowfullscreen
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+        loading="lazy">
+      </iframe>
+    </div>
+
+    <div class="game-actions">
+      <a class="btn" id="openFull" href="ben-picnic-full.html" target="_blank" rel="noopener">Open full page</a>
+      <span class="hint">If the game doesn't start, open full page or try removing the sandbox attribute while debugging.</span>
+    </div>
+
+    <div class="card" style="margin-top:14px;">
+      <h3>How to play</h3>
+      <p>Replace this help text with your game instructions (controls, objectives, scoring).</p>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script>
+    // Optional: parent listener to receive messages from the iframe (postMessage)
+    // The exported Scratch runtime won't send messages by default, but you can add a small
+    // script into the exported HTML to post events (example below).
+    window.addEventListener('message', function (ev) {
+      // For security: check origin (optional)
+      // if (ev.origin !== window.location.origin) return;
+      try {
+        const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
+        if (!data || !data.type) return;
+        // Example handlers:
+        if (data.type === 'game-progress') {
+          console.log('Game progress message:', data);
+          // e.g., update coins, show confetti, save to localStorage etc.
+        } else if (data.type === 'game-complete') {
+          console.log('Game completed:', data);
+          // show reward UI / update donations etc.
+        }
+      } catch (e) {
+        console.warn('Invalid postMessage data', e);
+      }
+    }, false);
+
+    // Improve mobile UX: when user clicks "Open full page", prefer to open the exported page with a query param,
+    // so the exported HTML (if you edit it) can detect it's in full mode (optional).
+    document.getElementById('openFull').addEventListener('click', function (ev) {
+      // no-op; the link already opens the exported page in a new tab
+    });
+  </script>
+</body>
+</html>
