@@ -1,39 +1,67 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Endue Learning</title>
-    <link rel="stylesheet" href="assets/css/header.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
-    <script src="assets/js/header.js" defer></script>
-    <script src="assets/js/footer.js" defer></script>
-    <script src="assets/js/main.js" defer></script>
-  </head>
-  <body>
-    <div id="header"></div>
-    <main class="container">
-      <section class="hero">
-        <h1>Welcome to Endue Learning — Fun Learning Anywhere!</h1>
-        <p class="small">Interactive worksheets, games and more for kids.</p>
-        <p><a class="btn" href="donate.html">Play Learn + Charity</a></p>
-      </section>
-      <section class="daily-box">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Endue Learning</title>
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/footer.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="container">
+    <section class="hero card">
+      <h1>Welcome to Endue Learning — Fun Learning Anywhere!</h1>
+      <p class="small">Interactive worksheets, games, simulations and resources for young learners.</p>
+      <p><a class="btn" href="games.html">Play a Game</a> <a class="btn" href="practice.html">Practice Sets</a></p>
+    </section>
+
+    <!-- two-column layout: main content + right sidebar -->
+    <section class="layout-grid container">
+      <div class="main-col">
+        <section class="card">
+          <h2>Featured Resource</h2>
+          <p>Spotlight on today's worksheet and activity.</p>
+        </section>
+
+        <section class="card">
+          <h2>Latest Updates</h2>
+          <ul>
+            <li>New mirror simulation added.</li>
+            <li>Ben's Picnic game updated.</li>
+          </ul>
+        </section>
+      </div>
+
+      <aside class="sidebar-col">
         <div class="card" id="word-of-day">Loading word...</div>
         <div class="card" id="thought-of-day">Loading thought...</div>
-      </section>
-      <section class="card"><h2>Featured Resource</h2>
-        <p>Spotlight on today's worksheet and activity.</p>
-      </section>
-    </main>
-    <div id="footer"></div>
-    <script src="assets/data/library.js" defer></script>
-    <script src="assets/js/dynamic-content.js" defer></script>
-    <script src="assets/js/animations.js" defer></script>
 
-    <script src="assets/data/library.js" defer></script>
-    <script src="assets/js/daily.js" defer></script>
+        <div class="card" id="top-competitions">
+          <h3>Top Competitions</h3>
+          <ul id="competitions-list">
+            <li>Loading competitions...</li>
+          </ul>
+        </div>
 
-  </body>
+        <div class="card">
+          <h3>Quick Links</h3>
+          <p><a href="worksheets.html">Worksheets</a><br><a href="simulations.html">Simulations</a><br><a href="games.html">Games</a></p>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <!-- library must be loaded before daily.js -->
+  <script src="assets/data/library.js" defer></script>
+  <script src="assets/js/daily.js" defer></script>
+  <script src="assets/js/competitions.js" defer></script>
+</body>
 </html>
