@@ -28,31 +28,30 @@
     :fullscreen .mobile-ctrls, :-webkit-full-screen .mobile-ctrls, .mobile-ctrls.fullscreen-visible { display:flex !important; }
     @media(min-width:880px) { .mobile-ctrls { display: none !important; } }
 
-    /* debug overlay (hidden by default) */
     #vc-debug { position: fixed; right: 12px; bottom: 18px; z-index:2400; background:rgba(0,0,0,0.7); color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; display:none; }
   </style>
 </head>
 <body>
   <div id="header"></div>
 
+  <!-- Per-page header link fixer (safe, non-invasive) -->
   <script>
-  // Ensure header Home link points to site root when page is in a subfolder.
-  (function fixHomeLink(){
+  (function(){
     document.addEventListener('DOMContentLoaded', () => {
       try {
-        const header = document.querySelector('header.main-header') || document.getElementById('header');
-        if (!header) return;
-        const homeLinks = document.querySelectorAll('a[href="index.html"], a[href="./index.html"], a[href="./"]');
-        homeLinks.forEach(a => {
-          a.setAttribute('href', '/index.html'); // root-aware absolute link
+        const headerRoot = document.querySelector('header.main-header') || document.getElementById('header');
+        if (!headerRoot) return;
+        headerRoot.querySelectorAll('a[href]').forEach(a => {
+          const href = a.getAttribute('href') || '';
+          if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('/') || href.startsWith('mailto:')) return;
+          a.setAttribute('href', '/' + href.replace(/^\.\//,''));
         });
-        // Also fix logo link if present
-        const logoLink = document.querySelector('.logo-link');
-        if (logoLink) logoLink.setAttribute('href', '/index.html');
-      } catch(e) { /* ignore */ }
+        const logo = headerRoot.querySelector('.logo-link');
+        if (logo) logo.setAttribute('href','/index.html');
+      } catch(e){}
     });
   })();
-</script>
+  </script>
 
   <main class="container game-wrapper">
     <h1>Ben's Picnic</h1>
@@ -85,7 +84,7 @@
 
   <div id="vc-debug" aria-hidden="true"></div>
 
-  <!-- SCRIPT: audio unlock + fullscreen visibility -->
+  <!-- AUDIO UNLOCK + FULLSCREEN VISIBILITY -->
   <script>
   (function(){
     const iframe = document.getElementById('gameIframe');
@@ -110,26 +109,28 @@
 
     function updateFullscreenVisibility(){
       const fs = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
-      if (fs) mobileCtrls.classList.add('fullscreen-visible'); else mobileCtrls.classList.remove('fullscreen-visible');
+      if (fs === document.getElementById('gameIframe') || fs === document.getElementById('gameFrameWrap') || fs === document.body) {
+        mobileCtrls.classList.add('fullscreen-visible');
+        mobileCtrls.style.display = 'flex';
+      } else {
+        mobileCtrls.classList.remove('fullscreen-visible');
+        const show = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+        mobileCtrls.style.display = show ? 'flex' : 'none';
+      }
     }
     document.addEventListener('fullscreenchange', updateFullscreenVisibility);
     document.addEventListener('webkitfullscreenchange', updateFullscreenVisibility);
     document.addEventListener('mozfullscreenchange', updateFullscreenVisibility);
-
-    // extra: detect if iframe became fullscreen via attribute check every 300ms (fallback)
+    // poll fallback
     setInterval(updateFullscreenVisibility, 300);
   })();
   </script>
 
-  <!-- SCRIPT: improved mobile virtual controls (tap vs hold) -->
+  <!-- VIRTUAL CONTROLS (tap = immediate keyup; hold = repeat) -->
   <script>
   (function(){
     const iframe = document.getElementById('gameIframe');
     const controls = document.querySelectorAll('.mobile-ctrls .ctrl-btn');
-    const debug = document.getElementById('vc-debug');
-    let debugOn = false; // set true to show debug overlay
-
-    function debugLog(s){ if(!debugOn) return; debug.style.display='block'; debug.textContent = s; }
 
     if(!iframe) return;
 
@@ -141,37 +142,36 @@
         const target = win.document.activeElement || win.document.body || win.document;
         target.dispatchEvent(ev);
         win.dispatchEvent(ev);
-        debugLog(`${type} → ${key}`);
       } catch (err) {
-        try { iframe.contentWindow.postMessage(JSON.stringify({ type:'virtual-key', key, action:type }), '*'); debugLog(`postMessage ${type}→${key}`); } catch(e){}
+        try { iframe.contentWindow.postMessage(JSON.stringify({ type:'virtual-key', key, action:type }), '*'); } catch(e){}
       }
     }
+
+    const HOLD_DELAY = 200;
+    const REPEAT_INTERVAL = 140;
 
     controls.forEach(btn => {
       const key = btn.getAttribute('data-key');
       let holdInterval = null;
-      let tapTimeout = null;
-      const HOLD_DELAY = 220;   // ms before treating as hold
-      const REPEAT_INTERVAL = 140; // ms repeat while holding
+      let holdTimer = null;
 
       function startPress(e){
         e.preventDefault();
+        try { iframe.contentWindow.focus(); } catch(e) {}
         sendKeyToIframe(key, 'keydown');
 
-        // if released before HOLD_DELAY => treat as tap; otherwise start repeating
-        tapTimeout = setTimeout(()=> {
-          tapTimeout = null;
+        holdTimer = setTimeout(() => {
+          holdTimer = null;
           holdInterval = setInterval(()=> sendKeyToIframe(key, 'keydown'), REPEAT_INTERVAL);
         }, HOLD_DELAY);
       }
 
       function endPress(e){
         e.preventDefault();
-        if (tapTimeout) {
-          clearTimeout(tapTimeout);
-          tapTimeout = null;
-          // short tap: send a quick keyup shortly so the game registers a single step
-          setTimeout(()=> sendKeyToIframe(key, 'keyup'), 60);
+        if (holdTimer) {
+          clearTimeout(holdTimer); holdTimer = null;
+          // short tap: immediate keyup
+          sendKeyToIframe(key, 'keyup');
         } else {
           if (holdInterval) { clearInterval(holdInterval); holdInterval = null; }
           sendKeyToIframe(key, 'keyup');
@@ -195,7 +195,6 @@
     }
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
-
   })();
   </script>
 </body>
