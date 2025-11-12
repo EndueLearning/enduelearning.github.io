@@ -35,6 +35,25 @@
 <body>
   <div id="header"></div>
 
+  <script>
+  // Ensure header Home link points to site root when page is in a subfolder.
+  (function fixHomeLink(){
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        const header = document.querySelector('header.main-header') || document.getElementById('header');
+        if (!header) return;
+        const homeLinks = document.querySelectorAll('a[href="index.html"], a[href="./index.html"], a[href="./"]');
+        homeLinks.forEach(a => {
+          a.setAttribute('href', '/index.html'); // root-aware absolute link
+        });
+        // Also fix logo link if present
+        const logoLink = document.querySelector('.logo-link');
+        if (logoLink) logoLink.setAttribute('href', '/index.html');
+      } catch(e) { /* ignore */ }
+    });
+  })();
+</script>
+
   <main class="container game-wrapper">
     <h1>Ben's Picnic</h1>
     <p class="small">Use arrow keys on desktop. On mobile, use the buttons below. Short tap = single step; hold = continuous move.</p>
