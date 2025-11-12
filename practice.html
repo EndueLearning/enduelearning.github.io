@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Practice Sets - Endue Learning</title>
+  <link rel="stylesheet" href="assets/css/header.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/header.js" defer></script>
+  <script src="assets/js/footer.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/practice.js" defer></script>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="container">
+    <h1>Practice Sets</h1>
+
+    <div class="card">
+      <label for="setSelect">Choose a set:</label>
+      <select id="setSelect">
+        <option value="assets/data/set_science_01.json">Science — Set 1</option>
+        <!-- Add more sets here -->
+      </select>
+      <button id="loadSetBtn" class="btn">Load Set</button>
+    </div>
+
+    <div id="practice-app" class="card">
+      <h2 id="set-title">Select a set to begin</h2>
+      <div id="questions-container"></div>
+      <div id="practice-actions" style="margin-top:12px;display:none">
+        <button id="submit-answers" class="btn">Submit Answers</button>
+      </div>
+      <div id="results" style="display:none" class="card"></div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>
