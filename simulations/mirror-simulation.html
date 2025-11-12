@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mirror Simulator - Endue Learning</title>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Mirror Simulator - Endue Learning</title>
   <link rel="stylesheet" href="../assets/css/header.css">
   <link rel="stylesheet" href="../assets/css/style.css">
   <script src="../assets/js/header.js" defer></script>
   <script src="../assets/js/footer.js" defer></script>
+
   <style>
     body.sim-canvas { font-family: Arial, sans-serif; display:flex; flex-direction:column; align-items:center; background:#f0f0f0; padding-bottom:40px; }
-    canvas { border:1px solid #333; background:white; margin-top:20px; max-width:100%; height:auto; }
+    canvas { border:1px solid #333; background:white; margin-top:20px; max-width:100%; height:auto; display:block; }
     .controls { margin-top:18px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; justify-content:center; }
     label { margin-left:6px; }
     select,input { margin-left:6px; margin-right:8px; }
@@ -17,35 +19,25 @@
 </head>
 <body>
   <div id="header"></div>
-<script>
-  // Fix header links to be root-absolute when running from a subfolder page.
+
+  <!-- per-page header fix -->
+  <script>
   (function(){
     document.addEventListener('DOMContentLoaded', () => {
       try {
-        // Find header area (either injected header or fallback)
         const headerRoot = document.querySelector('header.main-header') || document.getElementById('header');
         if (!headerRoot) return;
-
-        // Select all anchor tags inside the header nav
-        const anchors = headerRoot.querySelectorAll('a[href]');
-        anchors.forEach(a => {
-          const href = a.getAttribute('href').trim();
-          // Ignore anchors that are already absolute, hash links, mailto, or javascript:
-          if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('javascript:') || href.startsWith('http') || href.startsWith('/')) return;
-          // Normalize and make root-absolute
-          const normalized = '/' + href.replace(/^\.\//,'');
-          a.setAttribute('href', normalized);
+        headerRoot.querySelectorAll('a[href]').forEach(a => {
+          const href = a.getAttribute('href') || '';
+          if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('/') || href.startsWith('mailto:')) return;
+          a.setAttribute('href','/'+href.replace(/^\.\//,''));
         });
-
-        // also ensure the logo link (if it exists) goes to root
         const logo = headerRoot.querySelector('.logo-link');
         if (logo) logo.setAttribute('href','/index.html');
-      } catch (e) {
-        console.warn('fix header links failed', e);
-      }
+      } catch(e){}
     });
   })();
-</script>
+  </script>
 
   <main class="container">
     <div class="card sim-container">
@@ -75,14 +67,13 @@
         <span id="distanceValue">100</span>
       </div>
 
-      <canvas id="mirrorCanvas" width="800" height="400" aria-label="Mirror simulation canvas"></canvas>
+      <canvas id="mirrorCanvas" aria-label="Mirror simulation canvas"></canvas>
     </div>
   </main>
 
   <div id="footer"></div>
 
   <script>
-    // Your simulation code (slightly adapted for wrapper)
     const canvas = document.getElementById('mirrorCanvas');
     const ctx = canvas.getContext('2d');
     const mirrorTypeSelect = document.getElementById('mirrorType');
@@ -90,48 +81,53 @@
     const objectPreset = document.getElementById('objectPreset');
     const distanceValue = document.getElementById('distanceValue');
 
-    const poleX = canvas.width/2; // center
-    const focalLength = 80; // px (tweakable)
-    const radius = 2 * focalLength;
+    let poleX, focalLength, radius;
 
     function drawSetup(mirrorType, objectDistance) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      // drawing uses CSS pixel coordinates (ctx scaled by DPR already)
+      const cssW = parseInt(canvas.style.width || canvas.width);
+      const cssH = parseInt(canvas.style.height || canvas.height);
+      poleX = cssW / 2;
+      focalLength = Math.round(cssW * 0.10); // 10% of width
+      radius = 2 * focalLength;
+
       // principal axis
       ctx.beginPath();
-      ctx.moveTo(0, canvas.height/2);
-      ctx.lineTo(canvas.width, canvas.height/2);
+      ctx.moveTo(0, cssH/2);
+      ctx.lineTo(cssW, cssH/2);
       ctx.strokeStyle = '#000';
+      ctx.lineWidth = 1;
       ctx.stroke();
 
       // object
       const objX = poleX - objectDistance;
       ctx.beginPath();
-      ctx.moveTo(objX, canvas.height/2);
-      ctx.lineTo(objX, canvas.height/2 - 80);
+      ctx.moveTo(objX, cssH/2);
+      ctx.lineTo(objX, cssH/2 - 80);
       ctx.strokeStyle = 'green';
       ctx.stroke();
-      ctx.fillText('Object', objX - 10, canvas.height/2 - 90);
+      ctx.fillStyle = '#000';
+      ctx.fillText('Object', objX - 10, cssH/2 - 90);
 
-      // mirror (simple semi-circle visual)
+      // mirror
       ctx.beginPath();
       if (mirrorType === 'concave') {
-        ctx.arc(poleX, canvas.height/2, 80, Math.PI/2, 3*Math.PI/2);
+        ctx.arc(poleX, cssH/2, 80, Math.PI/2, 3*Math.PI/2);
       } else if (mirrorType === 'convex') {
-        ctx.arc(poleX, canvas.height/2, 80, -Math.PI/2, Math.PI/2);
+        ctx.arc(poleX, cssH/2, 80, -Math.PI/2, Math.PI/2);
       } else {
-        // plane
-        ctx.moveTo(poleX, canvas.height/2 - 120);
-        ctx.lineTo(poleX, canvas.height/2 + 120);
+        ctx.moveTo(poleX, cssH/2 - 120);
+        ctx.lineTo(poleX, cssH/2 + 120);
       }
       ctx.strokeStyle = 'black';
       ctx.stroke();
 
-      // markers
-      ctx.fillText('P', poleX - 5, canvas.height/2 + 15);
+      ctx.fillText('P', poleX - 5, cssH/2 + 15);
       if (mirrorType !== 'plane') {
-        ctx.fillText('F', poleX - (mirrorType === 'concave' ? focalLength : -focalLength) - 5, canvas.height/2 + 15);
-        ctx.fillText('C', poleX - (mirrorType === 'concave' ? radius : -radius) - 5, canvas.height/2 + 15);
+        ctx.fillText('F', poleX - (mirrorType === 'concave' ? focalLength : -focalLength) - 5, cssH/2 + 15);
+        ctx.fillText('C', poleX - (mirrorType === 'concave' ? radius : -radius) - 5, cssH/2 + 15);
       }
 
       calculateAndDrawImage(mirrorType, objectDistance);
@@ -152,7 +148,6 @@
       const isVirtual = mirrorType !== 'plane' ? v > 0 : false;
       const imgHeight = (v && u) ? (-80 * (v / u)) : 80;
 
-      // image line
       ctx.beginPath();
       ctx.moveTo(imgX, canvas.height/2);
       ctx.lineTo(imgX, canvas.height/2 - imgHeight);
@@ -162,7 +157,7 @@
       ctx.setLineDash([]);
       ctx.fillText('Image', imgX - 10, canvas.height/2 - imgHeight - 10);
 
-      // sample rays (simplified)
+      // rays (simplified)
       ctx.beginPath();
       ctx.moveTo(poleX - objectDistance, canvas.height/2 - 80);
       ctx.lineTo(poleX, canvas.height/2 - 80);
@@ -206,15 +201,32 @@
       update();
     });
 
-    // initial draw: fit canvas for responsive width
-    function fitCanvas() {
-      const max = Math.min(980, window.innerWidth - 60);
-      canvas.width = max;
-      canvas.height = Math.round(max * 0.5);
+    // Responsive DPR-aware canvas sizing and initial draw
+    function fitCanvasResponsive() {
+      const container = document.querySelector('.sim-container') || document.body;
+      const containerWidth = Math.min(980, Math.max(320, container.clientWidth || window.innerWidth - 60));
+      const aspect = 0.5;
+      const cssWidth = containerWidth;
+      const cssHeight = Math.round(cssWidth * aspect);
+
+      const dpr = window.devicePixelRatio || 1;
+      canvas.style.width = cssWidth + 'px';
+      canvas.style.height = cssHeight + 'px';
+      canvas.width = Math.round(cssWidth * dpr);
+      canvas.height = Math.round(cssHeight * dpr);
+
+      // Reset transform and scale down by DPR so drawing uses CSS pixels
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.scale(dpr, dpr);
     }
-    window.addEventListener('resize', ()=> { fitCanvas(); update(); });
-    fitCanvas();
-    update();
+
+    function onResizeAndDraw() {
+      fitCanvasResponsive();
+      update();
+    }
+    window.addEventListener('resize', onResizeAndDraw);
+    // initial
+    onResizeAndDraw();
   </script>
 </body>
 </html>
