@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ben's Picnic — Endue Learning</title>
 
-  <!-- site CSS & header loader -->
   <link rel="stylesheet" href="../assets/css/header.css">
   <link rel="stylesheet" href="../assets/css/style.css">
 
@@ -14,60 +13,23 @@
 
   <style>
     .game-wrapper { max-width:1100px; margin:18px auto; padding:12px; }
-    .iframe-frame {
-      position:relative;
-      width:100%;
-      padding-top:56.25%;
-      border-radius:10px;
-      overflow:hidden;
-      box-shadow:0 10px 30px rgba(12,45,80,0.08);
-      background:#000;
-    }
+    .iframe-frame { position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden; box-shadow:0 10px 30px rgba(12,45,80,0.08); background:#000; }
     .iframe-frame iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
 
     .game-actions { display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; }
     .hint { color:#556; font-size:0.95rem; }
     .btn { background:#2b9cff; color:#fff; padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:700; display:inline-block; }
 
-    /* Mobile virtual controls (fixed on screen) */
-    .mobile-ctrls {
-      position: fixed;
-      left: 12px;
-      bottom: 18px;
-      z-index: 2200;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      pointer-events: none;
-    }
-    .mobile-ctrls .ctrl-btn {
-      pointer-events: auto;
-      width: 60px;
-      height: 60px;
-      border-radius: 12px;
-      background: rgba(43,156,255,0.95);
-      color: #fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      font-weight:700;
-      box-shadow:0 8px 18px rgba(11,53,85,0.18);
-      user-select: none;
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
-    }
+    .mobile-ctrls { position: fixed; left: 12px; bottom: 18px; z-index: 2200; display: flex; gap: 10px; align-items: center; pointer-events: none; }
+    .mobile-ctrls .ctrl-btn { pointer-events: auto; width: 60px; height: 60px; border-radius: 12px; background: rgba(43,156,255,0.95); color: #fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; box-shadow:0 8px 18px rgba(11,53,85,0.18); user-select: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
     .mobile-ctrls .ctrl-btn.small { width:46px; height:46px; font-size:18px; border-radius:10px; }
     .mobile-ctrls .ctrl-btn:active { transform: translateY(2px) scale(.98); }
 
-    /* show controls when document or iframe is fullscreen */
-    :fullscreen .mobile-ctrls,
-    :-webkit-full-screen .mobile-ctrls,
-    .mobile-ctrls.fullscreen-visible { display:flex !important; }
+    :fullscreen .mobile-ctrls, :-webkit-full-screen .mobile-ctrls, .mobile-ctrls.fullscreen-visible { display:flex !important; }
+    @media(min-width:880px) { .mobile-ctrls { display: none !important; } }
 
-    /* hide controls on desktop */
-    @media(min-width:880px) {
-      .mobile-ctrls { display: none !important; }
-    }
+    /* debug overlay (hidden by default) */
+    #vc-debug { position: fixed; right: 12px; bottom: 18px; z-index:2400; background:rgba(0,0,0,0.7); color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; display:none; }
   </style>
 </head>
 <body>
@@ -75,33 +37,25 @@
 
   <main class="container game-wrapper">
     <h1>Ben's Picnic</h1>
-    <p class="small">Help Ben in his picnic adventure. Use arrow keys on desktop. On mobile, use the buttons below.</p>
+    <p class="small">Use arrow keys on desktop. On mobile, use the buttons below. Short tap = single step; hold = continuous move.</p>
 
     <div class="iframe-frame" id="gameFrameWrap" aria-live="polite">
-      <iframe
-        id="gameIframe"
-        src="ben-picnic-full.html"
-        title="Ben's Picnic"
-        allow="autoplay; fullscreen; encrypted-media"
-        loading="lazy"
-        style="background:#000;">
-      </iframe>
+      <iframe id="gameIframe" src="ben-picnic-full.html" title="Ben's Picnic" allow="autoplay; fullscreen; encrypted-media" loading="lazy" style="background:#000;"></iframe>
     </div>
 
     <div class="game-actions">
       <a class="btn" id="openFull" href="ben-picnic-full.html" target="_blank" rel="noopener">Open full page</a>
-      <span class="hint">If the game doesn't respond on mobile, open full page or tap inside the game area once to enable audio and focus.</span>
+      <span class="hint">If the game doesn't respond on mobile, tap inside the game area once to enable audio and focus.</span>
     </div>
 
     <div class="card" style="margin-top:14px;">
       <h3>How to play</h3>
-      <p>Use left/right arrow keys to move, up to jump. On mobile, use the on-screen buttons. A short tap moves a single step; hold to keep moving.</p>
+      <p>Left / Right to move, Up to jump. On mobile use the buttons below.</p>
     </div>
   </main>
 
   <div id="footer"></div>
 
-  <!-- Mobile virtual controls -->
   <div class="mobile-ctrls" id="mobileCtrls" aria-hidden="false" role="group" aria-label="Mobile game controls">
     <button class="ctrl-btn" data-key="ArrowLeft" id="btnLeft" aria-label="Left">◀</button>
     <button class="ctrl-btn" data-key="ArrowRight" id="btnRight" aria-label="Right">▶</button>
@@ -110,25 +64,24 @@
     <button class="ctrl-btn small" data-key=" " id="btnSpace" aria-label="Action">␣</button>
   </div>
 
-  <!-- Scripts: audio unlock + improved virtual controls (tap vs hold) -->
+  <div id="vc-debug" aria-hidden="true"></div>
+
+  <!-- SCRIPT: audio unlock + fullscreen visibility -->
   <script>
   (function(){
     const iframe = document.getElementById('gameIframe');
     const wrap = document.getElementById('gameFrameWrap');
     const mobileCtrls = document.getElementById('mobileCtrls');
 
-    /* AUDIO UNLOCK: resume audio in iframe on first user gesture */
     function tryUnlockAudio() {
       try { iframe.contentWindow.postMessage({ type: 'user-gesture' }, window.location.origin); } catch(e){}
       try {
         const doc = iframe.contentWindow.document;
         doc.querySelectorAll('audio,video').forEach(m => { try { m.muted = false; m.volume = 1; m.play().catch(()=>{}); } catch(e){} });
-        try {
-          const Howler = iframe.contentWindow.Howler || iframe.contentWindow.howler;
-          if (Howler && Howler.ctx && Howler.ctx.state === 'suspended') Howler.ctx.resume().catch(()=>{});
-          const ctx = iframe.contentWindow.__scratchAudioContext || iframe.contentWindow.audioContext || (Howler && Howler.ctx);
-          if (ctx && ctx.state === 'suspended') ctx.resume().catch(()=>{});
-        } catch(e){}
+        const Howler = iframe.contentWindow.Howler || iframe.contentWindow.howler;
+        if (Howler && Howler.ctx && Howler.ctx.state === 'suspended') Howler.ctx.resume().catch(()=>{});
+        const ctx = iframe.contentWindow.__scratchAudioContext || iframe.contentWindow.audioContext || (Howler && Howler.ctx);
+        if (ctx && ctx.state === 'suspended') ctx.resume().catch(()=>{});
       } catch(e){}
       wrap.removeEventListener('pointerdown', tryUnlockAudio);
       wrap.removeEventListener('click', tryUnlockAudio);
@@ -136,33 +89,32 @@
     wrap.addEventListener('pointerdown', tryUnlockAudio, { once: true });
     wrap.addEventListener('click', tryUnlockAudio, { once: true });
 
-    /* FULLSCREEN VISIBILITY: show controls when any element goes fullscreen */
-    function onFullscreenChange(){
-      const fsEl = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
-      if (fsEl) {
-        // show controls in fullscreen mode
-        mobileCtrls.classList.add('fullscreen-visible');
-      } else {
-        mobileCtrls.classList.remove('fullscreen-visible');
-      }
+    function updateFullscreenVisibility(){
+      const fs = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
+      if (fs) mobileCtrls.classList.add('fullscreen-visible'); else mobileCtrls.classList.remove('fullscreen-visible');
     }
-    document.addEventListener('fullscreenchange', onFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', onFullscreenChange);
-    document.addEventListener('mozfullscreenchange', onFullscreenChange);
+    document.addEventListener('fullscreenchange', updateFullscreenVisibility);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenVisibility);
+    document.addEventListener('mozfullscreenchange', updateFullscreenVisibility);
 
+    // extra: detect if iframe became fullscreen via attribute check every 300ms (fallback)
+    setInterval(updateFullscreenVisibility, 300);
   })();
   </script>
 
+  <!-- SCRIPT: improved mobile virtual controls (tap vs hold) -->
   <script>
   (function(){
-    // Virtual controls: improved tap vs hold behavior
     const iframe = document.getElementById('gameIframe');
     const controls = document.querySelectorAll('.mobile-ctrls .ctrl-btn');
+    const debug = document.getElementById('vc-debug');
+    let debugOn = false; // set true to show debug overlay
+
+    function debugLog(s){ if(!debugOn) return; debug.style.display='block'; debug.textContent = s; }
 
     if(!iframe) return;
 
-    // dispatch keyboard event into iframe (same-origin)
-    function sendKeyToIframe(key, type = 'keydown') {
+    function sendKeyToIframe(key, type='keydown'){
       try {
         const win = iframe.contentWindow;
         if(!win) return;
@@ -170,9 +122,9 @@
         const target = win.document.activeElement || win.document.body || win.document;
         target.dispatchEvent(ev);
         win.dispatchEvent(ev);
+        debugLog(`${type} → ${key}`);
       } catch (err) {
-        // fallback to postMessage if dispatching fails
-        try { iframe.contentWindow.postMessage(JSON.stringify({ type: 'virtual-key', key, action: type }), '*'); } catch(e){}
+        try { iframe.contentWindow.postMessage(JSON.stringify({ type:'virtual-key', key, action:type }), '*'); debugLog(`postMessage ${type}→${key}`); } catch(e){}
       }
     }
 
@@ -180,38 +132,33 @@
       const key = btn.getAttribute('data-key');
       let holdInterval = null;
       let tapTimeout = null;
-      const HOLD_DELAY = 250;   // ms before treating as hold
-      const REPEAT_INTERVAL = 160; // ms repeat while holding
+      const HOLD_DELAY = 220;   // ms before treating as hold
+      const REPEAT_INTERVAL = 140; // ms repeat while holding
 
       function startPress(e){
         e.preventDefault();
-        // send initial keydown immediately
         sendKeyToIframe(key, 'keydown');
 
-        // schedule a quick tap auto-keyup in case of short tap
+        // if released before HOLD_DELAY => treat as tap; otherwise start repeating
         tapTimeout = setTimeout(()=> {
           tapTimeout = null;
-          // start repeating keydowns for hold
           holdInterval = setInterval(()=> sendKeyToIframe(key, 'keydown'), REPEAT_INTERVAL);
         }, HOLD_DELAY);
       }
 
       function endPress(e){
         e.preventDefault();
-        // if a tapTimeout is active (meaning user released before HOLD_DELAY), then treat as short tap:
         if (tapTimeout) {
           clearTimeout(tapTimeout);
           tapTimeout = null;
-          // send a short keyup after a tiny delay so the game registers single-step movement
-          setTimeout(()=> sendKeyToIframe(key, 'keyup'), 80);
+          // short tap: send a quick keyup shortly so the game registers a single step
+          setTimeout(()=> sendKeyToIframe(key, 'keyup'), 60);
         } else {
-          // user was holding: stop repeating and send keyup
           if (holdInterval) { clearInterval(holdInterval); holdInterval = null; }
           sendKeyToIframe(key, 'keyup');
         }
       }
 
-      // pointer / touch / mouse event handlers
       btn.addEventListener('pointerdown', startPress);
       btn.addEventListener('pointerup', endPress);
       btn.addEventListener('pointerleave', endPress);
@@ -219,12 +166,9 @@
       btn.addEventListener('touchend', endPress);
       btn.addEventListener('mousedown', startPress);
       btn.addEventListener('mouseup', endPress);
-
-      // cancel touch scroll during use
       btn.addEventListener('touchmove', (ev)=> ev.preventDefault(), { passive:false });
     });
 
-    // Show mobile control only on mobile
     function updateVisibility(){
       const show = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
       const el = document.getElementById('mobileCtrls');
@@ -232,6 +176,7 @@
     }
     updateVisibility();
     window.addEventListener('resize', updateVisibility);
+
   })();
   </script>
 </body>
