@@ -1,0 +1,16 @@
+{
+  "title": "Science Practice Set 1",
+  "subject": "science",
+  "questions": [
+    { "q": "Which planet is known as the Red Planet?", "options": ["Earth","Mars","Jupiter","Venus"], "answer": "Mars" },
+    { "q": "Which organ pumps blood in your body?", "options": ["Lungs","Brain","Heart","Kidneys"], "answer": "Heart" },
+    { "q": "Which gas do plants release during photosynthesis?", "options": ["Carbon Dioxide","Oxygen","Nitrogen","Helium"], "answer": "Oxygen" },
+    { "q": "What is the boiling point of water at sea level (°C)?", "options": ["90","95","100","105"], "answer": "100" },
+    { "q": "Which part of a plant conducts photosynthesis?", "options": ["Root","Stem","Leaf","Flower"], "answer": "Leaf" },
+    { "q": "What force keeps us grounded on Earth?", "options": ["Magnetism","Friction","Gravity","Buoyancy"], "answer": "Gravity" },
+    { "q": "Which of these is a mammal?", "options": ["Crocodile","Dolphin","Frog","Shark"], "answer": "Dolphin" },
+    { "q": "What do bees collect from flowers to make honey?", "options": ["Pollen","Nectar","Leaves","Sap"], "answer": "Nectar" },
+    { "q": "What is H2O commonly called?", "options": ["Salt","Water","Oxygen","Hydrogen"], "answer": "Water" },
+    { "q": "Which sense do we use to taste food?", "options": ["Sight","Hearing","Smell","Taste"], "answer": "Taste" }
+  ]
+}
