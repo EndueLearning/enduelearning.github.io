@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mirror Simulator - Endue Learning</title>
+  <link rel="stylesheet" href="../assets/css/header.css">
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script src="../assets/js/header.js" defer></script>
+  <script src="../assets/js/footer.js" defer></script>
+  <style>
+    body.sim-canvas { font-family: Arial, sans-serif; display:flex; flex-direction:column; align-items:center; background:#f0f0f0; padding-bottom:40px; }
+    canvas { border:1px solid #333; background:white; margin-top:20px; max-width:100%; height:auto; }
+    .controls { margin-top:18px; display:flex; flex-wrap:wrap; align-items:center; gap:12px; justify-content:center; }
+    label { margin-left:6px; }
+    select,input { margin-left:6px; margin-right:8px; }
+    .card.sim-container { padding:18px; border-radius:12px; max-width:980px; width:100%; box-sizing:border-box; background:white; box-shadow:0 8px 20px rgba(0,0,0,0.04); margin-top:18px; }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="container">
+    <div class="card sim-container">
+      <h2>Mirror Simulator</h2>
+
+      <div class="controls">
+        <label for="mirrorType">Mirror Type:</label>
+        <select id="mirrorType">
+          <option value="concave">Concave</option>
+          <option value="convex">Convex</option>
+          <option value="plane">Plane</option>
+        </select>
+
+        <label for="objectPreset">Object Position:</label>
+        <select id="objectPreset">
+          <option value="custom">Custom</option>
+          <option value="infinity">At Infinity</option>
+          <option value="beyondC">Beyond C</option>
+          <option value="atC">At C</option>
+          <option value="betweenCF">Between C and F</option>
+          <option value="atF">At F</option>
+          <option value="betweenFandP">Between F and Pole</option>
+        </select>
+
+        <label for="objectDistance">Object Distance (cm):</label>
+        <input id="objectDistance" max="200" min="1" type="range" value="100" />
+        <span id="distanceValue">100</span>
+      </div>
+
+      <canvas id="mirrorCanvas" width="800" height="400" aria-label="Mirror simulation canvas"></canvas>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script>
+    // Your simulation code (slightly adapted for wrapper)
+    const canvas = document.getElementById('mirrorCanvas');
+    const ctx = canvas.getContext('2d');
+    const mirrorTypeSelect = document.getElementById('mirrorType');
+    const objectDistanceSlider = document.getElementById('objectDistance');
+    const objectPreset = document.getElementById('objectPreset');
+    const distanceValue = document.getElementById('distanceValue');
+
+    const poleX = canvas.width/2; // center
+    const focalLength = 80; // px (tweakable)
+    const radius = 2 * focalLength;
+
+    function drawSetup(mirrorType, objectDistance) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // principal axis
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height/2);
+      ctx.lineTo(canvas.width, canvas.height/2);
+      ctx.strokeStyle = '#000';
+      ctx.stroke();
+
+      // object
+      const objX = poleX - objectDistance;
+      ctx.beginPath();
+      ctx.moveTo(objX, canvas.height/2);
+      ctx.lineTo(objX, canvas.height/2 - 80);
+      ctx.strokeStyle = 'green';
+      ctx.stroke();
+      ctx.fillText('Object', objX - 10, canvas.height/2 - 90);
+
+      // mirror (simple semi-circle visual)
+      ctx.beginPath();
+      if (mirrorType === 'concave') {
+        ctx.arc(poleX, canvas.height/2, 80, Math.PI/2, 3*Math.PI/2);
+      } else if (mirrorType === 'convex') {
+        ctx.arc(poleX, canvas.height/2, 80, -Math.PI/2, Math.PI/2);
+      } else {
+        // plane
+        ctx.moveTo(poleX, canvas.height/2 - 120);
+        ctx.lineTo(poleX, canvas.height/2 + 120);
+      }
+      ctx.strokeStyle = 'black';
+      ctx.stroke();
+
+      // markers
+      ctx.fillText('P', poleX - 5, canvas.height/2 + 15);
+      if (mirrorType !== 'plane') {
+        ctx.fillText('F', poleX - (mirrorType === 'concave' ? focalLength : -focalLength) - 5, canvas.height/2 + 15);
+        ctx.fillText('C', poleX - (mirrorType === 'concave' ? radius : -radius) - 5, canvas.height/2 + 15);
+      }
+
+      calculateAndDrawImage(mirrorType, objectDistance);
+    }
+
+    function calculateAndDrawImage(mirrorType, objectDistance) {
+      let u = -objectDistance;
+      let f;
+      if (mirrorType === 'concave') f = -focalLength;
+      else if (mirrorType === 'convex') f = focalLength;
+      else f = Infinity;
+
+      let v;
+      if (mirrorType === 'plane') v = -u;
+      else v = (f * u) / (u - f);
+
+      const imgX = poleX + (isFinite(v) ? v : 0);
+      const isVirtual = mirrorType !== 'plane' ? v > 0 : false;
+      const imgHeight = (v && u) ? (-80 * (v / u)) : 80;
+
+      // image line
+      ctx.beginPath();
+      ctx.moveTo(imgX, canvas.height/2);
+      ctx.lineTo(imgX, canvas.height/2 - imgHeight);
+      ctx.strokeStyle = isVirtual ? 'blue' : 'red';
+      ctx.setLineDash(isVirtual ? [5,5]:[]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillText('Image', imgX - 10, canvas.height/2 - imgHeight - 10);
+
+      // sample rays (simplified)
+      ctx.beginPath();
+      ctx.moveTo(poleX - objectDistance, canvas.height/2 - 80);
+      ctx.lineTo(poleX, canvas.height/2 - 80);
+      ctx.strokeStyle = '#999';
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(poleX, canvas.height/2 - 80);
+      ctx.lineTo(poleX + (isFinite(v) ? v : 50), canvas.height/2);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(poleX - objectDistance, canvas.height/2 - 80);
+      ctx.lineTo(poleX + (isFinite(f) ? f : 100), canvas.height/2);
+      ctx.stroke();
+    }
+
+    function update() {
+      const mirrorType = mirrorTypeSelect.value;
+      const objectDistance = parseInt(objectDistanceSlider.value);
+      distanceValue.textContent = objectDistance;
+      drawSetup(mirrorType, objectDistance);
+    }
+
+    objectDistanceSlider.addEventListener('input', () => { objectPreset.value = 'custom'; update(); });
+    mirrorTypeSelect.addEventListener('change', () => { objectPreset.value = 'custom'; update(); });
+
+    objectPreset.addEventListener('change', () => {
+      const mirrorType = mirrorTypeSelect.value;
+      if (objectPreset.value === 'custom') return;
+
+      const presets = {
+        concave: { infinity: 200, beyondC: radius+30, atC: radius, betweenCF: (radius+focalLength)/2, atF: focalLength, betweenFandP: focalLength/2 },
+        convex: { infinity: 200, beyondC: 150, atC: 100, betweenCF: 80, atF: 60, betweenFandP: 40 },
+        plane:  { infinity: 200, beyondC: 150, atC: 100, betweenCF: 70, atF: 50, betweenFandP: 30 }
+      };
+
+      const distance = presets[mirrorType][objectPreset.value];
+      objectDistanceSlider.value = distance;
+      distanceValue.textContent = distance;
+      update();
+    });
+
+    // initial draw: fit canvas for responsive width
+    function fitCanvas() {
+      const max = Math.min(980, window.innerWidth - 60);
+      canvas.width = max;
+      canvas.height = Math.round(max * 0.5);
+    }
+    window.addEventListener('resize', ()=> { fitCanvas(); update(); });
+    fitCanvas();
+    update();
+  </script>
+</body>
+</html>
