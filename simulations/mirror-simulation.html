@@ -17,6 +17,35 @@
 </head>
 <body>
   <div id="header"></div>
+<script>
+  // Fix header links to be root-absolute when running from a subfolder page.
+  (function(){
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        // Find header area (either injected header or fallback)
+        const headerRoot = document.querySelector('header.main-header') || document.getElementById('header');
+        if (!headerRoot) return;
+
+        // Select all anchor tags inside the header nav
+        const anchors = headerRoot.querySelectorAll('a[href]');
+        anchors.forEach(a => {
+          const href = a.getAttribute('href').trim();
+          // Ignore anchors that are already absolute, hash links, mailto, or javascript:
+          if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('javascript:') || href.startsWith('http') || href.startsWith('/')) return;
+          // Normalize and make root-absolute
+          const normalized = '/' + href.replace(/^\.\//,'');
+          a.setAttribute('href', normalized);
+        });
+
+        // also ensure the logo link (if it exists) goes to root
+        const logo = headerRoot.querySelector('.logo-link');
+        if (logo) logo.setAttribute('href','/index.html');
+      } catch (e) {
+        console.warn('fix header links failed', e);
+      }
+    });
+  })();
+</script>
 
   <main class="container">
     <div class="card sim-container">
