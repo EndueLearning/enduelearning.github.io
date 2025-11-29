@@ -1,24 +1,62 @@
 <!-- components/footer.html -->
-<footer class="site-footer" role="contentinfo">
+<footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <img src="assets/images/logo.svg" alt="Endue Learning" style="width:56px;height:56px">
-      <p>Endue Learning — Fun learning anywhere.</p>
+      <h4>Endue Learning</h4>
+      <p>Fun learning anywhere — worksheets, activities, games and simulations for kids.</p>
     </div>
     <div>
-      <h3>Explore</h3>
+      <h4>Quick Links</h4>
       <ul>
-        <li><a href="activities.html">Activities</a></li>
-        <li><a href="worksheets.html">Worksheets</a></li>
-        <li><a href="games.html">Games</a></li>
-        <li><a href="donate.html">Donate</a></li>
-        
+        <li><a href="/activities.html">Activities</a></li>
+        <li><a href="/worksheets.html">Worksheets</a></li>
+        <li><a href="/games.html">Games</a></li>
+        <li><a href="/simulations.html">Simulations</a></li>
       </ul>
     </div>
     <div>
-      <h3>Contact</h3>
-      <p>enduelearning@gmail.com</p>
+      <h4>Subscribe</h4>
+      <form id="subscribeForm">
+        <input type="email" id="subEmail" placeholder="Your email" required />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>Email: <a href="mailto:hello@enduelearning.example">hello@enduelearning.example</a></p>
+      <div class="socials">
+        <a href="#" aria-label="YouTube">YouTube</a> |
+        <a href="#" aria-label="Twitter">X</a> |
+        <a href="#" aria-label="Instagram">Instagram</a>
+      </div>
     </div>
   </div>
-  <div class="footer-bottom">© 2025 Endue Learning — All rights reserved</div>
+  <div class="copyright">© <span id="yr"></span> Endue Learning — All rights reserved.</div>
 </footer>
+
+<style>
+.site-footer { background:#0a2640; color:#fff; padding:22px 0; font-size:14px; }
+.footer-grid { display:flex; gap:20px; justify-content:space-between; width:90%; margin:0 auto; flex-wrap:wrap; }
+.footer-grid h4 { margin:0 0 8px 0; }
+.footer-grid ul { list-style:none; padding:0; margin:0;}
+.footer-grid ul li a { color:#cfe9ff; text-decoration:none; }
+.site-footer input { padding:8px; border-radius:6px; border:none; margin-right:6px; }
+.site-footer button { padding:8px 10px; border-radius:6px; border:none; background:#2b9cff; color:#fff; }
+.copyright { text-align:center; padding-top:12px; color:#a7cbe8; }
+@media(max-width:720px){ .footer-grid{flex-direction:column; gap:12px;} }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', ()=> {
+  document.getElementById('yr').innerText = new Date().getFullYear();
+  const form = document.getElementById('subscribeForm');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const em = document.getElementById('subEmail').value.trim();
+    if (!em) return alert('Please enter an email.');
+    // placeholder: in real site send to API
+    alert('Thanks! Subscribed: ' + em);
+    form.reset();
+  });
+});
+</script>
