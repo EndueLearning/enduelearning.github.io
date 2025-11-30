@@ -3,128 +3,100 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulations – Endue Learning</title>
+  <title>Simulations • Endue Learning</title>
 
-  <!-- Load shared CSS -->
-  <link rel="stylesheet" href="../assets/css/header.css" />
-  <link rel="stylesheet" href="../assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/header.css" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
 
   <style>
-    .sim-container {
-      max-width: 850px;
-      margin: 120px auto 50px auto; /* keeps below sticky menu */
-      background: #ffffff;
+    .sim-wrapper {
+      max-width: 900px;
+      margin: 120px auto 40px auto;
+      background: #fff;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.08);
+      box-shadow: 0 0 10px rgba(0,0,0,0.09);
     }
 
-    #simCanvas {
+    canvas {
       width: 100%;
-      height: auto;
-      max-height: 320px;
-      object-fit: contain;
-      display: block;
-      margin: 20px auto;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+      max-height: 350px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
       margin-top: 20px;
-      font-size: 18px;
     }
-
-    label {
-      font-weight: bold;
-    }
-
-    select, input {
-      padding: 6px;
-      border-radius: 6px;
-      border: 1px solid #aaa;
-    }
-
   </style>
 </head>
 
 <body>
 
-  <!-- HEADER LOADS HERE -->
-  <div id="header"></div>
+<div id="header"></div>
 
-  <div class="sim-container">
-    <h2>Ray Diagram Simulation (Basic Version)</h2>
+<div class="sim-wrapper">
+  <h2>Ray Diagram Simulator</h2>
 
-    <div class="controls">
-      <label>Mirror Type:</label>
-      <select id="mirrorType">
-        <option value="concave">Concave Mirror</option>
-        <option value="convex">Convex Mirror</option>
-      </select>
+  <label>Mirror Type:</label>
+  <select id="mirrorType">
+    <option value="concave">Concave</option>
+    <option value="convex">Convex</option>
+  </select>
 
-      <label>Object Distance (cm):</label>
-      <input id="objDist" type="range" min="20" max="200" value="80" />
-      <span id="distVal">80</span>
-    </div>
+  <label>Object Distance (cm):</label>
+  <input type="range" id="objDist" min="20" max="200" value="80" />
+  <span id="distVal">80</span>
 
-    <canvas id="simCanvas" width="800" height="320"></canvas>
-  </div>
+  <canvas id="simCanvas" width="800" height="350"></canvas>
+</div>
 
-  <!-- FOOTER -->
-  <div id="footer"></div>
+<div id="footer"></div>
 
-  <!-- JS imports -->
-  <script src="../assets/js/header.js"></script>
-  <script src="../assets/js/footer.js"></script>
+<script src="/assets/js/header.js"></script>
+<script src="/assets/js/footer.js"></script>
 
-  <script>
-    /* SIMPLE DRAWING — replaced by full advanced simulation in next phase */
-    const canvas = document.getElementById("simCanvas");
-    const ctx = canvas.getContext("2d");
+<script>
+// Simple simulation (advanced version coming)
+const c = document.getElementById("simCanvas");
+const ctx = c.getContext("2d");
+const typeSel = document.getElementById("mirrorType");
+const distSel = document.getElementById("objDist");
+const distVal = document.getElementById("distVal");
 
-    const typeSel = document.getElementById("mirrorType");
-    const slider = document.getElementById("objDist");
-    const distVal = document.getElementById("distVal");
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
 
-    function draw() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+  const d = Number(distSel.value);
+  distVal.textContent = d;
 
-      let d = slider.value;
-      distVal.textContent = d;
+  const mid = c.height/2;
 
-      // Axis
-      ctx.beginPath();
-      ctx.moveTo(0, canvas.height/2);
-      ctx.lineTo(canvas.width, canvas.height/2);
-      ctx.strokeStyle = "#000";
-      ctx.stroke();
+  // axis
+  ctx.beginPath();
+  ctx.moveTo(0,mid);
+  ctx.lineTo(c.width,mid);
+  ctx.stroke();
 
-      // Object
-      ctx.beginPath();
-      ctx.moveTo(canvas.width/2 - d, canvas.height/2);
-      ctx.lineTo(canvas.width/2 - d, canvas.height/2 - 60);
-      ctx.strokeStyle = "green";
-      ctx.stroke();
+  // object
+  ctx.beginPath();
+  ctx.moveTo(c.width/2 - d, mid);
+  ctx.lineTo(c.width/2 - d, mid - 60);
+  ctx.strokeStyle = "green";
+  ctx.stroke();
 
-      // Mirror
-      ctx.beginPath();
-      ctx.arc(canvas.width/2, canvas.height/2, 80,
-        typeSel.value === "concave" ? Math.PI/2 : -Math.PI/2,
-        typeSel.value === "concave" ? 3*Math.PI/2 : -3*Math.PI/2
-      );
-      ctx.strokeStyle = "#000";
-      ctx.stroke();
-    }
+  // mirror
+  ctx.beginPath();
+  ctx.arc(c.width/2, mid, 80,
+    typeSel.value === "concave" ? Math.PI/2 : -Math.PI/2,
+    typeSel.value === "concave" ? 3*Math.PI/2 : -3*Math.PI/2
+  );
+  ctx.strokeStyle = "#000";
+  ctx.stroke();
+}
 
-    slider.oninput = draw;
-    typeSel.onchange = draw;
+distSel.oninput = draw;
+typeSel.onchange = draw;
 
-    draw();
-  </script>
+draw();
+</script>
 
 </body>
 </html>
