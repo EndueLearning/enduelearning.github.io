@@ -1,72 +1,27 @@
-/* assets/css/style.css - global styles (updated) */
+/* assets/css/style.css - core site styles */
 :root{
-  --brand-blue:#2b9cff;
-  --brand-aqua:#5ad1e1;
-  --accent-saffron:#ffd166;
-  --muted:#6b7280;
-  --card:#ffffff;
+  --bg:#f6fbff; --card:#fff; --accent:#2b9cff; --muted:#556;
+  --radius:12px;
 }
-
-/* reset basics */
 *{box-sizing:border-box}
-html,body{height:100%}
-body{
-  font-family: "Poppins", Arial, sans-serif;
-  margin:0;
-  background: linear-gradient(180deg,#f7fbff,#ffffff);
-  color:#0f172a;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  line-height:1.45;
+html,body{margin:0;padding:0;font-family:Inter, system-ui, -apple-system, "Poppins", Arial; background:var(--bg); color:#123;}
+.container{width:90%; max-width:1100px; margin:20px auto;}
+.card{background:var(--card); border-radius:var(--radius); padding:14px; box-shadow:0 6px 18px rgba(10,20,40,0.06); margin-bottom:12px;}
+.header-hero{display:flex; gap:16px; align-items:center; justify-content:space-between; flex-wrap:wrap;}
+.hero-left{flex:1}
+.hero-right{width:320px; min-width:220px}
+.grid{display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap:14px; align-items:start;}
+.btn{display:inline-block;background:var(--accent); color:#fff; padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:700;}
+.small{font-size:0.9rem;color:var(--muted)}
+.sidebar-col{display:flex; flex-direction:column; gap:12px;}
+.daily-box .card{padding:10px}
+.nav-active{font-weight:800; color:var(--accent);}
+
+/* Games cards */
+.games-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px}
+
+/* responsive */
+@media(max-width:880px){
+  .header-hero{flex-direction:column; align-items:stretch;}
+  .hero-right{width:100%}
 }
-
-/* containers */
-.container{max-width:1100px;margin:0 auto;padding:20px}
-
-/* hero */
-.hero{padding:28px;border-radius:12px;background:linear-gradient(180deg,#e6f7ff,#fff);box-shadow:0 8px 20px rgba(12,45,80,0.06);text-align:center}
-.hero h1{font-size:1.9rem;margin:6px 0}
-.hero p.small{color:var(--muted)}
-
-/* cards */
-.card{background:var(--card);border-radius:12px;padding:16px;box-shadow:0 6px 18px rgba(12,45,80,0.06);margin-bottom:14px}
-
-/* layout grid: main content + right sidebar */
-.layout-grid{
-  display:grid;
-  grid-template-columns: 1fr 320px;
-  gap:24px;
-  align-items:start;
-  margin-top:18px;
-}
-
-/* main and sidebar columns */
-.main-col{}
-.sidebar-col .card{margin-bottom:12px}
-
-/* daily cards */
-#word-of-day h3, #thought-of-day h3{margin:0 0 8px 0}
-#word-of-day p, #thought-of-day p{margin:0;color:#123}
-
-/* competitions list simple style */
-#competitions-list{padding-left:18px;margin:0}
-#competitions-list li{margin:6px 0}
-
-/* buttons */
-.btn{display:inline-block;background:var(--brand-blue);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700;box-shadow:0 6px 16px rgba(43,156,255,0.14)}
-.btn:hover{transform:translateY(-2px);transition:transform .12s}
-
-/* responsive behavior */
-@media (max-width: 900px){
-  .layout-grid{grid-template-columns:1fr}
-  .sidebar-col{order:2}
-}
-
-/* minor helpers */
-.small{font-size:0.95rem;color:var(--muted)}
-.center{text-align:center}
-
-/* floating messages / reward icons (games) */
-.reward-container{position:fixed;left:0;bottom:90px;width:100%;height:0;pointer-events:none;z-index:1500}
-.reward-icon{position:absolute;font-size:20px;animation:floatUp 1.4s ease-out forwards}
-@keyframes floatUp{from{transform:translateY(0) scale(1);opacity:1}to{transform:translateY(-120px) scale(1.35);opacity:0}}
