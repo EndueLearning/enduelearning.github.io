@@ -1,41 +1,32 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Quiz Sets | Endue Learning</title>
-    <link rel="stylesheet" href="/assets/css/style.css">
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quiz Sets — Subjects | Endue Learning</title>
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/header.css">
   <script src="/assets/js/header.js" defer></script>
   <script src="/assets/js/footer.js" defer></script>
 </head>
-
 <body>
   <div id="header"></div>
 
-  <main class="container">
-    <h2>Quiz Sets</h2>
-    <p>Select a subject and begin practicing!</p>
+  <main class="container" style="margin-top:28px;">
+    <h1>Quiz Sets — Subjects</h1>
+    <p class="small">Choose a subject to see available topics.</p>
 
-    <label><strong>Choose Subject:</strong></label>
-    <select id="subjectSelect">
-      <option value="math">Math</option>
-      <option value="science">Science</option>
-      <option value="english">English</option>
-    </select>
-
-    <button id="startBtn" class="btn-primary">Start Quiz</button>
-
-    <div id="quizArea" style="display:none; margin-top:20px;">
-      <div id="qbox"></div>
+    <div class="grid" id="subjectGrid" style="margin-top:18px;">
+      <!-- Subjects cards -->
+      <div class="card"><h3><a href="/games/quizsets/science/index.html">Science</a></h3><p class="small">Physics • Chemistry • Biology</p></div>
+      <div class="card"><h3><a href="/games/quizsets/mathematics/index.html">Mathematics</a></h3><p class="small">Algebra • Geometry • Arithmetic</p></div>
+      <div class="card"><h3><a href="/games/quizsets/english/index.html">English</a></h3><p class="small">Grammar • Vocabulary</p></div>
+      <div class="card"><h3><a href="/games/quizsets/gk/index.html">General Knowledge</a></h3><p class="small">India • World • Environment</p></div>
+      <div class="card"><h3><a href="/games/quizsets/computer/index.html">Computer</a></h3><p class="small">Basics • Internet</p></div>
+      <div class="card"><h3><a href="/games/quizsets/reasoning/index.html">Reasoning</a></h3><p class="small">Analogies • Puzzles</p></div>
+      <div class="card"><h3><a href="/games/quizsets/history/index.html">History & Civics</a></h3><p class="small">Ancient • Freedom Struggle • Civics</p></div>
     </div>
-
-    <div id="score"></div>
   </main>
 
   <div id="footer"></div>
-
-  <script src="/assets/js/header.js" defer></script>
-  <script src="/assets/js/footer.js" defer></script>
-  <script src="/assets/js/quizsets.js" defer></script>
 </body>
 </html>
