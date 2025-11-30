@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Play & Charity — Endue Learning</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
+  <style>
+    .game-shell{max-width:980px;margin:18px auto;}
+    .qa-area{display:flex;gap:12px;align-items:flex-start; flex-wrap:wrap;}
+    .qa-left{flex:1}
+    .ad-slot{width:220px; min-height:140px; border-radius:10px; background:#fff; box-shadow:0 6px 18px rgba(0,0,0,0.06); padding:8px;}
+    .options {display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:10px;}
+    .opt-btn{padding:10px;border-radius:10px;border:1px solid #e4e8ef;background:#f7fbff; cursor:pointer;}
+    .coin-box{display:flex;gap:8px;align-items:center;padding:8px;border-radius:10px;background:#fff; }
+    .mascot{font-size:34px}
+    .robot-note{position:fixed; right:12px; bottom:120px; z-index:2600; background:#fff;padding:10px;border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.12);}
+    .confetti{position:fixed; inset:0; pointer-events:none; z-index:3000;}
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="container game-shell card">
+    <h1>Play & Charity — Learn + Give</h1>
+    <p class="small">Answer questions. Each correct answer donates a virtual book and gives you a knowledge coin.</p>
+
+    <div class="coin-box" style="justify-content:space-between;">
+      <div><span class="mascot" id="mascot">📘</span> <strong id="coins">0</strong> coins</div>
+      <div>Donated: <strong id="donated">0</strong> virtual books</div>
+    </div>
+
+    <div class="qa-area" style="margin-top:14px;">
+      <div class="qa-left card" id="qaCard">
+        <div id="questionTitle"><strong>Loading question...</strong></div>
+        <div class="options" id="options"></div>
+        <div style="margin-top:8px;"><button id="skipBtn" class="btn">Skip</button> <button id="hintBtn" class="btn" style="background:#6bcf7a">Hint</button></div>
+        <div id="msg" class="small" style="margin-top:8px;color:#2b9cff"></div>
+      </div>
+
+      <div class="ad-slot card" id="adSlot">
+        <div><strong>Sponsored</strong></div>
+        <img id="adImg" src="https://via.placeholder.com/200x100?text=Ad" style="width:100%; border-radius:8px; margin-top:8px;" alt="ad">
+        <p class="small">Your ad here (placeholder)</p>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;">
+      <a class="btn" id="openFull" href="/games/playncharity.html" target="_blank">Open Full</a>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <!-- Robot helper -->
+  <div id="robot" class="robot-note" style="display:none;">
+    <div><strong>Robot helper 🤖</strong></div>
+    <div class="small">Watch our short video to learn this topic:</div>
+    <a href="https://www.youtube.com/" target="_blank">Open YouTube lesson</a>
+  </div>
+
+  <div class="confetti" id="confettiContainer" aria-hidden="true"></div>
+
+  <script>
+  // Simple question set inline (you can move to /assets/data/playncharity_questions.json)
+  const QUESTIONS = [
+    { q:"Which planet is known as the Red Planet?", a:"Mars", options:["Earth","Mars","Jupiter","Venus"] },
+    { q:"What is H2O commonly known as?", a:"Water", options:["Water","Oxygen","Salt","Gold"] },
+    { q:"Which animal is a mammal?", a:"Dolphin", options:["Shark","Dolphin","Squid","Turtle"] },
+    { q:"2 + 2 × 2 = ?", a:"6", options:["8","6","4","2"] },
+    { q:"What do plants need to perform photosynthesis?", a:"Sunlight", options:["Sunlight","Salt","Sugar","Ice"] }
+  ];
+
+  // state + DOM
+  let idx = 0; let coins = parseInt(localStorage.getItem('endue_coins')||'0'); let donated = parseInt(localStorage.getItem('endue_donated')||'0');
+  const mascotEl = document.getElementById('mascot'), coinsEl = document.getElementById('coins'), donatedEl = document.getElementById('donated');
+  const qTitle = document.getElementById('questionTitle'), opts = document.getElementById('options'), msg = document.getElementById('msg'), adImg = document.getElementById('adImg');
+  const robot = document.getElementById('robot');
+
+  function saveState(){ localStorage.setItem('endue_coins', coins); localStorage.setItem('endue_donated', donated); }
+  function updateUI(){ coinsEl.innerText = coins; donatedEl.innerText = donated; }
+  updateUI();
+
+  // ad images to rotate
+  const ADS = [
+    'https://via.placeholder.com/200x100?text=Ad+1',
+    'https://via.placeholder.com/200x100?text=Ad+2',
+    'https://via.placeholder.com/200x100?text=Ad+3'
+  ];
+
+  function renderQuestion(){
+    msg.innerText = '';
+    const q = QUESTIONS[idx % QUESTIONS.length];
+    qTitle.innerHTML = `<strong>${q.q}</strong>`;
+    opts.innerHTML = '';
+    q.options.forEach(opt=>{
+      const btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.innerText = opt;
+      btn.addEventListener('click', ()=> checkAnswer(opt));
+      opts.appendChild(btn);
+    });
+  }
+
+  function showMascotAndConfetti(){
+    // cycle mascot
+    const masc = ['📘','✏️','🧠','🎈','🖍️'];
+    mascotEl.innerText = masc[Math.floor(Math.random()*masc.length)];
+    // simple confetti (lightweight)
+    const c = document.getElementById('confettiContainer'); c.innerHTML = '';
+    for(let i=0;i<30;i++){
+      const el = document.createElement('div');
+      el.style.position='absolute';
+      el.style.left = (Math.random()*100)+'%';
+      el.style.top = (Math.random()*60)+'%';
+      el.style.width='8px'; el.style.height='12px';
+      el.style.background = ['#f9c74f','#90be6d','#f94144','#577590'][Math.floor(Math.random()*4)];
+      el.style.opacity='0.95';
+      el.style.transform = 'translateY(0) rotate('+ (Math.random()*360)+'deg)';
+      el.style.borderRadius='2px';
+      c.appendChild(el);
+      // animate out
+      el.animate([{transform:'translateY(0) rotate(0deg)'},{transform:'translateY(120vh) rotate(360deg)'}], {duration:1800+Math.random()*800, easing:'linear'});
+    }
+    setTimeout(()=> c.innerHTML='', 2200);
+  }
+
+  function checkAnswer(option){
+    const q = QUESTIONS[idx % QUESTIONS.length];
+    if(option === q.a){
+      coins++;
+      donated++;
+      saveState(); updateUI();
+      msg.innerText = 'Correct! +1 coin and donated a virtual book!';
+      showMascotAndConfetti();
+      // rotate ad
+      adImg.src = ADS[Math.floor(Math.random()*ADS.length)];
+      // robot suggestion occasionally
+      if(Math.random() < 0.25){
+        robot.style.display = 'block';
+        setTimeout(()=> robot.style.display='none', 6000);
+      }
+    } else {
+      msg.innerText = 'Not quite — try the next one. Keep learning!';
+    }
+    idx++;
+    setTimeout(renderQuestion, 700);
+  }
+
+  document.getElementById('skipBtn').addEventListener('click', ()=>{ idx++; renderQuestion(); });
+  document.getElementById('hintBtn').addEventListener('click', ()=>{ msg.innerText='Hint: Think about what you have learned.'; setTimeout(()=> msg.innerText='',2000); });
+
+  // initial
+  renderQuestion();
+  </script>
