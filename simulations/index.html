@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physics Simulation | Endue Learning</title>
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<style>
+  .sim-container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+
+  canvas {
+    width: 100%;
+    border: 1px solid #333;
+    margin-top: 20px;
+  }
+
+  .inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .card {
+    margin-top: 20px;
+    padding: 10px;
+    background: #eef6ff;
+    border-radius: 10px;
+  }
+</style>
+</head>
+
+<body>
+<div id="header"></div>
+
+<main class="sim-container">
+  <h2>Ray Diagram Simulation</h2>
+
+  <label><strong>Choose System:</strong></label>
+  <select id="modeSelect">
+    <option value="concave">Concave Mirror</option>
+    <option value="convexlens">Convex Lens</option>
+  </select>
+
+  <div class="inputs">
+    <label>Object Distance (cm):  
+      <input type="range" id="objDist" min="10" max="200" value="80">
+      <span id="objVal">80</span>
+    </label>
+
+    <label>Focal Length (cm):  
+      <input type="range" id="focalLen" min="10" max="100" value="40">
+      <span id="fVal">40</span>
+    </label>
+  </div>
+
+  <canvas id="simCanvas" height="400"></canvas>
+
+  <div class="card" id="details"></div>
+</main>
+
+<div id="footer"></div>
+
+<script src="/assets/js/header.js" defer></script>
+<script src="/assets/js/footer.js" defer></script>
+<script src="/assets/js/simulation.js" defer></script>
+
+</body>
+</html>
