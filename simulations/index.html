@@ -8,39 +8,30 @@
 
 <style>
   .sim-container {
-    max-width: 700px;
+    max-width: 900px;
     margin: auto;
-    background: #ffffff;
+    background: #fff;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    border-radius: 10px;
   }
 
-  #simCanvas {
+  canvas {
     width: 100%;
-    max-width: 650px;
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    display: block;
-    border-radius: 8px;
-    background: white;
+    border: 1px solid #333;
+    margin-top: 20px;
   }
 
   .inputs {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .inputs label {
-    font-weight: bold;
+    flex-wrap: wrap;
+    gap: 20px;
   }
 
   .card {
-    background: #eef6ff;
-    padding: 12px;
-    border-radius: 10px;
     margin-top: 20px;
+    padding: 10px;
+    background: #eef6ff;
+    border-radius: 10px;
   }
 </style>
 </head>
@@ -51,31 +42,27 @@
 <main class="sim-container">
   <h2>Ray Diagram Simulation</h2>
 
+  <label><strong>Choose System:</strong></label>
+  <select id="modeSelect">
+    <option value="concave">Concave Mirror</option>
+    <option value="convexlens">Convex Lens</option>
+  </select>
+
   <div class="inputs">
-
-    <label>
-      Choose System:
-      <select id="modeSelect">
-        <option value="concave">Concave Mirror</option>
-        <option value="convexlens">Convex Lens</option>
-      </select>
-    </label>
-
-    <label>
-      Object Distance (u): <span id="objVal">80</span> cm
+    <label>Object Distance (cm):  
       <input type="range" id="objDist" min="10" max="200" value="80">
+      <span id="objVal">80</span>
     </label>
 
-    <label>
-      Focal Length (f): <span id="fVal">40</span> cm
+    <label>Focal Length (cm):  
       <input type="range" id="focalLen" min="10" max="100" value="40">
+      <span id="fVal">40</span>
     </label>
-
   </div>
 
-  <canvas id="simCanvas" height="350"></canvas>
+  <canvas id="simCanvas" height="400"></canvas>
 
-  <div id="details" class="card"></div>
+  <div class="card" id="details"></div>
 </main>
 
 <div id="footer"></div>
