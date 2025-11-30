@@ -1,102 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulations • Endue Learning</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Physics Simulation | Endue Learning</title>
+    <link rel='stylesheet' href='assets/css/header.css'>
+    <link rel='stylesheet' href='assets/css/style.css'>
+    <script src="assets/js/header.js" defer></script>
+    <script src="assets/js/footer.js" defer></script>
+    <script src="assets/js/main.js" defer></script>
 
-  <link rel="stylesheet" href="/assets/css/header.css" />
-  <link rel="stylesheet" href="/assets/css/main.css" />
+<style>
+  .sim-container {
+    max-width: 700px;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+  }
 
-  <style>
-    .sim-wrapper {
-      max-width: 900px;
-      margin: 120px auto 40px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.09);
-    }
+  #simCanvas {
+    width: 100%;
+    max-width: 650px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    display: block;
+    border-radius: 8px;
+    background: white;
+  }
 
-    canvas {
-      width: 100%;
-      max-height: 350px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-  </style>
+  .inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .inputs label {
+    font-weight: bold;
+  }
+
+  .card {
+    background: #eef6ff;
+    padding: 12px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+</style>
 </head>
 
 <body>
-
 <div id="header"></div>
 
-<div class="sim-wrapper">
-  <h2>Ray Diagram Simulator</h2>
+<main class="sim-container">
+  <h2>Ray Diagram Simulation</h2>
 
-  <label>Mirror Type:</label>
-  <select id="mirrorType">
-    <option value="concave">Concave</option>
-    <option value="convex">Convex</option>
-  </select>
+  <div class="inputs">
 
-  <label>Object Distance (cm):</label>
-  <input type="range" id="objDist" min="20" max="200" value="80" />
-  <span id="distVal">80</span>
+    <label>
+      Choose System:
+      <select id="modeSelect">
+        <option value="concave">Concave Mirror</option>
+        <option value="convexlens">Convex Lens</option>
+      </select>
+    </label>
 
-  <canvas id="simCanvas" width="800" height="350"></canvas>
-</div>
+    <label>
+      Object Distance (u): <span id="objVal">80</span> cm
+      <input type="range" id="objDist" min="10" max="200" value="80">
+    </label>
+
+    <label>
+      Focal Length (f): <span id="fVal">40</span> cm
+      <input type="range" id="focalLen" min="10" max="100" value="40">
+    </label>
+
+  </div>
+
+  <canvas id="simCanvas" height="350"></canvas>
+
+  <div id="details" class="card"></div>
+</main>
 
 <div id="footer"></div>
 
-<script src="/assets/js/header.js"></script>
-<script src="/assets/js/footer.js"></script>
-
-<script>
-// Simple simulation (advanced version coming)
-const c = document.getElementById("simCanvas");
-const ctx = c.getContext("2d");
-const typeSel = document.getElementById("mirrorType");
-const distSel = document.getElementById("objDist");
-const distVal = document.getElementById("distVal");
-
-function draw(){
-  ctx.clearRect(0,0,c.width,c.height);
-
-  const d = Number(distSel.value);
-  distVal.textContent = d;
-
-  const mid = c.height/2;
-
-  // axis
-  ctx.beginPath();
-  ctx.moveTo(0,mid);
-  ctx.lineTo(c.width,mid);
-  ctx.stroke();
-
-  // object
-  ctx.beginPath();
-  ctx.moveTo(c.width/2 - d, mid);
-  ctx.lineTo(c.width/2 - d, mid - 60);
-  ctx.strokeStyle = "green";
-  ctx.stroke();
-
-  // mirror
-  ctx.beginPath();
-  ctx.arc(c.width/2, mid, 80,
-    typeSel.value === "concave" ? Math.PI/2 : -Math.PI/2,
-    typeSel.value === "concave" ? 3*Math.PI/2 : -3*Math.PI/2
-  );
-  ctx.strokeStyle = "#000";
-  ctx.stroke();
-}
-
-distSel.oninput = draw;
-typeSel.onchange = draw;
-
-draw();
-</script>
+<script src="/assets/js/header.js" defer></script>
+<script src="/assets/js/footer.js" defer></script>
+<script src="/assets/js/simulation.js" defer></script>
+    <link rel='stylesheet' href='assets/css/header.css'>
+    <link rel='stylesheet' href='assets/css/style.css'>
 
 </body>
 </html>
