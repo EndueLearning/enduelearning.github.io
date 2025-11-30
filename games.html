@@ -1,31 +1,37 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Games - Endue Learning</title>
-  <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/header.js" defer></script>
-  <script src="assets/js/footer.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Games — Endue Learning</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
 </head>
 <body>
   <div id="header"></div>
 
   <main class="container">
     <h1>Games</h1>
-    <p>Choose a fun educational game.</p>
+    <p class="small">Choose a game and play — the Learn + Charity game supports donations via correct answers.</p>
 
-    <div class="card-grid" style="display:flex;gap:16px;flex-wrap:wrap;">
-      <div class="card" style="width:260px;">
-        <img src="assets/images/bens-picnic.png" alt="Ben's Picnic" style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+    <div class="games-grid">
+      <div class="card">
         <h3>Ben's Picnic</h3>
-        <p>Help Ben arrange a healthy picnic and learn about food groups.</p>
-        <p><a class="btn" href="games/bens-picnic.html">Play Ben's Picnic</a></p>
+        <p class="small">A fun platformer made in Scratch. Use arrow keys or touch controls on mobile.</p>
+        <a class="btn" href="/games/bens-picnic.html">Play</a>
       </div>
 
-      <!-- Add more games cards here -->
+      <div class="card">
+        <h3>Play & Charity — Learn + Charity</h3>
+        <p class="small">Answer questions. Correct answers donate virtual books and show rewards.</p>
+        <a class="btn" href="/games/playncharity.html">Play</a>
+      </div>
 
+      <div class="card">
+        <h3>Quiz Sets (Practice)</h3>
+        <p class="small">10-question sets per subject: Maths, Science, English.</p>
+        <a class="btn" href="/games/quizsets.html">Open Quiz Sets</a>
+      </div>
     </div>
   </main>
 
