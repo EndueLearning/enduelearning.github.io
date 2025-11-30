@@ -1,77 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Physics Simulation | Endue Learning</title>
-    <link rel='stylesheet' href='assets/css/header.css'>
-    <link rel='stylesheet' href='assets/css/style.css'>
-    <script src="assets/js/header.js" defer></script>
-    <script src="assets/js/footer.js" defer></script>
-    <script src="assets/js/main.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulations – Endue Learning</title>
 
-.sim-container {
-  max-width: 800px;
-  margin: auto;
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
-}
+  <!-- Load shared CSS -->
+  <link rel="stylesheet" href="../assets/css/header.css" />
+  <link rel="stylesheet" href="../assets/css/main.css" />
 
-#simCanvas {
-  width: 100%;
-  height: auto;
-  max-height: 320px;     /* FIX DESKTOP SCROLLING */
-  object-fit: contain;
-  display: block;
-  margin: 20px auto;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-}
+  <style>
+    .sim-container {
+      max-width: 850px;
+      margin: 120px auto 50px auto; /* keeps below sticky menu */
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    }
 
+    #simCanvas {
+      width: 100%;
+      height: auto;
+      max-height: 320px;
+      object-fit: contain;
+      display: block;
+      margin: 20px auto;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    select, input {
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #aaa;
+    }
+
+  </style>
 </head>
 
 <body>
-<div id="header"></div>
 
-<main class="sim-container">
-  <h2>Ray Diagram Simulation</h2>
+  <!-- HEADER LOADS HERE -->
+  <div id="header"></div>
 
-  <div class="inputs">
+  <div class="sim-container">
+    <h2>Ray Diagram Simulation (Basic Version)</h2>
 
-    <label>
-      Choose System:
-      <select id="modeSelect">
+    <div class="controls">
+      <label>Mirror Type:</label>
+      <select id="mirrorType">
         <option value="concave">Concave Mirror</option>
-        <option value="convexlens">Convex Lens</option>
+        <option value="convex">Convex Mirror</option>
       </select>
-    </label>
 
-    <label>
-      Object Distance (u): <span id="objVal">80</span> cm
-      <input type="range" id="objDist" min="10" max="200" value="80">
-    </label>
+      <label>Object Distance (cm):</label>
+      <input id="objDist" type="range" min="20" max="200" value="80" />
+      <span id="distVal">80</span>
+    </div>
 
-    <label>
-      Focal Length (f): <span id="fVal">40</span> cm
-      <input type="range" id="focalLen" min="10" max="100" value="40">
-    </label>
-
+    <canvas id="simCanvas" width="800" height="320"></canvas>
   </div>
 
-  <canvas id="simCanvas" height="350"></canvas>
+  <!-- FOOTER -->
+  <div id="footer"></div>
 
-  <div id="details" class="card"></div>
-</main>
+  <!-- JS imports -->
+  <script src="../assets/js/header.js"></script>
+  <script src="../assets/js/footer.js"></script>
 
-<div id="footer"></div>
+  <script>
+    /* SIMPLE DRAWING — replaced by full advanced simulation in next phase */
+    const canvas = document.getElementById("simCanvas");
+    const ctx = canvas.getContext("2d");
 
-<script src="/assets/js/header.js" defer></script>
-<script src="/assets/js/footer.js" defer></script>
-<script src="/assets/js/simulation.js" defer></script>
-    <link rel='stylesheet' href='assets/css/header.css'>
-    <link rel='stylesheet' href='assets/css/style.css'>
+    const typeSel = document.getElementById("mirrorType");
+    const slider = document.getElementById("objDist");
+    const distVal = document.getElementById("distVal");
+
+    function draw() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      let d = slider.value;
+      distVal.textContent = d;
+
+      // Axis
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height/2);
+      ctx.lineTo(canvas.width, canvas.height/2);
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+
+      // Object
+      ctx.beginPath();
+      ctx.moveTo(canvas.width/2 - d, canvas.height/2);
+      ctx.lineTo(canvas.width/2 - d, canvas.height/2 - 60);
+      ctx.strokeStyle = "green";
+      ctx.stroke();
+
+      // Mirror
+      ctx.beginPath();
+      ctx.arc(canvas.width/2, canvas.height/2, 80,
+        typeSel.value === "concave" ? Math.PI/2 : -Math.PI/2,
+        typeSel.value === "concave" ? 3*Math.PI/2 : -3*Math.PI/2
+      );
+      ctx.strokeStyle = "#000";
+      ctx.stroke();
+    }
+
+    slider.oninput = draw;
+    typeSel.onchange = draw;
+
+    draw();
+  </script>
 
 </body>
 </html>
