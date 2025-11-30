@@ -1,79 +1,100 @@
 // assets/js/quizsets.js
 (function(){
-  'use strict';
-  const subjects = { math: '/assets/data/quizsets_math.json', science: '/assets/data/quizsets_science.json', english: '/assets/data/quizsets_english.json' };
-  let currentBank = [], current = 0, answers = [];
-  const qbox = document.getElementById('qbox');
-  const quizArea = document.getElementById('quizArea');
-  const scoreDiv = document.getElementById('score');
-  const nextBtn = document.getElementById('nextBtn');
 
-  function loadSubject(subj){
-    const url = subjects[subj];
-    return fetch(url).then(r => r.ok ? r.json() : []).then(data => {
-      currentBank = Array.isArray(data) ? data.slice(0) : [];
+  const SUBJECT_PATHS = {
+    math: "/assets/data/quizsets_math.json",
+    science: "/assets/data/quizsets_science.json",
+    english: "/assets/data/quizsets_english.json"
+  };
+
+  const startBtn = document.getElementById("startBtn");
+  const subjectSelect = document.getElementById("subjectSelect");
+  const quizArea = document.getElementById("quizArea");
+  const qbox = document.getElementById("qbox");
+  const scoreDiv = document.getElementById("score");
+
+  let questions = [];
+  let index = 0;
+  let answers = [];
+
+  function startQuiz() {
+    const subject = subjectSelect.value;
+    const filePath = SUBJECT_PATHS[subject];
+
+    fetch(filePath)
+      .then(r => r.json())
+      .then(data => {
+        questions = data.sort(() => Math.random() - 0.5).slice(0, 10);
+        index = 0;
+        answers = [];
+        scoreDiv.innerHTML = "";
+        quizArea.style.display = "block";
+        loadQuestion();
+      });
+  }
+
+  function loadQuestion() {
+    const q = questions[index];
+    qbox.innerHTML = `
+      <div class="question"><strong>Q${index + 1}:</strong> ${q.q}</div>
+      <div class="options"></div>
+    `;
+
+    const optionsDiv = qbox.querySelector(".options");
+
+    q.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "opt-btn";
+      btn.textContent = opt;
+
+      btn.onclick = () => handleAnswer(btn, opt, q.a);
+
+      optionsDiv.appendChild(btn);
     });
   }
 
-  function startQuiz(subj){
-    loadSubject(subj).then(()=> {
-      // shuffle and pick 10
-      currentBank.sort(()=>0.5 - Math.random());
-      currentBank = currentBank.slice(0,10);
-      current = 0; answers = new Array(currentBank.length);
-      quizArea.style.display = 'block';
-      scoreDiv.innerHTML = '';
-      renderQ();
-    }).catch(err => {
-      alert('Failed to load questions.');
-      console.error(err);
-    });
-  }
+  function handleAnswer(button, selected, correct) {
+    const buttons = qbox.querySelectorAll(".opt-btn");
+    buttons.forEach(b => (b.disabled = true));
 
-  function renderQ(){
-    const q = currentBank[current];
-    if(!q){ finishQuiz(); return; }
-    qbox.innerHTML = `<div class="question"><strong>Q ${current+1}.</strong> ${escapeHtml(q.q)}</div>`;
-    const opts = document.createElement('div'); opts.className='options';
-    q.options.forEach(opt=>{
-      const b = document.createElement('button'); b.className='opt-btn'; b.innerText = opt;
-      b.addEventListener('click', ()=> handleAnswer(b, opt, q.a));
-      opts.appendChild(b);
-    });
-    qbox.appendChild(opts);
-  }
-
-  function handleAnswer(button, selected, correct){
-    // disable all
-    Array.from(qbox.querySelectorAll('.opt-btn')).forEach(b => b.disabled = true);
-    // mark answers
-    if(selected === correct){
-      button.style.borderColor = '#34c759'; button.style.background = '#e9ffef';
+    if (selected === correct) {
+      button.style.background = "#d4ffd8";
+      button.style.border = "2px solid #28a745";
     } else {
-      button.style.borderColor = '#ff3b30'; button.style.background = '#ffecec';
-      // highlight correct
-      Array.from(qbox.querySelectorAll('.opt-btn')).forEach(b => { if(b.innerText === correct){ b.style.borderColor = '#34c759'; b.style.background = '#e9ffef'; } });
+      button.style.background = "#ffd4d4";
+      button.style.border = "2px solid #dc3545";
+
+      buttons.forEach(b => {
+        if (b.textContent === correct) {
+          b.style.background = "#d4ffd8";
+          b.style.border = "2px solid #28a745";
+        }
+      });
     }
-    answers[current] = selected;
-    // auto-advance after 1.2s
-    setTimeout(()=> {
-      current++;
-      if(current >= currentBank.length) finishQuiz(); else renderQ();
+
+    answers.push(selected);
+
+    setTimeout(() => {
+      index++;
+      if (index >= questions.length) showScore();
+      else loadQuestion();
     }, 1200);
   }
 
-  function finishQuiz(){
-    let score=0;
-    currentBank.forEach((q,i)=> { if(answers[i] === q.a) score++; });
-    quizArea.style.display='none';
-    scoreDiv.innerHTML = `<div class="result">You scored <strong>${score}</strong> / ${currentBank.length}. <a href="/games/quizsets.html">Try another set</a></div>`;
+  function showScore() {
+    quizArea.style.display = "none";
+
+    let score = 0;
+    questions.forEach((q, i) => {
+      if (answers[i] === q.a) score++;
+    });
+
+    scoreDiv.innerHTML = `
+      <h3>Your Score: ${score} / ${questions.length}</h3>
+      <a href="/games/quizsets.html" class="btn-primary">Try Another Set</a>
+    `;
   }
 
-  function escapeHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  startBtn.addEventListener("click", startQuiz);
 
-  // wire up start button
-  document.getElementById('startBtn').addEventListener('click', ()=>{
-    const subj = document.getElementById('subjectSelect').value;
-    startQuiz(subj);
-  });
 })();
