@@ -1,24 +1,45 @@
-<!-- components/header.html -->
-<header class="main-header" role="banner">
-  <nav class="navbar container" role="navigation" aria-label="Main">
+<header class="main-header">
+  <nav class="navbar">
     <div class="logo-area">
-      <a href="index.html" class="logo-link" aria-label="Endue Learning home">
-        <img src="assets/images/logo.svg" alt="Endue Learning Logo" class="logo" />
+      <a href="/" class="logo-link">
+        <img src="/assets/images/logo.svg" alt="Endue Learning" class="logo">
       </a>
-      <span class="site-title">Endue Learning</span>
+      <h1 class="site-title">Endue Learning</h1>
     </div>
 
-    <button class="hamburger" id="menuToggle" aria-label="Toggle navigation">☰</button>
+    <button class="hamburger" id="menuToggle">☰</button>
 
     <ul class="nav-links" id="navLinks">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="simulations.html">Simulations</a></li>
-      <li><a href="games.html">Games</a></li>
-      <li><a href="activities.html">Activities</a></li>
-      <li><a href="worksheets.html">Worksheets</a></li>
-      <li><a href="progress.html">Progress</a></li>
-      <li><a href="donate.html">Donate</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="/">Home</a></li>
+      <li><a href="/activities.html">Activities</a></li>
+      <li><a href="/worksheets.html">Worksheets</a></li>
+      <li><a href="/games.html">Games</a></li>
+      <li><a href="/simulations.html">Simulations</a></li>
+      <li><a href="/progress.html">Progress</a></li>
+      <li><a href="/contact.html">About / Contact</a></li>
     </ul>
   </nav>
 </header>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const t = document.getElementById("menuToggle");
+  const n = document.getElementById("navLinks");
+  t.addEventListener("click", () => n.classList.toggle("active"));
+});
+</script>
+
+<style>
+.main-header {background: #4bc0c8;color:white;position:sticky;top:0;z-index:999;}
+.navbar{width:90%;margin:auto;display:flex;align-items:center;justify-content:space-between;}
+.logo{width:58px;height:58px;}
+.nav-links{display:flex;gap:18px;list-style:none;}
+.nav-links li a{color:white;font-weight:600;text-decoration:none;}
+.hamburger{display:none;font-size:28px;background:none;border:none;color:white;cursor:pointer;}
+
+@media(max-width:768px){
+  .hamburger{display:block;}
+  .nav-links{display:none;position:absolute;top:70px;right:0;background:black;padding:15px;border-radius:10px 0 0 10px;flex-direction:column;}
+  .nav-links.active{display:flex;}
+}
+</style>
