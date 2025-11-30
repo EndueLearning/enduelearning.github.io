@@ -1,200 +1,111 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ben's Picnic — Endue Learning</title>
-
-  <link rel="stylesheet" href="../assets/css/header.css">
-  <link rel="stylesheet" href="../assets/css/style.css">
-
-  <script src="../assets/js/header.js" defer></script>
-  <script src="../assets/js/footer.js" defer></script>
-
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
   <style>
-    .game-wrapper { max-width:1100px; margin:18px auto; padding:12px; }
-    .iframe-frame { position:relative; width:100%; padding-top:56.25%; border-radius:10px; overflow:hidden; box-shadow:0 10px 30px rgba(12,45,80,0.08); background:#000; }
-    .iframe-frame iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
-
-    .game-actions { display:flex; gap:12px; align-items:center; margin-top:12px; flex-wrap:wrap; }
-    .hint { color:#556; font-size:0.95rem; }
-    .btn { background:#2b9cff; color:#fff; padding:10px 14px; border-radius:10px; text-decoration:none; font-weight:700; display:inline-block; }
-
-    .mobile-ctrls { position: fixed; left: 12px; bottom: 18px; z-index: 2200; display: flex; gap: 10px; align-items: center; pointer-events: none; }
-    .mobile-ctrls .ctrl-btn { pointer-events: auto; width: 60px; height: 60px; border-radius: 12px; background: rgba(43,156,255,0.95); color: #fff; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:700; box-shadow:0 8px 18px rgba(11,53,85,0.18); user-select: none; -webkit-tap-highlight-color: rgba(0,0,0,0); }
-    .mobile-ctrls .ctrl-btn.small { width:46px; height:46px; font-size:18px; border-radius:10px; }
-    .mobile-ctrls .ctrl-btn:active { transform: translateY(2px) scale(.98); }
-
-    :fullscreen .mobile-ctrls, :-webkit-full-screen .mobile-ctrls, .mobile-ctrls.fullscreen-visible { display:flex !important; }
-    @media(min-width:880px) { .mobile-ctrls { display: none !important; } }
-
-    #vc-debug { position: fixed; right: 12px; bottom: 18px; z-index:2400; background:rgba(0,0,0,0.7); color:#fff; padding:8px 10px; border-radius:8px; font-size:12px; display:none; }
+    .game-wrapper{max-width:1100px;margin:18px auto;padding:12px;}
+    .iframe-frame{position:relative;width:100%;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(12,45,80,0.08);}
+    .iframe-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
+    .mobile-ctrls{position:fixed;left:12px;bottom:18px;z-index:2200;display:flex;gap:10px;align-items:center;pointer-events:none;}
+    .ctrl-btn{pointer-events:auto;width:60px;height:60px;border-radius:12px;background:rgba(43,156,255,0.95);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;box-shadow:0 8px 18px rgba(11,53,85,0.18)}
+    @media(min-width:880px){.mobile-ctrls{display:none!important}}
   </style>
 </head>
 <body>
   <div id="header"></div>
 
-  <!-- Per-page header link fixer (safe, non-invasive) -->
   <script>
   (function(){
-    document.addEventListener('DOMContentLoaded', () => {
-      try {
-        const headerRoot = document.querySelector('header.main-header') || document.getElementById('header');
-        if (!headerRoot) return;
-        headerRoot.querySelectorAll('a[href]').forEach(a => {
-          const href = a.getAttribute('href') || '';
-          if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('/') || href.startsWith('mailto:')) return;
-          a.setAttribute('href', '/' + href.replace(/^\.\//,''));
-        });
-        const logo = headerRoot.querySelector('.logo-link');
-        if (logo) logo.setAttribute('href','/index.html');
-      } catch(e){}
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const headerRoot = document.querySelector('header.main-header') || document.getElementById('header');
+      if(!headerRoot) return;
+      headerRoot.querySelectorAll('a[href]').forEach(a=>{
+        const href = a.getAttribute('href')||'';
+        if(!href||href.startsWith('#')||href.startsWith('http')||href.startsWith('/')) return;
+        a.setAttribute('href','/' + href.replace(/^\.\//,''));
+      });
+      const logo = headerRoot.querySelector('.logo-link'); if(logo) logo.setAttribute('href','/index.html');
     });
   })();
   </script>
 
-  <main class="container game-wrapper">
+  <main class="container game-wrapper card">
     <h1>Ben's Picnic</h1>
-    <p class="small">Use arrow keys on desktop. On mobile, use the buttons below. Short tap = single step; hold = continuous move.</p>
+    <p class="small">Use arrow keys on desktop; use touch buttons on mobile. Tap = single step, hold = continuous.</p>
 
-    <div class="iframe-frame" id="gameFrameWrap" aria-live="polite">
-      <iframe id="gameIframe" src="ben-picnic-full.html" title="Ben's Picnic" allow="autoplay; fullscreen; encrypted-media" loading="lazy" style="background:#000;"></iframe>
+    <div class="iframe-frame" id="gameFrameWrap">
+      <iframe id="gameIframe" src="/games/ben-picnic-full.html" title="Ben's Picnic" allow="autoplay; fullscreen; encrypted-media" loading="lazy"></iframe>
     </div>
 
-    <div class="game-actions">
-      <a class="btn" id="openFull" href="ben-picnic-full.html" target="_blank" rel="noopener">Open full page</a>
-      <span class="hint">If the game doesn't respond on mobile, tap inside the game area once to enable audio and focus.</span>
-    </div>
-
-    <div class="card" style="margin-top:14px;">
-      <h3>How to play</h3>
-      <p>Left / Right to move, Up to jump. On mobile use the buttons below.</p>
+    <div style="margin-top:12px;">
+      <a class="btn" href="/games/ben-picnic-full.html" target="_blank">Open full page</a>
+      <span class="small" style="margin-left:10px">Tap inside the game area to enable audio & focus.</span>
     </div>
   </main>
 
   <div id="footer"></div>
 
-  <div class="mobile-ctrls" id="mobileCtrls" aria-hidden="false" role="group" aria-label="Mobile game controls">
-    <button class="ctrl-btn" data-key="ArrowLeft" id="btnLeft" aria-label="Left">◀</button>
-    <button class="ctrl-btn" data-key="ArrowRight" id="btnRight" aria-label="Right">▶</button>
-    <button class="ctrl-btn small" data-key="ArrowUp" id="btnUp" aria-label="Up">▲</button>
-    <button class="ctrl-btn small" data-key="ArrowDown" id="btnDown" aria-label="Down">▼</button>
-    <button class="ctrl-btn small" data-key=" " id="btnSpace" aria-label="Action">␣</button>
+  <div class="mobile-ctrls" id="mobileCtrls">
+    <button class="ctrl-btn" data-key="ArrowLeft">◀</button>
+    <button class="ctrl-btn" data-key="ArrowRight">▶</button>
+    <button class="ctrl-btn" data-key="ArrowUp" style="width:46px;height:46px">▲</button>
+    <button class="ctrl-btn" data-key=" " style="width:46px;height:46px">␣</button>
   </div>
 
-  <div id="vc-debug" aria-hidden="true"></div>
-
-  <!-- AUDIO UNLOCK + FULLSCREEN VISIBILITY -->
-  <script>
-  (function(){
-    const iframe = document.getElementById('gameIframe');
-    const wrap = document.getElementById('gameFrameWrap');
-    const mobileCtrls = document.getElementById('mobileCtrls');
-
-    function tryUnlockAudio() {
-      try { iframe.contentWindow.postMessage({ type: 'user-gesture' }, window.location.origin); } catch(e){}
-      try {
-        const doc = iframe.contentWindow.document;
-        doc.querySelectorAll('audio,video').forEach(m => { try { m.muted = false; m.volume = 1; m.play().catch(()=>{}); } catch(e){} });
-        const Howler = iframe.contentWindow.Howler || iframe.contentWindow.howler;
-        if (Howler && Howler.ctx && Howler.ctx.state === 'suspended') Howler.ctx.resume().catch(()=>{});
-        const ctx = iframe.contentWindow.__scratchAudioContext || iframe.contentWindow.audioContext || (Howler && Howler.ctx);
-        if (ctx && ctx.state === 'suspended') ctx.resume().catch(()=>{});
-      } catch(e){}
-      wrap.removeEventListener('pointerdown', tryUnlockAudio);
-      wrap.removeEventListener('click', tryUnlockAudio);
-    }
-    wrap.addEventListener('pointerdown', tryUnlockAudio, { once: true });
-    wrap.addEventListener('click', tryUnlockAudio, { once: true });
-
-    function updateFullscreenVisibility(){
-      const fs = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
-      if (fs === document.getElementById('gameIframe') || fs === document.getElementById('gameFrameWrap') || fs === document.body) {
-        mobileCtrls.classList.add('fullscreen-visible');
-        mobileCtrls.style.display = 'flex';
-      } else {
-        mobileCtrls.classList.remove('fullscreen-visible');
-        const show = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-        mobileCtrls.style.display = show ? 'flex' : 'none';
-      }
-    }
-    document.addEventListener('fullscreenchange', updateFullscreenVisibility);
-    document.addEventListener('webkitfullscreenchange', updateFullscreenVisibility);
-    document.addEventListener('mozfullscreenchange', updateFullscreenVisibility);
-    // poll fallback
-    setInterval(updateFullscreenVisibility, 300);
-  })();
-  </script>
-
-  <!-- VIRTUAL CONTROLS (tap = immediate keyup; hold = repeat) -->
   <script>
   (function(){
     const iframe = document.getElementById('gameIframe');
     const controls = document.querySelectorAll('.mobile-ctrls .ctrl-btn');
-
     if(!iframe) return;
 
-    function sendKeyToIframe(key, type='keydown'){
-      try {
+    function sendKey(key,type='keydown'){
+      try{
         const win = iframe.contentWindow;
-        if(!win) return;
-        const ev = new win.KeyboardEvent(type, { key: key === ' ' ? ' ' : key, code: key, bubbles: true, cancelable: true });
-        const target = win.document.activeElement || win.document.body || win.document;
-        target.dispatchEvent(ev);
+        const ev = new win.KeyboardEvent(type,{key:key===' ' ? ' ' : key, code:key, bubbles:true, cancelable:true});
+        (win.document.activeElement||win.document.body||win.document).dispatchEvent(ev);
         win.dispatchEvent(ev);
-      } catch (err) {
-        try { iframe.contentWindow.postMessage(JSON.stringify({ type:'virtual-key', key, action:type }), '*'); } catch(e){}
+      }catch(e){
+        try{ iframe.contentWindow.postMessage(JSON.stringify({type:'virtual-key',key,action:type}),'*'); }catch(e){}
       }
     }
 
-    const HOLD_DELAY = 200;
-    const REPEAT_INTERVAL = 140;
-
-    controls.forEach(btn => {
+    const HOLD_DELAY=200, REPEAT_INTERVAL=140;
+    controls.forEach(btn=>{
       const key = btn.getAttribute('data-key');
-      let holdInterval = null;
-      let holdTimer = null;
-
-      function startPress(e){
+      let holdTimer=null, holdInterval=null;
+      function start(e){
         e.preventDefault();
-        try { iframe.contentWindow.focus(); } catch(e) {}
-        sendKeyToIframe(key, 'keydown');
-
-        holdTimer = setTimeout(() => {
-          holdTimer = null;
-          holdInterval = setInterval(()=> sendKeyToIframe(key, 'keydown'), REPEAT_INTERVAL);
-        }, HOLD_DELAY);
+        try{ iframe.contentWindow.focus(); }catch(e){}
+        sendKey(key,'keydown');
+        holdTimer = setTimeout(()=>{ holdTimer=null; holdInterval = setInterval(()=>sendKey(key,'keydown'), REPEAT_INTERVAL); }, HOLD_DELAY);
       }
-
-      function endPress(e){
+      function end(e){
         e.preventDefault();
-        if (holdTimer) {
-          clearTimeout(holdTimer); holdTimer = null;
-          // short tap: immediate keyup
-          sendKeyToIframe(key, 'keyup');
-        } else {
-          if (holdInterval) { clearInterval(holdInterval); holdInterval = null; }
-          sendKeyToIframe(key, 'keyup');
-        }
+        if(holdTimer){ clearTimeout(holdTimer); holdTimer=null; sendKey(key,'keyup'); }
+        else { if(holdInterval){ clearInterval(holdInterval); holdInterval=null; } sendKey(key,'keyup'); }
       }
-
-      btn.addEventListener('pointerdown', startPress);
-      btn.addEventListener('pointerup', endPress);
-      btn.addEventListener('pointerleave', endPress);
-      btn.addEventListener('touchstart', startPress, { passive:false });
-      btn.addEventListener('touchend', endPress);
-      btn.addEventListener('mousedown', startPress);
-      btn.addEventListener('mouseup', endPress);
-      btn.addEventListener('touchmove', (ev)=> ev.preventDefault(), { passive:false });
+      btn.addEventListener('pointerdown', start);
+      btn.addEventListener('pointerup', end);
+      btn.addEventListener('pointerleave', end);
+      btn.addEventListener('touchstart', start, {passive:false});
+      btn.addEventListener('touchend', end);
+      btn.addEventListener('mousedown', start);
+      btn.addEventListener('mouseup', end);
     });
 
-    function updateVisibility(){
-      const show = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+    // show controls on fullscreen too
+    function checkFS(){
+      const fs = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
       const el = document.getElementById('mobileCtrls');
-      if (el) el.style.display = show ? 'flex' : 'none';
+      if(fs === document.getElementById('gameIframe') || fs === document.getElementById('gameFrameWrap') || fs === document.body){ el.style.display='flex'; } else { el.style.display = /Android|iPhone|Mobile/i.test(navigator.userAgent) ? 'flex' : 'none'; }
     }
-    updateVisibility();
-    window.addEventListener('resize', updateVisibility);
+    document.addEventListener('fullscreenchange', checkFS);
+    setInterval(checkFS, 300);
+    checkFS();
   })();
   </script>
 </body>
