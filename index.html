@@ -3,65 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Endue Learning</title>
-  <link rel="stylesheet" href="assets/css/header.css">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/responsive.css">
-  <script src="assets/js/header.js" defer></script>
-  <script src="assets/js/footer.js" defer></script>
-  <script src="assets/js/main.js" defer></script>
+  <title>Endue Learning — Home</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
+  <script src="/assets/data/library.js" defer></script>
+  <script src="/assets/js/daily.js" defer></script>
 </head>
 <body>
   <div id="header"></div>
 
   <main class="container">
-    <section class="hero card">
-      <h1>Welcome to Endue Learning — Fun Learning Anywhere!</h1>
-      <p class="small">Interactive worksheets, games, simulations and resources for young learners.</p>
-      <p><a class="btn" href="games.html">Play a Game</a> <a class="btn" href="practice.html">Practice Sets</a></p>
-    </section>
+    <section class="header-hero card">
+      <div class="hero-left">
+        <h1>Welcome to Endue Learning — Fun Learning Anywhere!</h1>
+        <p class="small">Educational activities, worksheets, games and simulations for curious kids.</p>
 
-    <!-- two-column layout: main content + right sidebar -->
-    <section class="layout-grid container">
-      <div class="main-col">
-        <section class="card">
-          <h2>Featured Resource</h2>
-          <p>Spotlight on today's worksheet and activity.</p>
-        </section>
+        <div class="card" style="margin-top:12px;">
+          <h3>Daily Highlights</h3>
+          <div class="daily-box" style="display:flex; gap:10px; flex-wrap:wrap;">
+            <div id="word-of-day" class="card" style="min-width:200px;">Loading word...</div>
+            <div id="thought-of-day" class="card" style="min-width:200px;">Loading thought...</div>
+          </div>
+        </div>
 
-        <section class="card">
-          <h2>Latest Updates</h2>
-          <ul>
-            <li>New mirror simulation added.</li>
-            <li>Ben's Picnic game updated.</li>
-          </ul>
-        </section>
+        <div class="card" style="margin-top:12px;">
+          <h3>Featured Resource</h3>
+          <p class="small">Today's featured worksheet or activity — encourage daily engagement.</p>
+          <a class="btn" href="/worksheets.html">See Worksheets</a>
+        </div>
       </div>
 
-      <aside class="sidebar-col">
-        <div class="card" id="word-of-day">Loading word...</div>
-        <div class="card" id="thought-of-day">Loading thought...</div>
-
-        <div class="card" id="top-competitions">
-          <h3>Top Competitions</h3>
-          <ul id="competitions-list">
-            <li>Loading competitions...</li>
-          </ul>
+      <aside class="hero-right sidebar-col">
+        <div class="card">
+          <h4>Fun Fact of the Day</h4>
+          <div id="fun-fact">Loading fact...</div>
         </div>
 
         <div class="card">
-          <h3>Quick Links</h3>
-          <p><a href="worksheets.html">Worksheets</a><br><a href="simulations.html">Simulations</a><br><a href="games.html">Games</a></p>
+          <h4>Top Competitions</h4>
+          <ol>
+            <li>Google Science Fair</li>
+            <li>International Math Olympiad</li>
+            <li>National Spell Bee</li>
+            <li>NASA Student Challenges</li>
+            <li>Hour of Code / Programming Contests</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <h4>Subscribe</h4>
+          <p class="small">Get updates and activities every week.</p>
+          <a class="btn" href="/contact.html">Contact / Subscribe</a>
         </div>
       </aside>
+    </section>
+
+    <section style="margin-top:14px;" class="card">
+      <h3>Explore</h3>
+      <div class="grid">
+        <div class="card"><h4>Activities</h4><p class="small">Hands-on learning.</p><a class="btn" href="/activities.html">Open</a></div>
+        <div class="card"><h4>Worksheets</h4><p class="small">PDFs & downloads.</p><a class="btn" href="/worksheets.html">Open</a></div>
+        <div class="card"><h4>Games</h4><p class="small">Play & Learn + Charity</p><a class="btn" href="/games.html">Open</a></div>
+        <div class="card"><h4>Simulations</h4><p class="small">Interactive science</p><a class="btn" href="/simulations.html">Open</a></div>
+      </div>
     </section>
   </main>
 
   <div id="footer"></div>
-
-  <!-- library must be loaded before daily.js -->
-  <script src="assets/data/library.js" defer></script>
-  <script src="assets/js/daily.js" defer></script>
-  <script src="assets/js/competitions.js" defer></script>
 </body>
 </html>
