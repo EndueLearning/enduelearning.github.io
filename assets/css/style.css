@@ -25,3 +25,115 @@ html,body{margin:0;padding:0;font-family:Inter, system-ui, -apple-system, "Poppi
   .header-hero{flex-direction:column; align-items:stretch;}
   .hero-right{width:100%}
 }
+/* ================================
+   HEADER BASE STYLE
+================================= */
+
+.main-header {
+  width: 100%;
+  background: linear-gradient(90deg, #4bc0c8, #c779d0, #feac5e);
+  padding: 12px 0;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+/* Slide-down animation */
+.slide-down {
+  animation: slideDown 0.6s ease forwards;
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100px); }
+  to   { transform: translateY(0); }
+}
+
+.navbar {
+  width: 92%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Logo section */
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 52px;
+  height: 52px;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.site-title {
+  font-size: 1.45rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: white;
+}
+
+/* Nav links */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.nav-links li a {
+  color: white;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* ================================
+   MOBILE NAVIGATION
+================================= */
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 75px;
+    right: 10px;
+    background: rgba(0,0,0,0.9);
+    flex-direction: column;
+    width: 200px;
+    padding: 18px;
+    border-radius: 10px;
+    display: none;
+  }
+
+  .nav-links.active {
+    display: flex;
+    animation: fadeIn 0.4s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
+
