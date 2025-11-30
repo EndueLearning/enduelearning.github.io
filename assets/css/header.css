@@ -1,12 +1,84 @@
-/* header.css */
-.main-header { background: linear-gradient(90deg,#4bc0c8,#c779d0,#feac5e); color:#fff; position:sticky; top:0; z-index:9999; width:100%; box-shadow:0 3px 8px rgba(0,0,0,0.12); }
-.container{max-width:1100px;margin:0 auto;padding:0 16px;}
-.navbar{display:flex;align-items:center;justify-content:space-between;padding:12px 0;gap:16px}
-.logo{width:48px;height:48px;border-radius:8px}
-.logo-area{display:flex;align-items:center;gap:10px}
-.site-title{font-weight:700;font-size:1.05rem}
-.nav-links{display:flex;gap:12px;align-items:center;list-style:none;margin:0;padding:0}
-.nav-links a{color:#fff;text-decoration:none;padding:8px 12px;border-radius:10px;display:inline-block}
-.nav-links a:hover{background:rgba(255,255,255,0.12);transform:translateY(-2px)}
-.hamburger{display:none;background:none;border:0;color:#fff;font-size:24px;cursor:pointer}
-@media(max-width:768px){.nav-links{position:absolute;top:64px;right:12px;background:rgba(0,0,0,0.92);flex-direction:column;padding:12px;border-radius:10px;display:none;width:220px}.nav-links.active{display:flex}.hamburger{display:block}}
+/* HEADER CONTAINER */
+.site-header {
+  width: 100%;
+  background: #ffffff;
+  padding: 12px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #e1e1e1;
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+/* LOGO */
+.header-logo img {
+  height: 50px;
+  transition: transform .3s ease;
+}
+
+.header-logo img:hover {
+  transform: scale(1.1);
+}
+
+/* NAVIGATION */
+.nav-links {
+  display: flex;
+  gap: 25px;
+  list-style: none;
+  align-items: center;
+}
+
+.nav-links li a {
+  font-size: 18px;
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+  position: relative;
+}
+
+/* Hover underline animation */
+.nav-links li a::after {
+  content: "";
+  width: 0%;
+  height: 3px;
+  background: #007bff;
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  transition: 0.3s;
+}
+
+.nav-links li a:hover::after {
+  width: 100%;
+}
+
+/* MOBILE */
+.hamburger {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    top: 70px;
+    right: 0;
+    background: white;
+    width: 100%;
+    flex-direction: column;
+    padding: 20px 0;
+    display: none;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  .hamburger {
+    display: block;
+  }
+}
