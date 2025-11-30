@@ -1,0 +1,9 @@
+[
+  { "q": "Which planet is known as the Red Planet?", "a": "Mars", "options": ["Earth", "Mars", "Jupiter", "Venus"] },
+  { "q": "What is H2O commonly known as?", "a": "Water", "options": ["Water", "Oxygen", "Salt", "Gold"] },
+  { "q": "Which animal is a mammal?", "a": "Dolphin", "options": ["Shark", "Dolphin", "Squid", "Turtle"] },
+  { "q": "2 + 2 × 2 = ?", "a": "6", "options": ["8", "6", "4", "2"] },
+  { "q": "What do plants need for photosynthesis?", "a": "Sunlight", "options": ["Sunlight", "Salt", "Sugar", "Ice"] },
+  { "q": "Which organ pumps blood?", "a": "Heart", "options": ["Lungs","Brain","Heart","Kidneys"] },
+  { "q": "Which gas do we breathe in?", "a": "Oxygen", "options": ["CO2","Oxygen","Nitrogen","Hydrogen"] }
+]
