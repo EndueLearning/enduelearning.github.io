@@ -1,157 +1,107 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Endue Learning — Fun Learning Anywhere</title>
+    <meta charset='utf-8'>
+    <meta charset="UTF-8" />
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <title>Endue Learning – Learn • Play • Grow</title>
 
-  <!-- Core styles -->
-  <link rel="stylesheet" href="/assets/css/header.css">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/home.css">
+    <!-- Main Styles -->
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/header.css" />
+    <link rel="stylesheet" href="/assets/css/footer.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
 
-  <!-- Header / footer (dynamic) -->
-  <script src="/assets/js/header.js" defer></script>
-  <script src="/assets/js/footer.js" defer></script>
+    <!-- Header + Footer Scripts -->
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
 
-  <!-- Homepage JS (daily fun fact + highlights) -->
-  <script src="/assets/js/daily_home.js" defer></script>
-
+    <!-- Daily Fun Fact & Quiz Highlights -->
+    <script src="/assets/js/daily_home.js" defer></script>
 </head>
+
 <body>
-  <!-- header loads here -->
-  <div id="header"></div>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-inner container">
-      <div class="hero-left">
-        <h1 class="hero-title">Welcome to <span class="accent">Endue Learning</span></h1>
-        <p class="hero-sub">Fun learning anywhere — games, quizzes, worksheets, and simulations for curious kids.</p>
+    <!-- Dynamic Header -->
+    <div id="header"></div>
 
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="/games.html">Play & Learn</a>
-          <a class="btn btn-outline" href="/worksheets.html">Worksheets</a>
-        </div>
+    <main class="container home-container" style="margin-top: 32px;">
 
-        <ul class="hero-features">
-          <li><strong>Daily Fun Fact</strong> — learn one new thing every day</li>
-          <li><strong>Progress Dashboard</strong> — track your learning</li>
-          <li><strong>Play + Charity</strong> — earn coins & donate virtual books</li>
-        </ul>
-      </div>
+        <!-- ===== LEFT SECTION ===== -->
+        <section class="home-left">
 
-      <div class="hero-right">
-        <!-- Duo mascot (Robot + Book) inside gradient bubble -->
-        <div class="mascot-bubble">
-          <!-- Book SVG -->
-          <svg class="mascot book" viewBox="0 0 120 120" width="160" height="160" aria-hidden="true">
-            <rect x="6" y="16" width="72" height="86" rx="8" fill="#1e88e5"></rect>
-            <rect x="18" y="28" width="72" height="86" rx="8" fill="#2196f3" opacity="0.95"></rect>
-            <circle cx="64" cy="44" r="6" fill="#fff"></circle>
-            <path d="M24 60c16 8 36 8 52 0" stroke="#fff" stroke-width="2" fill="none"/>
-          </svg>
+            <h1>Welcome to <span style="color:#0077ff;">Endue Learning</span></h1>
+            <p>Your one-stop destination for learning, games, quizzes, worksheets, simulations & more.</p>
 
-          <!-- Robot SVG (small) -->
-          <svg class="mascot robot" viewBox="0 0 120 120" width="100" height="100" aria-hidden="true">
-            <rect x="14" y="26" width="92" height="68" rx="10" fill="#ffd54f"></rect>
-            <rect x="32" y="36" width="56" height="44" rx="6" fill="#fff"></rect>
-            <circle cx="50" cy="56" r="6" fill="#4caf50"></circle>
-            <circle cx="74" cy="56" r="6" fill="#4caf50"></circle>
-            <rect x="46" y="72" width="28" height="6" rx="3" fill="#9e9e9e"></rect>
-          </svg>
-        </div>
+            <div class="card">
+                <h2>What’s New?</h2>
+                <ul class="small">
+                    <li>New **Quiz Sets** across subjects</li>
+                    <li>Daily **Fun Fact** & Highlights</li>
+                    <li>Improved **Ray Diagram Simulation**</li>
+                    <li>Better Navigation & UI Fixes</li>
+                </ul>
+            </div>
 
-        <div class="hero-illustrations">
-          <!-- playful floating shapes -->
-          <div class="float-shape s1"></div>
-          <div class="float-shape s2"></div>
-          <div class="float-shape s3"></div>
-        </div>
-      </div>
-    </div>
-  </section>
+            <div class="grid">
+                <a class="card link-card" href="/worksheets.html">
+                    <h3>Worksheets</h3>
+                    <p>Practice worksheets for all subjects.</p>
+                </a>
 
-  <!-- MAIN CONTENT -->
-  <main class="container home-container">
-    <!-- LEFT -->
-    <section class="home-left">
-      <div class="card">
-        <h2>Explore — Learn — Practice</h2>
-        <p class="small">Choose your path: interactive simulations, topic quizzes, printable worksheets, and friendly games.</p>
-      </div>
+                <a class="card link-card" href="/games/index.html">
+                    <h3>Games</h3>
+                    <p>Play, Learn & Charity games.</p>
+                </a>
 
-      <div class="grid two-col">
-        <!-- Worksheets (pencil mascot) -->
-        <a class="card link-card" href="/worksheets.html">
-          <div class="card-icon pencil">
-            <!-- pencil SVG -->
-            <svg viewBox="0 0 100 100" width="48" height="48"><path d="M10 80 L32 88 88 32 68 12 12 68 Z" fill="#ffb84d"/></svg>
-          </div>
-          <h3>Worksheets</h3>
-          <p class="small">Download and print practice sheets for every subject and grade.</p>
-        </a>
+                <a class="card link-card" href="/simulations/index.html">
+                    <h3>Simulations</h3>
+                    <p>Interactive Science Visualizations.</p>
+                </a>
 
-        <!-- Games (robot mascot accent) -->
-        <a class="card link-card" href="/games.html">
-          <div class="card-icon robot-small">
-            <svg viewBox="0 0 100 100" width="48" height="48"><rect x="18" y="22" width="64" height="56" rx="8" fill="#8ad4ff"/></svg>
-          </div>
-          <h3>Games</h3>
-          <p class="small">Play fun educational games — Learn + Charity, Platformers & Quizzes.</p>
-        </a>
+                <a class="card link-card" href="/games/quizsets.html">
+                    <h3>Quiz Sets</h3>
+                    <p>MCQs from all subjects.</p>
+                </a>
+            </div>
 
-        <!-- Simulations (space theme) -->
-        <a class="card link-card" href="/simulations/index.html">
-          <div class="card-icon space"><svg viewBox="0 0 100 100" width="48" height="48"><circle cx="50" cy="40" r="14" fill="#6a1b9a"/></svg></div>
-          <h3>Simulations</h3>
-          <p class="small">Visualize science — ray diagrams, optics, motion and more.</p>
-        </a>
+        </section>
 
-        <!-- Quiz Sets -->
-        <a class="card link-card" href="/games/quizsets.html">
-          <div class="card-icon book-small"><svg viewBox="0 0 100 100" width="48" height="48"><rect x="12" y="18" width="60" height="66" rx="6" fill="#4fc3f7"/></svg></div>
-          <h3>Quiz Sets</h3>
-          <p class="small">Subject-wise practice — 10-question sets with instant feedback.</p>
-        </a>
-      </div>
+        <!-- ===== RIGHT SECTION ===== -->
+        <aside class="home-right">
 
-      <div class="card">
-        <h3>Teacher / Parent Resources</h3>
-        <p class="small">Get printable lesson plans, answer keys, and classroom activities.</p>
-      </div>
-    </section>
+            <!-- Fun Fact -->
+            <div class="card">
+                <h3>Fun Fact of the Day</h3>
+                <div id="home-fun-fact">
+                    Loading fun fact...
+                </div>
+            </div>
 
-    <!-- RIGHT (Fun Fact, Highlights, Competitions) -->
-    <aside class="home-right">
-      <div class="card fun-fact-card">
-        <div class="ff-head">
-          <svg class="icon book-sm" viewBox="0 0 64 64" width="28" height="28"><rect x="4" y="10" width="30" height="44" rx="4" fill="#1e88e5"/></svg>
-          <h4>Fun Fact of the Day</h4>
-        </div>
-        <div id="home-fun-fact" class="fun-fact-body small">Loading fun fact...</div>
-      </div>
+            <!-- Quiz Highlights -->
+            <div class="card">
+                <h3>Quiz Highlights</h3>
+                <ul id="quiz-highlights-list" class="small"></ul>
+            </div>
 
-      <div class="card">
-        <h4>Quiz Highlights</h4>
-        <ul id="quiz-highlights-list" class="small"></ul>
-      </div>
+            <!-- Top Competitions -->
+            <div class="card">
+                <h3>Top Competitions</h3>
+                <ol class="small">
+                    <li>Google Science Fair</li>
+                    <li>International Math Olympiad</li>
+                    <li>SPELL Bee – National</li>
+                    <li>NASA Student Robotics</li>
+                    <li>World Coding Championship</li>
+                </ol>
+            </div>
 
-      <div class="card">
-        <h4>Top Competitions</h4>
-        <ol class="small">
-          <li>National Science Olympiad</li>
-          <li>International Math Olympiad (IMO)</li>
-          <li>National Spell Bee</li>
-          <li>Google Science Fair</li>
-          <li>Hour of Code Challenges</li>
-        </ol>
-      </div>
-    </aside>
-  </main>
+        </aside>
 
-  <!-- footer loads here -->
-  <div id="footer"></div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer"></div>
 
 </body>
 </html>
