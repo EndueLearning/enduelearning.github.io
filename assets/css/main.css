@@ -83,28 +83,3 @@ button{font-family:inherit}
     }
 }
 
-/* subtle button styles used on homepage */
-.btn-primary { 
-    background:#0b74ff; 
-    color:#fff; 
-    padding:10px 14px; 
-    border-radius:8px; 
-    display:inline-block; 
-    text-decoration:none; 
-}
-.btn-outline { 
-    border:2px solid rgba(255,255,255,0.9); 
-    color:white; 
-    padding:8px 12px; 
-    border-radius:8px; 
-    background:transparent; 
-}
-.btn { 
-    background:#e6eefc; 
-    padding:8px 12px; 
-    border-radius:8px; 
-    border:none; 
-    cursor:pointer; 
-}
-
-
