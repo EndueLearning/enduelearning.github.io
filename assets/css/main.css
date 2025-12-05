@@ -79,7 +79,7 @@ button{font-family:inherit}
     }
 
     .home-right {
-        order: -1; /* Move fun facts above main content */
+        order: 2; /* Move fun facts above main content */
     }
 }
 
