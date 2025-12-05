@@ -1,54 +1,24 @@
 [
   {
-    "question": "The focal length of a concave mirror is:",
-    "options": ["Positive", "Negative", "Zero", "Depends on curvature"],
-    "answer": "Negative",
-    "explanation": "Your explanation comes here."
+    "question": "A concave mirror has a focal length of 10 cm. Where is the image formed when the object is at infinity?",
+    "options": [
+      "At the pole",
+      "At the centre of curvature",
+      "At focus",
+      "Behind the mirror"
+    ],
+    "answer": 2,
+    "explanation": "For a concave mirror, a distant object forms an image at the focus."
   },
   {
-    "q": "If an object is placed at the center of curvature of a concave mirror, the image formed is:",
-    "options": ["Virtual & erect", "Real, inverted & same size", "Real & magnified", "Real & diminished"],
-    "answer": "Real, inverted & same size",
-    "explanation": "Your explanation comes here."
-  },
-  {
-    "q": "Principal axis of a mirror is:",
-    "options": ["Line passing through pole only", "Line joining pole & center of curvature", "Any horizontal line", "Line joining focus & image"],
-    "answer": "Line joining pole & center of curvature"
-  },
-  {
-    "q": "The point where parallel rays meet after reflection from a concave mirror is:",
-    "options": ["Center of curvature", "Aperture", "Focus", "Pole"],
-    "answer": "Focus"
-  },
-  {
-    "q": "A concave mirror always forms a virtual image when the object is placed:",
-    "options": ["Beyond C", "Between F and P", "At C", "At infinity"],
-    "answer": "Between F and P"
-  },
-  {
-    "q": "The mirror formula is:",
-    "options": ["1/v + 1/f = 1/u", "1/f = 1/u + 1/v", "v = u + f", "f = uv/(u+v)"],
-    "answer": "1/f = 1/v + 1/u"
-  },
-  {
-    "q": "Real images are always:",
-    "options": ["Upright", "Inverted", "Magnified", "Non-existent"],
-    "answer": "Inverted"
-  },
-  {
-    "q": "If object distance is 'u', image distance is 'v', and focal length is 'f', sign convention used is:",
-    "options": ["Right-hand rule", "Cartesian sign convention", "Lens maker rule", "Mirror effect rule"],
-    "answer": "Cartesian sign convention"
-  },
-  {
-    "q": "Concave mirrors are used in:",
-    "options": ["Rear-view mirrors", "Shaving mirrors", "Street lights", "Security mirrors"],
-    "answer": "Shaving mirrors"
-  },
-  {
-    "q": "Magnification is equal to:",
-    "options": ["v/u", "u/v", "f/u", "u/f"],
-    "answer": "v/u"
+    "question": "When the object is placed at the centre of curvature (C) of a concave mirror, the image is formed:",
+    "options": [
+      "Between F and C",
+      "At C",
+      "Beyond C",
+      "At the pole"
+    ],
+    "answer": 1,
+    "explanation": "Object at C produces a real, inverted image exactly at C."
   }
 ]
