@@ -1,8 +1,9 @@
 [
   {
-    "q": "The focal length of a concave mirror is:",
+    "question": "The focal length of a concave mirror is:",
     "options": ["Positive", "Negative", "Zero", "Depends on curvature"],
     "answer": "Negative"
+    "explanation": "Your explanation comes here."
   },
   {
     "q": "If an object is placed at the center of curvature of a concave mirror, the image formed is:",
