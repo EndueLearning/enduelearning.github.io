@@ -1,67 +1,81 @@
-// QUIZ ENGINE (universal for all topics)
-// Reads JSON file automatically based on page URL
-
-document.addEventListener("DOMContentLoaded", loadQuiz);
-
-async function loadQuiz() {
+document.addEventListener("DOMContentLoaded", () => {
     const quizBox = document.getElementById("quiz-box");
-    if (!quizBox) return;
+    const questionBox = document.getElementById("question");
+    const optionsBox = document.getElementById("options");
+    const nextBtn = document.getElementById("next-btn");
+    const progressText = document.getElementById("progress");
+    const explanation = document.getElementById("explanation");
 
-    const path = window.location.pathname.replace(".html", ".json").replace("/games/quizsets/", "/assets/data/quiz/");
-    
-    try {
-        const res = await fetch(path);
-        const questions = await res.json();
-        runQuiz(quizBox, questions);
-    } catch (e) {
-        quizBox.innerHTML = "<p>Error loading quiz.</p>";
-    }
-}
-
-function runQuiz(container, questions) {
+    let quizData = [];
     let index = 0;
-    let score = 0;
+    let selected = false;
 
-    showQuestion();
+    async function loadQuiz() {
+        try {
+            const page = window.location.pathname.split("/").pop().replace(".html", "");
+            const subject = window.location.pathname.split("/")[3];
+            const jsonPath = `/assets/data/quiz/science/physics/${page}.json`;
+
+            const res = await fetch(jsonPath);
+            quizData = await res.json();
+            showQuestion();
+        } catch (e) {
+            questionBox.innerText = "Error loading quiz!";
+            console.error(e);
+        }
+    }
 
     function showQuestion() {
-        const q = questions[index];
+        selected = false;
+        const q = quizData[index];
 
-        container.innerHTML = `
-            <h3>Question ${index + 1} of ${questions.length}</h3>
-            <p>${q.q}</p>
+        questionBox.innerHTML = q.question;
+        optionsBox.innerHTML = "";
+        explanation.style.display = "none";
+        explanation.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
 
-            ${q.options.map(opt =>
-                `<button class="quiz-option">${opt}</button>`
-            ).join("")}
-        `;
+        progressText.innerHTML = `Question ${index + 1} of ${quizData.length}`;
 
-        document.querySelectorAll(".quiz-option").forEach(btn => {
-            btn.onclick = () => {
-                if (btn.textContent === q.answer) score++;
+        q.options.forEach((opt, i) => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt;
 
-                index++;
-
-                if (index < questions.length) showQuestion();
-                else showResults();
-            };
+            btn.addEventListener("click", () => selectOption(btn, i, q.answer));
+            optionsBox.appendChild(btn);
         });
+
+        nextBtn.style.display = "none";
     }
 
-    function showResults() {
-        container.innerHTML = `
-            <h3>Your Score: ${score} / ${questions.length}</h3>
-            <p>${score === 10 ? "Excellent! ⭐" :
-               score >= 7 ? "Great Job! 🎉" :
-               score >= 5 ? "Good Try!" : "Keep Practicing!"}</p>
+    function selectOption(btn, userIndex, correctIndex) {
+        if (selected) return;
+        selected = true;
 
-            <button id="retryQuiz" class="btn">Try Again</button>
-        `;
+        const optionButtons = document.querySelectorAll(".option-btn");
 
-        document.getElementById("retryQuiz").onclick = () => {
-            index = 0;
-            score = 0;
+        optionButtons.forEach((b, i) => {
+            if (i === correctIndex) b.classList.add("option-correct");
+            if (i === userIndex && userIndex !== correctIndex)
+                b.classList.add("option-wrong");
+            b.style.pointerEvents = "none";
+        });
+
+        explanation.style.display = "block";
+        nextBtn.style.display = "block";
+    }
+
+    nextBtn.addEventListener("click", () => {
+        index++;
+        if (index < quizData.length) {
             showQuestion();
-        };
-    }
-}
+        } else {
+            quizBox.innerHTML = `
+                <h2>🎉 Quiz Completed!</h2>
+                <p>You have successfully finished the quiz.</p>
+            `;
+        }
+    });
+
+    loadQuiz();
+});
