@@ -1,6 +1,6 @@
-// =========================
-// QUIZ ENGINE – FULL FILE
-// =========================
+/* ==================================================
+   QUIZ ENGINE - FINAL VERSION (FULL WORKING FILE)
+   ================================================== */
 
 let quizData = [];
 let currentIndex = 0;
@@ -10,74 +10,78 @@ const startBtn = document.getElementById("startQuizBtn");
 const quizBox = document.getElementById("quizBox");
 const questionText = document.getElementById("questionText");
 const optionsBox = document.getElementById("optionsBox");
+const nextBtn = document.getElementById("nextBtn");
 const resultBox = document.getElementById("resultBox");
 
-// -----------------------------
-// 1. Load quiz based on page URL
-// -----------------------------
-function loadQuiz() {
-  const pathParts = window.location.pathname.split("/");
-  const fileName = pathParts[pathParts.length - 1]; // light_concave-mirror.html
-  const jsonName = fileName.replace(".html", ".json");
 
-  const subject = pathParts[pathParts.length - 3];   // science
-  const topic = pathParts[pathParts.length - 2];     // physics
+/* --------------------------------------------------
+   1. AUTO-LOAD QUIZ JSON BASED ON URL
+----------------------------------------------------- */
+function loadQuiz() {
+
+  const path = window.location.pathname.split("/");
+  const filename = path[path.length - 1]; // example: light_concave-mirror.html
+  const jsonName = filename.replace(".html", ".json");
+
+  const subject = path[path.length - 3]; // science
+  const topic = path[path.length - 2];   // physics
 
   const jsonPath = `/assets/data/quiz/${subject}/${topic}/${jsonName}`;
 
   fetch(jsonPath)
-    .then(r => r.json())
+    .then(res => res.json())
     .then(data => {
       quizData = data;
       startBtn.disabled = false;
     })
     .catch(err => {
-      console.error("Quiz load error:", err);
+      console.error("Quiz Load Error:", err);
       startBtn.innerText = "Error Loading Quiz ❌";
     });
 }
 
-// -----------------------------
-// 2. Start quiz
-// -----------------------------
+
+/* --------------------------------------------------
+   2. START QUIZ
+----------------------------------------------------- */
 startBtn.addEventListener("click", () => {
   startBtn.style.display = "none";
   quizBox.style.display = "block";
+  currentIndex = 0;
+  correctCount = 0;
   showQuestion();
 });
 
-// -----------------------------
-// 3. Display question
-// -----------------------------
+
+/* --------------------------------------------------
+   3. SHOW QUESTION + OPTIONS
+----------------------------------------------------- */
 function showQuestion() {
   const q = quizData[currentIndex];
 
-  // Safety check in case JSON missing fields
-  if (!q || !q.question) {
-    questionText.innerHTML = "⚠ Error: Invalid question format!";
-    return;
-  }
-
   questionText.innerHTML = q.question;
 
+  // clear previous options
   optionsBox.innerHTML = "";
-  q.options.forEach((opt, i) => {
+  nextBtn.style.display = "none";
+
+  q.options.forEach((opt, index) => {
     const btn = document.createElement("button");
     btn.className = "option-btn";
     btn.innerText = opt;
 
-    btn.onclick = () => checkAnswer(i);
+    btn.onclick = () => checkAnswer(index);
 
     optionsBox.appendChild(btn);
   });
 }
 
-// -----------------------------
-// 4. Check answer
-// -----------------------------
+
+/* --------------------------------------------------
+   4. CHECK ANSWER
+----------------------------------------------------- */
 function checkAnswer(selectedIndex) {
   const q = quizData[currentIndex];
-
   const buttons = document.querySelectorAll(".option-btn");
 
   buttons.forEach((btn, index) => {
@@ -90,76 +94,69 @@ function checkAnswer(selectedIndex) {
     }
   });
 
-  // Explanation box
+  // show explanation
   const exp = document.createElement("div");
   exp.className = "explanation-box";
-  exp.innerHTML = `
-    <strong>Explanation:</strong> ${q.explanation}
-  `;
+  exp.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
   quizBox.appendChild(exp);
 
   if (selectedIndex === q.answer) {
     correctCount++;
   }
 
-  setTimeout(() => {
-    exp.remove();
-    nextQuestion();
-  }, 1500);
+  nextBtn.style.display = "block";
 }
 
-// -----------------------------
-// 5. Load next or finish
-// -----------------------------
-function nextQuestion() {
+
+/* --------------------------------------------------
+   5. NEXT QUESTION
+----------------------------------------------------- */
+nextBtn.addEventListener("click", () => {
   currentIndex++;
 
+  // finish quiz
   if (currentIndex >= quizData.length) {
     finishQuiz();
     return;
   }
 
-  showQuestion();
-}
+  // remove explanation box
+  const expBox = document.querySelector(".explanation-box");
+  if (expBox) expBox.remove();
 
-// -----------------------------
-// 6. Finish Quiz + Show Score
-// -----------------------------
+  showQuestion();
+});
+
+
+/* --------------------------------------------------
+   6. FINISH QUIZ + SHOW SCORE
+----------------------------------------------------- */
 function finishQuiz() {
   quizBox.style.display = "none";
 
-  let score = correctCount;
-  let total = quizData.length;
-  let percent = Math.round((score / total) * 100);
+  const total = quizData.length;
+  const score = correctCount;
+  const percent = Math.round((score / total) * 100);
 
   let remark = "";
-
   if (percent === 100) remark = "🌟 Excellent — Perfect Score!";
   else if (percent >= 80) remark = "💚 Great Job — Keep it up!";
   else if (percent >= 50) remark = "🟡 Good — A little more practice!";
-  else remark = "🔴 Needs Practice — You can do it!";
+  else remark = "🔴 Needs Practice — Keep Learning!";
 
+  resultBox.style.display = "block";
   resultBox.innerHTML = `
     <h2>Your Score</h2>
     <p class="score-number">${score} / ${total}</p>
     <p class="remark">${remark}</p>
 
-    <button id="retryQuiz" class="quiz-btn">🔁 Retry</button>
-    <button id="goBack" class="quiz-btn secondary">⬅ Back</button>
+    <button class="quiz-btn" onclick="location.reload()">🔁 Retry</button>
+    <button class="quiz-btn secondary" onclick="window.location.href='/games/quizsets/'">⬅ Back</button>
   `;
-
-  resultBox.style.display = "block";
-
-  document.getElementById("retryQuiz").onclick = () => {
-    location.reload();
-  };
-
-  document.getElementById("goBack").onclick = () => {
-    window.location.href = "/games/quizsets/";
-  };
 }
 
-// -----------------------------
-// INIT
-// -----------------------------
+
+/* --------------------------------------------------
+   INITIAL CALL
+----------------------------------------------------- */
 loadQuiz();
