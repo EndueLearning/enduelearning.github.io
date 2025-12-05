@@ -1,88 +1,110 @@
+/* ==========================================
+   FINAL STABLE QUIZ ENGINE FOR ENDUE LEARNING
+   ========================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
 
-    const questionBox = document.getElementById("question");
-    const optionsBox = document.getElementById("options");
-    const progressText = document.getElementById("progress");
-    const explanation = document.getElementById("explanation");
-    const nextBtn = document.getElementById("next-btn");
+  // ---- DOM HOOKS ----
+  const qBox     = document.getElementById("question");
+  const optBox   = document.getElementById("options");
+  const nextBtn  = document.getElementById("next-btn");
+  const progress = document.getElementById("progress");
+  const explain  = document.getElementById("explanation");
 
-    let quiz = [];
-    let index = 0;
-    let locked = false;
+  let quiz = [];
+  let index = 0;
+  let score = 0;
+  let lock = false;
 
-    async function loadQuiz() {
-        try {
-            const page = window.location.pathname.split("/").pop().replace(".html", "");
-            const jsonPath = `/assets/data/quiz/science/physics/${page}.json`;
+  // ---- JSON PATH BUILDER ----
+  function quizJSONPath() {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    const file = parts.pop().replace(".html", ".json");
+    const topic = parts.pop();
+    const subject = parts.pop();
+    return `/assets/data/quiz/${subject}/${topic}/${file}`;
+  }
 
-            console.log("Loading:", jsonPath);
+  // ---- LOAD JSON ----
+  fetch(quizJSONPath())
+    .then(r => r.json())
+    .then(data => {
+      quiz = data;
+      progress.innerText = "Click a choice to begin!";
+      renderQuestion();
+    })
+    .catch(() => {
+      progress.innerText = "Quiz cannot be loaded.";
+    });
 
-            const res = await fetch(jsonPath);
+  // ---- RENDER QUESTION ----
+  function renderQuestion() {
+    const q = quiz[index];
+    progress.innerText = `Question ${index+1} of ${quiz.length}`;
+    qBox.innerText = q.question;
+    explain.innerHTML = "";
+    nextBtn.style.display = "none";
+    lock = false;
 
-            if (!res.ok) {
-                progressText.innerHTML = "❌ Quiz file not found.";
-                return;
-            }
+    optBox.innerHTML = "";
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.className = "option";
+      btn.innerText = opt;
+      btn.onclick = () => checkAnswer(i);
+      optBox.appendChild(btn);
+    });
+  }
 
-            quiz = await res.json();
-            showQuestion();
+  // ---- CHECK ANSWER ----
+  function checkAnswer(clicked) {
+    if (lock) return;
+    lock = true;
 
-        } catch (err) {
-            progressText.innerHTML = "⚠ Error loading quiz.";
-            console.error(err);
-        }
-    }
+    const q = quiz[index];
+    const correct = q.answer;
 
-    function showQuestion() {
-        locked = false;
-        const q = quiz[index];
+    const buttons = document.querySelectorAll(".option");
+    buttons.forEach((b, i) => {
+      b.disabled = true;
+      if (i === correct) b.classList.add("correct");
+      if (i === clicked && clicked !== correct) b.classList.add("wrong");
+    });
 
-        progressText.innerText = `Question ${index + 1} of ${quiz.length}`;
-        questionBox.innerHTML = q.question;
-        optionsBox.innerHTML = "";
-        explanation.style.display = "none";
-        explanation.innerHTML = `<b>Explanation:</b> ${q.explanation}`;
+    if (clicked === correct) score++;
 
-        q.options.forEach((opt, i) => {
-            const btn = document.createElement("button");
-            btn.className = "option-btn";
-            btn.innerText = opt;
+    explain.innerHTML = `
+      <div class="explain-box"><strong>Explanation:</strong><br>${q.explanation}</div>
+    `;
 
-            btn.onclick = () => checkAnswer(i, q.answer, btn);
-            optionsBox.appendChild(btn);
-        });
+    nextBtn.style.display = "block";
+  }
 
-        nextBtn.style.display = "none";
-    }
+  // ---- NEXT / FINISH ----
+  nextBtn.addEventListener("click", () => {
+    index++;
+    if (index >= quiz.length) return showResults();
+    renderQuestion();
+  });
 
-    function checkAnswer(selectedIndex, correctIndex, btn) {
-        if (locked) return;
-        locked = true;
+  // ---- FINAL SCORE ----
+  function showResults() {
+    let remark = "";
+    const percent = (score / quiz.length) * 100;
 
-        const optionButtons = document.querySelectorAll(".option-btn");
+    if (percent === 100) remark = "🌟 Excellent!";
+    else if (percent >= 80) remark = "💚 Great job!";
+    else if (percent >= 50) remark = "🟡 Needs more practice.";
+    else remark = "🔴 Keep learning — try again!";
 
-        optionButtons.forEach((b, i) => {
-            b.disabled = true;
-            if (i === correctIndex) b.classList.add("correct");
-            if (i === selectedIndex && selectedIndex !== correctIndex) {
-                b.classList.add("wrong");
-            }
-        });
+    document.getElementById("quiz-box").innerHTML = `
+      <h2>Quiz Completed!</h2>
+      <p class="final-score">Your Score: ${score} / ${quiz.length}</p>
+      <p class="remark">${remark}</p>
 
-        explanation.style.display = "block";
-        nextBtn.style.display = "block";
-    }
+      <button onclick="location.reload()" class="option">🔁 Retry</button>
+      <a href="/games/quizsets/" class="option">⬅ Back</a>
+    `;
+  }
 
-    nextBtn.onclick = () => {
-        index++;
-        if (index < quiz.length) showQuestion();
-        else {
-            document.getElementById("quiz-box").innerHTML = `
-                <h2>🎉 Quiz Completed!</h2>
-                <p>Check out more quizzes in the Quiz Sets section.</p>
-            `;
-        }
-    };
-
-    loadQuiz();
 });
