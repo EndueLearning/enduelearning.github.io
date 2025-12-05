@@ -6,38 +6,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Concave Mirror MCQ Quiz</title>
 
-  <!-- Header + Global Styles -->
+  <!-- Global Styles -->
   <link rel="stylesheet" href="/assets/css/header.css">
   <link rel="stylesheet" href="/assets/css/style.css">
-  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/main.css">    
   <link rel="stylesheet" href="/assets/css/quiz.css">
 
+  <!-- JS -->
   <script src="/assets/js/header.js" defer></script>
   <script src="/assets/js/footer.js" defer></script>
   <script src="/assets/js/main.js" defer></script>
   <script src="/assets/js/quizsets.js" defer></script>
 
+  <style>
+      /* FIX: Limit width of quiz box */
+      #quiz-page {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+      }
+  </style>
 </head>
+
 <body>
 
-<!-- 🔥 REQUIRED FOR HEADER -->
 <div id="header"></div>
 
 <main id="quiz-page">
 
-  <h1 class="page-title">Concave Mirror Quiz</h1>
+    <h1 class="page-title">Concave Mirror Quiz</h1>
 
-  <button id="startQuizBtn" disabled>Loading Quiz...</button>
+    <button id="startQuizBtn" disabled>Loading Quiz...</button>
 
-  <div id="quizBox">
-      <h2 id="questionText"></h2>
-      <div id="optionsBox"></div>
-      <div id="resultBox"></div>
-  </div>
+    <div id="quizBox">
+        <h2 id="questionText"></h2>
+        <div id="optionsBox"></div>
+
+        <!-- NEXT BUTTON -->
+        <button id="nextBtn" style="display:none;" class="quiz-btn">Next Question</button>
+
+        <!-- Final Result Box -->
+        <div id="resultBox"></div>
+    </div>
 
 </main>
 
-<!-- 🔥 REQUIRED FOR FOOTER -->
 <div id="footer"></div>
 
 </body>
