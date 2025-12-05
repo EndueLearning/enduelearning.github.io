@@ -1,96 +1,88 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const quizBox = document.getElementById("quiz-box");
+
     const questionBox = document.getElementById("question");
     const optionsBox = document.getElementById("options");
-    const nextBtn = document.getElementById("next-btn");
     const progressText = document.getElementById("progress");
     const explanation = document.getElementById("explanation");
+    const nextBtn = document.getElementById("next-btn");
 
-    let quizData = [];
+    let quiz = [];
     let index = 0;
-    let selected = false;
+    let locked = false;
 
     async function loadQuiz() {
         try {
-            // Detect the quiz HTML page name
-            const pageFile = window.location.pathname.split("/").pop();
-            const pageName = pageFile.replace(".html", "");
+            const page = window.location.pathname.split("/").pop().replace(".html", "");
+            const jsonPath = `/assets/data/quiz/science/physics/${page}.json`;
 
-            // Build the JSON path EXACTLY matching your folder structure
-            const jsonPath =
-                `/assets/data/quiz/science/physics/${pageName}.json`;
-
-            console.log("Loading quiz JSON:", jsonPath);
+            console.log("Loading:", jsonPath);
 
             const res = await fetch(jsonPath);
 
             if (!res.ok) {
-                questionBox.innerHTML = `❌ Quiz file not found:<br>${jsonPath}`;
+                progressText.innerHTML = "❌ Quiz file not found.";
                 return;
             }
 
-            quizData = await res.json();
+            quiz = await res.json();
             showQuestion();
-        } catch (error) {
-            questionBox.innerHTML = "⚠ Error loading quiz.";
-            console.error(error);
+
+        } catch (err) {
+            progressText.innerHTML = "⚠ Error loading quiz.";
+            console.error(err);
         }
     }
 
     function showQuestion() {
-        selected = false;
+        locked = false;
+        const q = quiz[index];
 
-        const q = quizData[index];
-
+        progressText.innerText = `Question ${index + 1} of ${quiz.length}`;
         questionBox.innerHTML = q.question;
         optionsBox.innerHTML = "";
         explanation.style.display = "none";
-        explanation.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
-
-        progressText.innerHTML = `Question ${index + 1} of ${quizData.length}`;
+        explanation.innerHTML = `<b>Explanation:</b> ${q.explanation}`;
 
         q.options.forEach((opt, i) => {
             const btn = document.createElement("button");
             btn.className = "option-btn";
             btn.innerText = opt;
 
-            btn.addEventListener("click", () => selectOption(btn, i, q.answer));
-
+            btn.onclick = () => checkAnswer(i, q.answer, btn);
             optionsBox.appendChild(btn);
         });
 
         nextBtn.style.display = "none";
     }
 
-    function selectOption(btn, userIndex, correctIndex) {
-        if (selected) return;
-        selected = true;
+    function checkAnswer(selectedIndex, correctIndex, btn) {
+        if (locked) return;
+        locked = true;
 
         const optionButtons = document.querySelectorAll(".option-btn");
 
         optionButtons.forEach((b, i) => {
-            if (i === correctIndex) b.classList.add("option-correct");
-            if (i === userIndex && userIndex !== correctIndex)
-                b.classList.add("option-wrong");
-
-            b.style.pointerEvents = "none";
+            b.disabled = true;
+            if (i === correctIndex) b.classList.add("correct");
+            if (i === selectedIndex && selectedIndex !== correctIndex) {
+                b.classList.add("wrong");
+            }
         });
 
         explanation.style.display = "block";
         nextBtn.style.display = "block";
     }
 
-    nextBtn.addEventListener("click", () => {
+    nextBtn.onclick = () => {
         index++;
-        if (index < quizData.length) {
-            showQuestion();
-        } else {
-            quizBox.innerHTML = `
+        if (index < quiz.length) showQuestion();
+        else {
+            document.getElementById("quiz-box").innerHTML = `
                 <h2>🎉 Quiz Completed!</h2>
-                <p>Great job! You finished this quiz.</p>
+                <p>Check out more quizzes in the Quiz Sets section.</p>
             `;
         }
-    });
+    };
 
     loadQuiz();
 });
