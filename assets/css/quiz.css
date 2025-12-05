@@ -1,61 +1,42 @@
 #quiz-box {
-  width: 90%;
-  max-width: 700px;
+  max-width: 650px;
   margin: auto;
-  background: white;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
-#question {
-  font-size: 1.25rem;
-  margin-bottom: 15px;
-}
-
-.option-btn {
+.option {
+  display: block;
   width: 100%;
   text-align: left;
-  padding: 12px;
   margin: 8px 0;
-  background: #f5f5f5;
-  border: 1px solid #bbb;
+  padding: 12px;
+  background: #eef3ff;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  font-size: 1rem;
   cursor: pointer;
 }
 
-.option-btn:hover {
-  background: #eee;
-}
+.option:hover { background: #dfe7ff; }
 
-.correct {
-  background: #b2ffb2 !important;
-  border-color: green !important;
-}
+.correct { background:#c7ffc7 !important; border-color:#00aa00; }
+.wrong   { background:#ffd4d4 !important; border-color:#ff0000; }
 
-.wrong {
-  background: #ffb2b2 !important;
-  border-color: red !important;
-}
-
-#explanation {
-  margin-top: 10px;
-  padding: 10px;
-  background: #e8f1ff;
-  border-left: 4px solid #2471ff;
-  border-radius: 6px;
-  display: none;
-}
-
-.next-btn {
-  margin-top: 15px;
+#next-btn {
   padding: 10px 20px;
-  font-size: 1.1rem;
-  background: #2471ff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  display: none;
-  cursor: pointer;
+  margin-top: 15px;
+  display:none;
 }
+
+.explain-box {
+  background:#f3f3f3;
+  padding:12px;
+  border-radius:8px;
+  margin-top:15px;
+}
+
+.final-score {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.remark { font-size:20px; margin-bottom:15px; }
