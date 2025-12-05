@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Concave Mirror MCQ Quiz</title>
@@ -13,20 +14,21 @@
   <link rel="stylesheet" href="/assets/css/main.css">
   
   <script src="/assets/js/quiz-engine.js" defer></script>
+
+<link rel="stylesheet" href="/assets/css/quiz.css">
+
 </head>
-
 <body>
-  <div id="header"></div>
 
-  <main class="container">
-    <h2>Concave Mirror — MCQ Quiz</h2>
-    <p class="small">Answer all 10 questions and check your score.</p>
+<div id="quiz-box">
+  <h2 id="progress">Loading quiz...</h2>
+  <div id="question"></div>
+  <div id="options"></div>
+  <div id="explanation"></div>
+  <button id="next-btn" class="next-btn">Next</button>
+</div>
 
-    <div id="quiz-box" class="card">
-      Loading quiz...
-    </div>
-  </main>
-
-  <div id="footer"></div>
+<!-- FIXED: Script paths -->
+<script src="/assets/js/quiz-engine.js"></script>
 </body>
 </html>
