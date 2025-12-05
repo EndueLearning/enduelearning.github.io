@@ -2,34 +2,43 @@
 <html lang="en">
 <head>
 
-  <meta charset='UTF-8'>
-  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Concave Mirror MCQ Quiz</title>
 
-  <link rel='stylesheet' href='assets/css/header.css'>
-  <link rel='stylesheet' href='assets/css/style.css'>
-  <script src='assets/js/header.js' defer></script>
-  <script src='assets/js/footer.js' defer></script>
-  <script src='assets/js/main.js' defer></script>
-  
-  <link rel="stylesheet" href="assets/css/main.css">
-  
-  <script src="/assets/js/quiz-engine.js" defer></script>
+  <!-- Header + Global Styles -->
+  <link rel="stylesheet" href="/assets/css/header.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/quiz.css">
 
-<link rel="stylesheet" href="/assets/css/quiz.css">
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+  <script src="/assets/js/quizsets.js" defer></script>
 
 </head>
 <body>
 
-<div id="quiz-box">
-  <h2 id="progress">Loading quiz...</h2>
-  <div id="question"></div>
-  <div id="options"></div>
-  <div id="explanation"></div>
-  <button id="next-btn" class="next-btn">Next</button>
-</div>
+<!-- 🔥 REQUIRED FOR HEADER -->
+<div id="header"></div>
 
-<!-- FIXED: Script paths -->
-<script src="/assets/js/quiz-engine.js"></script>
+<main id="quiz-page">
+
+  <h1 class="page-title">Concave Mirror Quiz</h1>
+
+  <button id="startQuizBtn" disabled>Loading Quiz...</button>
+
+  <div id="quizBox">
+      <h2 id="questionText"></h2>
+      <div id="optionsBox"></div>
+      <div id="resultBox"></div>
+  </div>
+
+</main>
+
+<!-- 🔥 REQUIRED FOR FOOTER -->
+<div id="footer"></div>
+
 </body>
 </html>
