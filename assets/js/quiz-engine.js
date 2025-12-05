@@ -12,21 +12,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function loadQuiz() {
         try {
-            const page = window.location.pathname.split("/").pop().replace(".html", "");
-            const subject = window.location.pathname.split("/")[3];
-            const jsonPath = `/assets/data/quiz/science/physics/${page}.json`;
+            // Detect the quiz HTML page name
+            const pageFile = window.location.pathname.split("/").pop();
+            const pageName = pageFile.replace(".html", "");
+
+            // Build the JSON path EXACTLY matching your folder structure
+            const jsonPath =
+                `/assets/data/quiz/science/physics/${pageName}.json`;
+
+            console.log("Loading quiz JSON:", jsonPath);
 
             const res = await fetch(jsonPath);
+
+            if (!res.ok) {
+                questionBox.innerHTML = `❌ Quiz file not found:<br>${jsonPath}`;
+                return;
+            }
+
             quizData = await res.json();
             showQuestion();
-        } catch (e) {
-            questionBox.innerText = "Error loading quiz!";
-            console.error(e);
+        } catch (error) {
+            questionBox.innerHTML = "⚠ Error loading quiz.";
+            console.error(error);
         }
     }
 
     function showQuestion() {
         selected = false;
+
         const q = quizData[index];
 
         questionBox.innerHTML = q.question;
@@ -42,6 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.innerText = opt;
 
             btn.addEventListener("click", () => selectOption(btn, i, q.answer));
+
             optionsBox.appendChild(btn);
         });
 
@@ -58,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (i === correctIndex) b.classList.add("option-correct");
             if (i === userIndex && userIndex !== correctIndex)
                 b.classList.add("option-wrong");
+
             b.style.pointerEvents = "none";
         });
 
@@ -72,7 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             quizBox.innerHTML = `
                 <h2>🎉 Quiz Completed!</h2>
-                <p>You have successfully finished the quiz.</p>
+                <p>Great job! You finished this quiz.</p>
             `;
         }
     });
