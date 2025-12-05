@@ -2,13 +2,14 @@
   {
     "question": "The focal length of a concave mirror is:",
     "options": ["Positive", "Negative", "Zero", "Depends on curvature"],
-    "answer": "Negative"
+    "answer": "Negative",
     "explanation": "Your explanation comes here."
   },
   {
     "q": "If an object is placed at the center of curvature of a concave mirror, the image formed is:",
     "options": ["Virtual & erect", "Real, inverted & same size", "Real & magnified", "Real & diminished"],
-    "answer": "Real, inverted & same size"
+    "answer": "Real, inverted & same size",
+    "explanation": "Your explanation comes here."
   },
   {
     "q": "Principal axis of a mirror is:",
