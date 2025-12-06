@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="footer-col">
         <img src="/assets/images/mascot_footer.png" class="footer-mascot" alt="Mascot">
         <h3>Endue Learning</h3>
-        <p>Fun learning anywhere — worksheets, games, activities & simulations for kids.</p>
+        <p>Fun learning anywhere — Practice Sets, Games, Flash Cards & Simulations and much more.</p>
       </div>
 
       <!-- Column 2 -->
