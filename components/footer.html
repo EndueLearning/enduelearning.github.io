@@ -1,6 +1,9 @@
 <!-- components/footer.html -->
 <footer class="site-footer fade-in-footer">
 
+  <!-- Animated WAVE -->
+  <div class="footer-wave"></div>
+
   <div class="footer-container">
 
     <!-- COLUMN 1 -->
@@ -17,7 +20,7 @@
         <li><a href="/worksheets.html">Worksheets</a></li>
         <li><a href="/games.html">Games</a></li>
         <li><a href="/simulations/index.html">Simulations</a></li>
-        <li><a href="/contact.html">About / Contact</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
     </div>
 
@@ -29,197 +32,233 @@
         <button type="submit">Subscribe</button>
       </form>
 
-      <h4 style="margin-top:18px;">Contact</h4>
-      <p>Email: <a href="mailto:enduelearning@gmail.com">enduelearning@gmail.com</a></p>
-
+      <h4 style="margin-top:18px;">Follow Us</h4>
       <div class="social-icons">
-        <a href="https://www.youtube.com/@enduelearning" aria-label="YouTube">
-          <img src="/assets/icons/youtube.svg" alt="YouTube">
-        </a>
-        <a href="https://www.instagram.com/enduelearning/" aria-label="Instagram">
-          <img src="/assets/icons/instagram.svg" alt="Instagram">
-        </a>
-        <a href="#" aria-label="Twitter">
-          <img src="/assets/icons/x.svg" alt="Twitter/X">
-        </a>
+        <a href="https://www.youtube.com/@enduelearning"><img src="/assets/icons/youtube.svg"></a>
+        <a href="https://www.instagram.com/enduelearning"><img src="/assets/icons/instagram.svg"></a>
+        <a href="#"><img src="/assets/icons/x.svg"></a>
       </div>
     </div>
 
   </div>
 
+  <!-- COPYRIGHT -->
   <div class="copyright">
     © <span id="yr"></span> Endue Learning — All rights reserved.
   </div>
 
-  <!-- Floating Mascot -->
-  <img src="/assets/mascots/footer-mascot.png" class="footer-mascot" alt="Mascot">
+  <!-- Mascot -->
+  <img src="/assets/mascots/footer-mascot.png" class="footer-mascot">
 
 </footer>
 
+<!-- Dark/Light toggle -->
+<button id="themeToggle" class="theme-toggle">🌙</button>
+
 <!-- Back-to-top button -->
-<button id="backToTop" class="back-to-top">↑ Top</button>
+<button id="backToTop" class="back-to-top">↑</button>
+
 
 <style>
 
-/* =========== FADE IN ANIMATION =========== */
-.fade-in-footer {
-  opacity: 0;
-  animation: fadeInFooter 1.2s ease-in forwards;
+/* ---------------------------------------------------
+   FOOTER WAVE
+--------------------------------------------------- */
+.footer-wave {
+  width: 100%;
+  height: 60px;
+  background: url('/assets/waves/footer-wave.svg') repeat-x;
+  background-size: cover;
+  animation: waveMove 8s linear infinite;
+  margin-bottom: -5px;
 }
-@keyframes fadeInFooter {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0);   }
+@keyframes waveMove {
+  from { background-position-x: 0; }
+  to   { background-position-x: 1000px; }
 }
 
-/* =========== FOOTER BASE =========== */
+/* ---------------------------------------------------
+   FOOTER BASE
+--------------------------------------------------- */
 .site-footer {
-  background: #0a2640;
-  color: #fff;
-  padding: 35px 0 15px;
+  background: var(--footer-bg);
+  color: var(--footer-text);
+  padding: 40px 0 15px;
   position: relative;
+  font-size: 15px;
   overflow: hidden;
-  font-size: 14px;
 }
 
+/* 3 Columns — horizontal layout */
 .footer-container {
   width: 90%;
-  margin: 0 auto;
+  margin: auto;
   display: flex;
   justify-content: space-between;
   gap: 40px;
-  flex-wrap: wrap;
 }
-
 .footer-col {
-  flex: 1 1 calc(33% - 40px);
-  min-width: 240px;
+  flex: 1;
+  min-width: 280px;
 }
 
 .footer-col h4 {
   margin-bottom: 10px;
-  font-size: 16px;
-  color: #a8d3ff;
+  color: var(--footer-heading);
 }
 
 .footer-links {
   list-style: none;
   padding: 0;
 }
-.footer-links li { margin-bottom: 6px; }
 .footer-links a {
+  color: var(--footer-link);
   text-decoration: none;
-  color: #d9ecff;
 }
-.footer-links a:hover { color: #fff; }
+.footer-links a:hover { color: var(--footer-link-hover); }
 
-/* Subscribe Form */
+/* Subscribe */
 .subscribe-box input {
-  width: 65%;
   padding: 8px;
+  width: 65%;
   border-radius: 6px;
   border: none;
 }
 .subscribe-box button {
   padding: 8px 12px;
+  border-radius: 6px;
   border: none;
   background: #2b9cff;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.subscribe-box button:hover {
-  background: #1787e0;
+  color: #fff;
 }
 
-/* Social icons (SVG) */
+/* Social icons */
 .social-icons img {
   width: 26px;
-  margin-right: 10px;
-  filter: brightness(0) invert(1);
-  transition: 0.2s;
+  margin-right: 12px;
+  filter: var(--icon-filter);
+  transition: 0.3s;
 }
-.social-icons img:hover {
-  transform: scale(1.15);
-}
+.social-icons img:hover { transform: scale(1.12); }
 
 /* Mascot */
 .footer-mascot {
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
   right: 10px;
   width: 110px;
-  transform: translateY(10px);
-  animation: floatMascot 3s ease-in-out infinite alternate;
-  opacity: 0.9;
+  animation: mascotFloat 3s ease-in-out infinite alternate;
+}
+@keyframes mascotFloat {
+  from { transform: translateY(6px); }
+  to   { transform: translateY(-6px); }
 }
 
-@keyframes floatMascot {
-  from { transform: translateY(8px); }
-  to   { transform: translateY(-4px); }
-}
-
-/* ============ COPYRIGHT ============ */
+/* Copyright */
 .copyright {
   text-align: center;
-  margin-top: 25px;
-  color: #a7cbe8;
-  border-top: 1px solid #134d73;
-  padding-top: 10px;
+  margin-top: 20px;
+  color: var(--footer-copy);
 }
 
-/* ============ BACK TO TOP BTN ============ */
+/* ---------------------------------------------------
+   Back to top button
+--------------------------------------------------- */
 .back-to-top {
   position: fixed;
-  right: 18px;
   bottom: 18px;
-  padding: 12px 14px;
+  right: 18px;
+  padding: 10px 14px;
   background: #2b9cff;
-  border: none;
+  color: #fff;
   border-radius: 50%;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
+  border: none;
+  font-size: 18px;
   opacity: 0;
   pointer-events: none;
-  transition: all 0.3s ease;
-  z-index: 999;
+  transition: .3s;
 }
-
 .back-to-top.visible {
   opacity: 1;
   pointer-events: all;
 }
 
+/* ---------------------------------------------------
+   DARK/LIGHT MODE
+--------------------------------------------------- */
+
+/* Default: Light Mode */
+:root {
+  --footer-bg: #0a2640;
+  --footer-text: #ffffff;
+  --footer-link: #cfe9ff;
+  --footer-link-hover: #ffffff;
+  --footer-heading: #a8d3ff;
+  --footer-copy: #a7cbe8;
+  --icon-filter: brightness(0) invert(1);
+}
+
+/* Dark mode */
+.dark {
+  --footer-bg: #0b0b0b;
+  --footer-text: #e6e6e6;
+  --footer-link: #aee2ff;
+  --footer-link-hover: #fff;
+  --footer-heading: #7dc7ff;
+  --footer-copy: #888;
+  --icon-filter: brightness(0.8) invert(0.8);
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  position: fixed;
+  bottom: 80px;
+  right: 18px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 50%;
+  background: #ffcc00;
+  cursor: pointer;
+  z-index: 999;
+}
+
 /* Responsive */
-@media (max-width: 768px) {
-  .footer-container { flex-direction: column; }
+@media(max-width: 768px) {
+  .footer-container { flex-direction: column; text-align: center; }
+  .social-icons img { margin: 8px; }
   .footer-mascot { width: 80px; }
 }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('yr').innerText = new Date().getFullYear();
+document.addEventListener("DOMContentLoaded", () => {
+  
+  /* Year */
+  document.getElementById("yr").textContent = new Date().getFullYear();
 
-  // Subscribe action
-  const form = document.getElementById('subscribeForm');
-  form.addEventListener('submit', e => {
+  /* Subscribe */
+  const form = document.getElementById("subscribeForm");
+  form.addEventListener("submit", e => {
     e.preventDefault();
-    const em = document.getElementById('subEmail').value.trim();
-    if (!em) return alert('Please enter an email.');
-    alert('Thanks! Subscribed: ' + em);
+    const em = document.getElementById("subEmail").value;
+    if (!em) return alert("Enter email");
+    alert("Subscribed: " + em);
     form.reset();
   });
 
-  // Back to top
+  /* Back to Top */
   const topBtn = document.getElementById("backToTop");
   window.addEventListener("scroll", () => {
-    if (window.scrollY > 300) topBtn.classList.add("visible");
+    if (window.scrollY > 250) topBtn.classList.add("visible");
     else topBtn.classList.remove("visible");
   });
+  topBtn.addEventListener("click", () => window.scrollTo({top:0, behavior:"smooth"}));
 
-  topBtn.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  /* Theme Toggle */
+  const toggle = document.getElementById("themeToggle");
+  toggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+    toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
   });
 });
 </script>
