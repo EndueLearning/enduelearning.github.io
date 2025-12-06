@@ -1,0 +1,49 @@
+{
+  "template": "GRID_B_12x12",
+
+  "across": [
+    {
+      "clue": "Number left after division.",
+      "answer": "REMAINDER"
+    },
+    {
+      "clue": "Number you subtract from.",
+      "answer": "MINUEND"
+    },
+    {
+      "clue": "Number that comes before another number.",
+      "answer": "PREDECESSOR"
+    },
+    {
+      "clue": "Number that comes after another number.",
+      "answer": "SUCCESSOR"
+    },
+    {
+      "clue": "Numbers that are added.",
+      "answer": "ADDENDS"
+    }
+  ],
+
+  "down": [
+    {
+      "clue": "Any number multiplied by zero equals ___.",
+      "answer": "ZERO"
+    },
+    {
+      "clue": "The number by which we divide.",
+      "answer": "DIVISOR"
+    },
+    {
+      "clue": "Indian place value for 1,00,00,000.",
+      "answer": "CRORE"
+    },
+    {
+      "clue": "The number being subtracted.",
+      "answer": "SUBTRAHEND"
+    },
+    {
+      "clue": "Answer in multiplication.",
+      "answer": "PRODUCT"
+    }
+  ]
+}
