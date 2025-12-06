@@ -22,11 +22,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3>Quick Links</h3>
         <ul>
           <li><a href="/index.html">Home</a></li>
-          <li><a href="/activities.html">Activities</a></li>
+          <li><a href="/flashcards.html">Flash Cards</a></li>
           <li><a href="/worksheets.html">Worksheets</a></li>
           <li><a href="/games.html">Games</a></li>
           <li><a href="/simulations/index.html">Simulations</a></li>
-          <li><a href="/games/quizsets/">Quiz Sets</a></li>
+          <li><a href="/games/quizsets/">Practice Sets</a></li>
+          <li><a href="/store.html">Store</a></li>
         </ul>
 
         <h3 style="margin-top:18px;">Follow Us</h3>
