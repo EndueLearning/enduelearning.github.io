@@ -1,208 +1,187 @@
-/* ============================================================
-   CROSSWORD ENGINE – Endue Learning
-   Features:
-   ✔ Auto-check words
-   ✔ Correct/Wrong sound effects
-   ✔ Smooth navigation
-   ✔ Highlighting
-   ✔ Works with crossword.json structure
-   ============================================================ */
+/* ======================================================
+   FINAL CROSSWORD ENGINE — For GRID_B 12×12 Template
+   ====================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* -----------------------------
-     Load sound effects
-  ----------------------------- */
-  const correctSound = new Audio("/assets/sounds/correct.mp3");
-  const wrongSound = new Audio("/assets/sounds/wrong.mp3");
+  const gridEl = document.getElementById("cw-grid");
+  const acrossEl = document.getElementById("across-clues");
+  const downEl = document.getElementById("down-clues");
 
-  /* -----------------------------
-     Elements
-  ----------------------------- */
-  const gridContainer = document.getElementById("cw-grid");
-  const acrossList = document.getElementById("acrossList");
-  const downList = document.getElementById("downList");
+  /* Load puzzle JSON */
+  async function loadPuzzle() {
+    const res = await fetch("/assets/data/crossword/math-gridB.json");
+    const data = await res.json();
 
-  let crosswordData = null;
-  let cellMatrix = [];  // 2D array storing cell objects
-
-  /* -----------------------------
-     LOAD JSON FILE
-  ----------------------------- */
-  async function loadCrossword() {
-    try {
-      const url = "/assets/data/crossword/math-crossword.json";
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("JSON not found");
-
-      crosswordData = await res.json();
-      buildGrid();
-      buildClues();
-
-    } catch (err) {
-      console.error("Crossword error:", err);
-      gridContainer.innerHTML = "<p>Unable to load crossword.</p>";
-    }
+    const template = GRID_B_TEMPLATE();
+    buildGrid(template, data);
   }
 
-  /* -----------------------------
-     BUILD CROSSWORD GRID
-  ----------------------------- */
-  function buildGrid() {
-    const rows = crosswordData.rows;
-    const cols = crosswordData.cols;
-    const layout = crosswordData.layout;
+  /* GRID_B (12x12) fixed layout pattern */
+  function GRID_B_TEMPLATE() {
 
-    gridContainer.style.gridTemplateColumns = `repeat(${cols}, 40px)`;
+    const size = 12;
+    const grid = Array.from({ length: size }, () =>
+      Array.from({ length: size }, () => ({ black: false, num: "" }))
+    );
 
-    cellMatrix = [];
+    /* Pre-designed black cell pattern — balanced & symmetric */
+    const blacks = [
+      [0,0],[0,1],[0,10],[0,11],
+      [1,0],[1,1],[1,10],[1,11],
+      [10,0],[10,1],[10,10],[10,11],
+      [11,0],[11,1],[11,10],[11,11]
+    ];
 
-    for (let r = 0; r < rows; r++) {
-      cellMatrix[r] = [];
-      for (let c = 0; c < cols; c++) {
+    blacks.forEach(([r,c]) => grid[r][c].black = true);
 
-        const cellData = layout[r][c];
-        const cellDiv = document.createElement("div");
+    return grid;
+  }
 
-        // Black cell
-        if (cellData === "#") {
-          cellDiv.className = "cw-cell black";
-          gridContainer.appendChild(cellDiv);
-          cellMatrix[r][c] = null;
-          continue;
+  /* Build the grid and fill with clues */
+  function buildGrid(template, puzzle) {
+
+    /* Layout grid */
+    gridEl.style.gridTemplateColumns = `repeat(12, 40px)`;
+
+    /* Expand actual DOM grid */
+    const cellMap = [];
+    template.forEach((row, r) => {
+      const rowMap = [];
+      row.forEach((cell, c) => {
+        const div = document.createElement("div");
+        div.className = cell.black ? "cw-cell black" : "cw-cell";
+
+        if (!cell.black) {
+          const inp = document.createElement("input");
+          inp.maxLength = 1;
+          div.appendChild(inp);
+          rowMap.push({ el: div, input: inp, row:r, col:c });
+        } else {
+          rowMap.push({ el: div, input: null, row:r, col:c });
         }
+        gridEl.appendChild(div);
+      });
+      cellMap.push(rowMap);
+    });
 
-        // Normal white cell
-        cellDiv.className = "cw-cell";
+    /* Number placement + clue mapping */
+    let num = 1;
 
-        // Numbering
-        if (typeof cellData === "object" && cellData.num) {
-          const num = document.createElement("div");
-          num.className = "cw-number";
-          num.textContent = cellData.num;
-          cellDiv.appendChild(num);
+    function placeWord(answer, dir) {
+      for (let r = 0; r < 12; r++) {
+        for (let c = 0; c < 12; c++) {
+
+          if (dir === "across") {
+            if (c + answer.length <= 12 &&
+                canPlaceAcross(r,c,answer,cellMap)) {
+              assignAcross(r,c,answer,cellMap,num);
+              const n = num++;
+              return { row:r, col:c, num:n };
+            }
+          }
+
+          else if (dir === "down") {
+            if (r + answer.length <= 12 &&
+                canPlaceDown(r,c,answer,cellMap)) {
+              assignDown(r,c,answer,cellMap,num);
+              const n = num++;
+              return { row:r, col:c, num:n };
+            }
+          }
+
         }
+      }
+      return null;
+    }
 
-        // Input
-        const input = document.createElement("input");
-        input.maxLength = 1;
-        input.dataset.row = r;
-        input.dataset.col = c;
-        cellDiv.appendChild(input);
+    /* Placement rules */
+    function canPlaceAcross(r,c,word,map) {
+      for (let i=0;i<word.length;i++){
+        if (map[r][c+i].el.classList.contains("black")) return false;
+      }
+      return true;
+    }
 
-        // Input typing handler
-        input.addEventListener("input", (e) => {
-          input.value = input.value.toUpperCase().slice(0, 1);
-          checkWordsForCell(r, c);
-          moveNext(r, c);
-        });
+    function canPlaceDown(r,c,word,map) {
+      for (let i=0;i<word.length;i++){
+        if (map[r+i][c].el.classList.contains("black")) return false;
+      }
+      return true;
+    }
 
-        gridContainer.appendChild(cellDiv);
-        cellMatrix[r][c] = { el: cellDiv, input };
+    function assignAcross(r,c,word,map,n){
+      map[r][c].el.innerHTML =
+        `<div class='cw-number'>${n}</div>` + map[r][c].el.innerHTML;
+
+      for (let i=0;i<word.length;i++){
+        map[r][c+i].answer = word[i];
       }
     }
-  }
 
-  /* -----------------------------
-     BUILD CLUES LIST
-  ----------------------------- */
-  function buildClues() {
-    acrossList.innerHTML = "";
-    downList.innerHTML = "";
+    function assignDown(r,c,word,map,n){
+      map[r][c].el.innerHTML =
+        `<div class='cw-number'>${n}</div>` + map[r][c].el.innerHTML;
 
-    crosswordData.across.forEach(clue => addClue(acrossList, clue));
-    crosswordData.down.forEach(clue => addClue(downList, clue));
-  }
-
-  function addClue(parent, clue) {
-    const li = document.createElement("li");
-    li.textContent = clue.clue;
-    parent.appendChild(li);
-  }
-
-  /* -----------------------------
-     GET CELLS OF A WORD
-  ----------------------------- */
-  function getCellsForClue(clue) {
-    const cells = [];
-    let { row, col } = clue;
-
-    for (let i = 0; i < clue.answer.length; i++) {
-      const cell = cellMatrix[row][col];
-      if (!cell) return [];
-
-      cells.push(cell);
-      if (clue.dir === "across") col++;
-      else row++;
+      for (let i=0;i<word.length;i++){
+        map[r+i][c].answer = word[i];
+      }
     }
-    return cells;
+
+    /* Place Across words */
+    puzzle.across.forEach(cl => {
+      const pos = placeWord(cl.answer, "across");
+      if (pos) {
+        const li = document.createElement("li");
+        li.textContent = `${pos.num}. ${cl.clue}`;
+        acrossEl.appendChild(li);
+      }
+    });
+
+    /* Place Down words */
+    puzzle.down.forEach(cl => {
+      const pos = placeWord(cl.answer, "down");
+      if (pos) {
+        const li = document.createElement("li");
+        li.textContent = `${pos.num}. ${cl.clue}`;
+        downEl.appendChild(li);
+      }
+    });
+
+    enableAutoCheck(cellMap);
   }
 
-  /* -----------------------------
-     AUTO-CHECK words that touch a cell
-  ----------------------------- */
-  function checkWordsForCell(row, col) {
-    const allClues = [...crosswordData.across, ...crosswordData.down];
+  /* Auto-check logic */
+  function enableAutoCheck(map) {
 
-    allClues.forEach(clue => {
-      const cells = getCellsForClue(clue);
-      clue.cells = cells;
+    const correctSound = new Audio("/assets/sounds/correct.mp3");
+    const wrongSound = new Audio("/assets/sounds/wrong.mp3");
 
-      if (cells.some(c => !c)) return;
+    map.forEach(row => {
+      row.forEach(cell => {
+        if (!cell.input) return;
 
-      autoCheckWord(clue);
+        cell.input.addEventListener("input", () => {
+          const letter = cell.input.value.toUpperCase().slice(0,1);
+          cell.input.value = letter;
+
+          if (!letter) return;
+
+          if (letter === cell.answer) {
+            cell.el.classList.add("correct");
+            cell.el.classList.remove("wrong");
+            correctSound.play();
+            confetti({ particleCount:8, spread:30, origin:{y:0.5} });
+          } else {
+            cell.el.classList.add("wrong");
+            cell.el.classList.remove("correct");
+            wrongSound.play();
+          }
+        });
+      });
     });
   }
 
-  /* -----------------------------
-     AUTO-CHECK WORD LOGIC
-  ----------------------------- */
-  function autoCheckWord(clue) {
-    const letters = clue.cells.map(c => c.input.value.toUpperCase());
-    const attempt = letters.join("");
-    const answer = clue.answer.toUpperCase();
+  loadPuzzle();
 
-    // Skip incomplete words
-    if (attempt.length < answer.length || attempt.includes("")) return;
-
-    if (attempt === answer) {
-      clue.cells.forEach(c => {
-        c.el.classList.remove("wrong");
-        c.el.classList.add("correct");
-      });
-      correctSound.play();
-    } else {
-      clue.cells.forEach(c => {
-        c.el.classList.remove("correct");
-        c.el.classList.add("wrong");
-      });
-      wrongSound.play();
-
-      // remove wrong highlight after flash
-      setTimeout(() => {
-        clue.cells.forEach(c => c.el.classList.remove("wrong"));
-      }, 700);
-    }
-  }
-
-  /* -----------------------------
-     Move to next cell automatically
-  ----------------------------- */
-  function moveNext(r, c) {
-    // Try right cell
-    if (cellMatrix[r][c + 1] && cellMatrix[r][c + 1].input) {
-      cellMatrix[r][c + 1].input.focus();
-      return;
-    }
-
-    // Try down cell
-    if (cellMatrix[r + 1] && cellMatrix[r + 1][c] && cellMatrix[r + 1][c].input) {
-      cellMatrix[r + 1][c].input.focus();
-    }
-  }
-
-  /* -----------------------------
-     START
-  ----------------------------- */
-  loadCrossword();
 });
