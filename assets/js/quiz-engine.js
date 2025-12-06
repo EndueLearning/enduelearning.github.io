@@ -137,7 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateProgressBar(index, total) {
     const bar = document.getElementById("quiz-progress-bar");
     if (!bar) return;
-    const percent = Math.round((index / total) * 100);
+    // correct formula → ensures final question shows 100%
+  const percent = Math.round(((index + 1) / total) * 100);
     bar.style.width = percent + "%";
   }
 
