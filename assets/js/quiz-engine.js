@@ -119,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="remark">${getRemark(score, quiz.length)}</div>
         <div style="margin-top:16px;">
           <button class="score-btn" onclick="location.reload()">🔁 Retry</button>
-          <button class="score-btn" onclick="window.location='/games/quizsets/'">⬅ Back</button>
+          <button class="score-btn" onclick="window.location='/games/quizsets.html'">⬅ Back</button>
         </div>
       </div>
     `;
