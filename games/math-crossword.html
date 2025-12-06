@@ -1,37 +1,51 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Math Crossword</title>
-<link rel="stylesheet" href="/assets/css/header.css">
-<link rel="stylesheet" href="/assets/css/crossword.css">
-<script src="/assets/js/header.js" defer></script>
-<script src="/assets/js/footer.js" defer></script>
-<script src="/assets/js/crossword.js" defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Math Crossword — Endue Learning</title>
+
+  <link rel="stylesheet" href="/assets/css/header.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/crossword.css">
+
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
+  <script src="/assets/js/crossword.js" defer></script>
 </head>
-
 <body>
+  <div id="header"></div>
 
-<h1 class="cw-title">Math Crossword Puzzle</h1>
+  <main class="cw-container">
+    <h1>Math Crossword — Operations & Terms</h1>
 
-<div class="cw-container">
-  <div class="cw-main">
-    <div class="crossword">
-      <div id="cw-grid" class="cw-grid"></div>
+    <section class="cw-topbar">
+      <div>
+        <button id="checkBtn" class="cw-btn">Check Answers</button>
+        <button id="revealBtn" class="cw-btn">Reveal Solution</button>
+        <button id="clearBtn" class="cw-btn">Clear</button>
+        <button id="printBtn" class="cw-btn">Print</button>
+      </div>
+      <div class="cw-save">Saved: <span id="savedStatus">No</span></div>
+    </section>
+
+    <section class="cw-main">
+      <div id="crossword" class="crossword" aria-label="Math crossword puzzle"></div>
+
+      <aside class="cw-clues">
+        <h3>Across</h3>
+        <ol id="acrossList"></ol>
+
+        <h3>Down</h3>
+        <ol id="downList"></ol>
+      </aside>
+    </section>
+
+    <div class="cw-footer-note">
+      Tip: use keyboard to type letters; tap any cell on mobile. Answers accept letters only (ignore underscores).
     </div>
+  </main>
 
-    <div class="cw-clues">
-      <h3>Across</h3>
-      <ul id="across-list" class="clue-list"></ul>
-
-      <h3>Down</h3>
-      <ul id="down-list" class="clue-list"></ul>
-    </div>
-  </div>
-
-  <button class="cw-btn" id="check-btn">Check Answers</button>
-  <div class="cw-footer-note">Type letters in the boxes. Use Across/Down clues to solve!</div>
-</div>
-
+  <div id="footer"></div>
 </body>
 </html>
