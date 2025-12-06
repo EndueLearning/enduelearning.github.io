@@ -7,22 +7,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   // WORD LIST (answers are uppercase, underscores allowed for readability)
   const words = [
-    {id:1, clue:"Basic operation: add two numbers", answer:"ADDITION", row:0, col:0, dir:"across"},
-    {id:2, clue:"Remove a number from another", answer:"SUBTRACTION", row:2, col:0, dir:"across"},
-    {id:3, clue:"Repeated addition", answer:"MULTIPLICATION", row:4, col:0, dir:"across"},
-    {id:4, clue:"Share or split numbers", answer:"DIVISION", row:6, col:0, dir:"across"},
-    {id:5, clue:"Power of a number", answer:"EXPONENT", row:8, col:0, dir:"across"},
-    {id:6, clue:"Square root symbol or operation", answer:"SQUAREROOT", row:10, col:0, dir:"across"},
-    {id:7, clue:"n! — product of all positive integers to n", answer:"FACTORIAL", row:0, col:11, dir:"down"},
-    {id:8, clue:"Remainder operation", answer:"MODULO", row:3, col:11, dir:"down"},
-    {id:9, clue:"Part of a whole (a/b)", answer:"FRACTION", row:6, col:11, dir:"down"},
-    {id:10, clue:"Numbers with decimal point", answer:"DECIMAL", row:9, col:8, dir:"across"},
-    {id:11, clue:"Symbol for per hundred", answer:"PERCENT", row:12, col:0, dir:"across"},
-    {id:12, clue:"Mathematical sentence with equals", answer:"EQUATION", row:14, col:0, dir:"across"},
-    {id:13, clue:"Letter that represents a number", answer:"VARIABLE", row:4, col:7, dir:"down"}
-  ];
+    {id:1, clue:"Any number multiplied by zero is", answer:"ZERO", row:0, col:8, dir:"down"},
+    {id:2, clue:"The number left over after division", answer:"REMAINDER", row:2, col:0, dir:"across"},
+    {id:3, clue:"The number by which we divide", answer:"DIVISOR", row:3, col:6, dir:"down"},
+    {id:4, clue:"An eight digit number starts with this place", answer:"CRORE", row:4, col:9, dir:"down"},
+    {id:5, clue:"The number you subtract", answer:"SUBTRAHEND", row:4, col:15, dir:"down"},
+    {id:6, clue:"The number from which you subtract", answer:"MINUEND", row:5, col:12, dir:"across"},
+    {id:7, clue:"The before number", answer:"PREDECESSOR", row:8, col:5, dir:"across"},
+    {id:8, clue:"The answer in multiplication", answer:"PRODUCT", row:10, col:18, dir:"down"},
+    {id:9, clue:"The next number", answer:"SUCCESSOR", row:11, col:11, dir:"down"},
+    {id:10, clue:"The numbers to be added", answer:"ADDENDS", row:13, col:14, dir:"across"}
+    ];
 
-  const ROWS = 16, COLS = 16;
+  const ROWS = 17, COLS = 21;
   const grid = Array.from({length:ROWS}, ()=>Array.from({length:COLS}, ()=>null));
 
   // Place words into grid model
