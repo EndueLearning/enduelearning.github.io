@@ -1,49 +1,78 @@
 {
-  "template": "GRID_B_12x12",
-
-  "across": [
+  "rows": 12,
+  "cols": 12,
+  "words": [
     {
-      "clue": "Number left after division.",
-      "answer": "REMAINDER"
+      "number": 1,
+      "clue": "Any number multiplied by zero is",
+      "answer": "ZERO",
+      "row": 0,
+      "col": 0,
+      "dir": "down"
     },
     {
-      "clue": "Number you subtract from.",
-      "answer": "MINUEND"
+      "number": 2,
+      "clue": "The number left over after division",
+      "answer": "REMAINDER",
+      "row": 0,
+      "col": 3,
+      "dir": "across"
     },
     {
-      "clue": "Number that comes before another number.",
-      "answer": "PREDECESSOR"
+      "number": 3,
+      "clue": "The number by which we divide",
+      "answer": "DIVISOR",
+      "row": 0,
+      "col": 8,
+      "dir": "down"
     },
     {
-      "clue": "Number that comes after another number.",
-      "answer": "SUCCESSOR"
+      "number": 4,
+      "clue": "The before number",
+      "answer": "PREDECESSOR",
+      "row": 5,
+      "col": 0,
+      "dir": "across"
     },
     {
-      "clue": "Numbers that are added.",
-      "answer": "ADDENDS"
-    }
-  ],
-
-  "down": [
-    {
-      "clue": "Any number multiplied by zero equals ___.",
-      "answer": "ZERO"
+      "number": 5,
+      "clue": "The next number",
+      "answer": "SUCCESSOR",
+      "row": 7,
+      "col": 0,
+      "dir": "across"
     },
     {
-      "clue": "The number by which we divide.",
-      "answer": "DIVISOR"
+      "number": 6,
+      "clue": "The number from which you subtract",
+      "answer": "MINUEND",
+      "row": 9,
+      "col": 0,
+      "dir": "across"
     },
     {
-      "clue": "Indian place value for 1,00,00,000.",
-      "answer": "CRORE"
+      "number": 7,
+      "clue": "The number you subtract",
+      "answer": "SUBTRAHEND",
+      "row": 10,
+      "col": 0,
+      "dir": "across"
     },
     {
-      "clue": "The number being subtracted.",
-      "answer": "SUBTRAHEND"
+      "number": 8,
+      "clue": "The numbers to be added",
+      "answer": "ADDENDS",
+      "row": 4,
+      "col": 5,
+      "dir": "down"
     },
     {
-      "clue": "Answer in multiplication.",
-      "answer": "PRODUCT"
+      "number": 9,
+      "clue": "The answer in multiplication",
+      "answer": "PRODUCT",
+      "row": 3,
+      "col": 9,
+      "dir": "down"
     }
   ]
 }
