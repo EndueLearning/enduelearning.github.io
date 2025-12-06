@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Math Crossword — Endue Learning</title>
+
+  <link rel="stylesheet" href="/assets/css/header.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/crossword.css">
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
+  <script src="/assets/js/crossword.js" defer></script>
+</head>
+<body>
+  <div id="header"></div>
+
+  <main class="cw-container">
+    <h1>Math Crossword — Operations & Terms</h1>
+
+    <section class="cw-topbar">
+      <div>
+        <button id="checkBtn" class="cw-btn">Check Answers</button>
+        <button id="revealBtn" class="cw-btn">Reveal Solution</button>
+        <button id="clearBtn" class="cw-btn">Clear</button>
+        <button id="printBtn" class="cw-btn">Print</button>
+      </div>
+      <div class="cw-save">Saved: <span id="savedStatus">No</span></div>
+    </section>
+
+    <section class="cw-main">
+      <div id="crossword" class="crossword" aria-label="Math crossword puzzle"></div>
+
+      <aside class="cw-clues">
+        <h3>Across</h3>
+        <ol id="acrossList"></ol>
+
+        <h3>Down</h3>
+        <ol id="downList"></ol>
+      </aside>
+    </section>
+
+    <div class="cw-footer-note">
+      Tip: use keyboard to type letters; tap any cell on mobile. Answers accept letters only (ignore underscores).
+    </div>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>
