@@ -1,44 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Concave Mirror — Quiz</title>
 
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Concave Mirror MCQ Quiz</title>
-
-  <!-- Global Styles -->
+  <!-- IMPORTANT: use absolute paths (leading slash) -->
   <link rel="stylesheet" href="/assets/css/header.css">
-  <link rel="stylesheet" href="/assets/css/style.css">
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="/assets/css/quiz.css">
 
-  <!-- Header + Footer Scripts -->
+  <!-- confetti lib (required by quiz-engine to show confetti) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <!-- header/footer loaders and common scripts -->
   <script src="/assets/js/header.js" defer></script>
   <script src="/assets/js/footer.js" defer></script>
   <script src="/assets/js/main.js" defer></script>
 
-  <!-- Quiz Engine -->
+  <!-- quiz engine (defer so DOM exists) -->
   <script src="/assets/js/quiz-engine.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
 </head>
-
 <body>
 
-<div id="header"></div>
-<div class="progress-container">
-  <div id="quiz-progress-bar"></div>
-</div>
+  <!-- header injection point (required) -->
+  <div id="header"></div>
 
-<div id="quiz-box">
-  <h2 id="progress">Loading quiz...</h2>
-  <div id="question"></div>
-  <div id="options"></div>
-  <div id="explanation"></div>
-  <button id="next-btn" class="next-btn">Next</button>
-</div>
+  <main style="max-width:900px;margin:30px auto;padding:0 16px;">
+    <h1>Concave Mirror — MCQ Quiz</h1>
 
-<div id="footer"></div>
+    <!-- PROGRESS BAR -->
+    <div class="progress-container" aria-hidden="true">
+      <div id="quiz-progress-bar"></div>
+    </div>
+
+    <!-- quiz UI (IDs MUST match quiz-engine.js) -->
+    <div id="quiz-box">
+      <div id="progress" style="margin-bottom:12px;font-weight:600;">Loading quiz...</div>
+      <div id="question" style="margin-bottom:14px;"></div>
+
+      <div id="options"></div>
+
+      <div id="explanation" style="margin-top:14px;display:none;"></div>
+
+      <button id="next-btn" class="next-btn" style="display:none;margin-top:18px;">Next</button>
+    </div>
+  </main>
+
+  <!-- footer injection point (required) -->
+  <div id="footer"></div>
 
 </body>
 </html>
