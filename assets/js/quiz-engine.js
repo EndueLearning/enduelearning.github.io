@@ -1,110 +1,122 @@
-/* ==========================================
-   FINAL STABLE QUIZ ENGINE FOR ENDUE LEARNING
-   ========================================== */
+let quizData = [];
+let current = 0;
+let score = 0;
 
-document.addEventListener("DOMContentLoaded", () => {
+let questionBox = document.getElementById("question");
+let optionsBox = document.getElementById("options");
+let explanationBox = document.getElementById("explanation");
+let progressBox = document.getElementById("progress");
+let nextBtn = document.getElementById("next-btn");
 
-  // ---- DOM HOOKS ----
-  const qBox     = document.getElementById("question");
-  const optBox   = document.getElementById("options");
-  const nextBtn  = document.getElementById("next-btn");
-  const progress = document.getElementById("progress");
-  const explain  = document.getElementById("explanation");
+async function loadQuiz() {
+  let path = window.location.pathname.replace(".html", ".json");
+  path = "/assets/data/quiz" + path.replace("/games/quizsets", "");
 
-  let quiz = [];
-  let index = 0;
-  let score = 0;
-  let lock = false;
-
-  // ---- JSON PATH BUILDER ----
-  function quizJSONPath() {
-    const parts = window.location.pathname.split("/").filter(Boolean);
-    const file = parts.pop().replace(".html", ".json");
-    const topic = parts.pop();
-    const subject = parts.pop();
-    return `/assets/data/quiz/${subject}/${topic}/${file}`;
+  try {
+    const res = await fetch(path);
+    quizData = await res.json();
+    showQuestion();
+  } catch (e) {
+    progressBox.textContent = "Error loading quiz";
   }
+}
 
-  // ---- LOAD JSON ----
-  fetch(quizJSONPath())
-    .then(r => r.json())
-    .then(data => {
-      quiz = data;
-      progress.innerText = "Click a choice to begin!";
-      renderQuestion();
-    })
-    .catch(() => {
-      progress.innerText = "Quiz cannot be loaded.";
-    });
+function showQuestion() {
+  let q = quizData[current];
 
-  // ---- RENDER QUESTION ----
-  function renderQuestion() {
-    const q = quiz[index];
-    progress.innerText = `Question ${index+1} of ${quiz.length}`;
-    qBox.innerText = q.question;
-    explain.innerHTML = "";
-    nextBtn.style.display = "none";
-    lock = false;
+  progressBox.textContent = `Question ${current + 1} of ${quizData.length}`;
+  questionBox.textContent = q.question;
+  explanationBox.style.display = "none";
+  explanationBox.textContent = "";
 
-    optBox.innerHTML = "";
-    q.options.forEach((opt, i) => {
-      const btn = document.createElement("button");
-      btn.className = "option";
-      btn.innerText = opt;
-      btn.onclick = () => checkAnswer(i);
-      optBox.appendChild(btn);
-    });
-  }
+  optionsBox.innerHTML = "";
 
-  // ---- CHECK ANSWER ----
-  function checkAnswer(clicked) {
-    if (lock) return;
-    lock = true;
+  q.options.forEach(opt => {
+    let btn = document.createElement("button");
+    btn.className = "option-btn";
+    btn.textContent = opt;
 
-    const q = quiz[index];
-    const correct = q.answer;
+    btn.onclick = () => checkAnswer(btn, q);
+    optionsBox.appendChild(btn);
+  });
+}
 
-    const buttons = document.querySelectorAll(".option");
-    buttons.forEach((b, i) => {
-      b.disabled = true;
-      if (i === correct) b.classList.add("correct");
-      if (i === clicked && clicked !== correct) b.classList.add("wrong");
-    });
+function checkAnswer(button, q) {
+  let selected = button.textContent;
 
-    if (clicked === correct) score++;
-
-    explain.innerHTML = `
-      <div class="explain-box"><strong>Explanation:</strong><br>${q.explanation}</div>
-    `;
-
-    nextBtn.style.display = "block";
-  }
-
-  // ---- NEXT / FINISH ----
-  nextBtn.addEventListener("click", () => {
-    index++;
-    if (index >= quiz.length) return showResults();
-    renderQuestion();
+  // highlight correct & wrong buttons
+  document.querySelectorAll(".option-btn").forEach(btn => {
+    if (btn.textContent === q.answer) btn.classList.add("correct");
+    if (btn === button && selected !== q.answer) btn.classList.add("wrong");
+    btn.disabled = true;
   });
 
-  // ---- FINAL SCORE ----
-  function showResults() {
-    let remark = "";
-    const percent = (score / quiz.length) * 100;
+  // scoring
+  if (selected === q.answer) score++;
 
-    if (percent === 100) remark = "🌟 Excellent!";
-    else if (percent >= 80) remark = "💚 Great job!";
-    else if (percent >= 50) remark = "🟡 Needs more practice.";
-    else remark = "🔴 Keep learning — try again!";
+  // explanation
+  explanationBox.style.display = "block";
+  explanationBox.textContent = q.explanation || "";
 
-    document.getElementById("quiz-box").innerHTML = `
-      <h2>Quiz Completed!</h2>
-      <p class="final-score">Your Score: ${score} / ${quiz.length}</p>
-      <p class="remark">${remark}</p>
+  // show NEXT
+  nextBtn.style.display = "block";
 
-      <button onclick="location.reload()" class="option">🔁 Retry</button>
-      <a href="/games/quizsets/" class="option">⬅ Back</a>
-    `;
+  // play feedback effect
+  if (selected === q.answer) fireSuccessConfetti();
+}
+
+nextBtn.onclick = () => {
+  nextBtn.style.display = "none";
+  current++;
+
+  if (current < quizData.length) {
+    showQuestion();
+  } else {
+    showResults();
   }
+};
 
-});
+function showResults() {
+  document.getElementById("quiz-box").innerHTML = `
+    <div id="score-card">
+      <div class="score-circle">${score}/${quizData.length}</div>
+      <h2>Your Score</h2>
+      <div class="remark">${getRemark(score, quizData.length)}</div>
+
+      <button class="score-btn" onclick="location.reload()">Retry</button>
+      <button class="score-btn" onclick="window.location='/games/quizsets/'">Back</button>
+    </div>
+  `;
+
+  fireFinalConfetti();
+}
+
+function getRemark(s, t) {
+  let p = (s / t) * 100;
+  if (p === 100) return "🌟 Excellent! You're a genius!";
+  if (p >= 80) return "👍 Great job!";
+  if (p >= 50) return "🙂 Good effort — keep practicing!";
+  return "📘 Needs more practice. You can do it!";
+}
+
+/* ---------------- Confetti Effects ---------------- */
+
+function fireSuccessConfetti() {
+  confetti({
+    particleCount: 40,
+    spread: 60,
+    startVelocity: 40,
+    origin: { y: 0.6 }
+  });
+}
+
+function fireFinalConfetti() {
+  confetti({
+    particleCount: 120,
+    spread: 90,
+    startVelocity: 45,
+    origin: { y: 0.6 }
+  });
+}
+
+document.addEventListener("DOMContentLoaded", loadQuiz);
