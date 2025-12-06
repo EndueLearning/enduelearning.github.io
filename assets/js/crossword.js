@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const ROWS = 17, COLS = 21;
   const grid = Array.from({length:ROWS}, ()=>Array.from({length:COLS}, ()=>null));
 
-  // Place words into grid model
+   // Place words into grid model
   words.forEach(w=>{
     const ans = w.answer.replace(/\s+/g,'').toUpperCase();
     if (w.dir === 'across') {
