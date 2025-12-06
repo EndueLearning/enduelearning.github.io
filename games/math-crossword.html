@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -15,40 +15,44 @@
   <script src="/assets/js/header.js" defer></script>
   <script src="/assets/js/footer.js" defer></script>
   <script src="/assets/js/crossword.js" defer></script>
+
+  <link rel="stylesheet" href="/assets/css/crossword.css">
+
+  <!-- Confetti + Sounds -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
+
 <body>
-  <div id="header"></div>
 
-  <main class="cw-container">
-    <h1>Math Crossword — Operations & Terms</h1>
+<div id="header"></div>
 
-    <section class="cw-topbar">
-      <div>
-        <button id="checkBtn" class="cw-btn">Check Answers</button>
-        <button id="revealBtn" class="cw-btn">Reveal Solution</button>
-        <button id="clearBtn" class="cw-btn">Clear</button>
-        <button id="printBtn" class="cw-btn">Print</button>
-      </div>
-      <div class="cw-save">Saved: <span id="savedStatus">No</span></div>
-    </section>
+<div class="cw-container">
+  <h1>Math Crossword Puzzle</h1>
 
-    <section class="cw-main">
-      <div id="crossword" class="crossword" aria-label="Math crossword puzzle"></div>
+  <div class="cw-topbar">
+    <button class="cw-btn" onclick="location.reload()">🔁 Reset</button>
+    <button class="cw-btn secondary" onclick="print()">🖨 Print</button>
+  </div>
 
-      <aside class="cw-clues">
-        <h3>Across</h3>
-        <ul id="acrossList"></ul>
-
-        <h3>Down</h3>
-        <ul id="downList"></ul>
-      </aside>
-    </section>
-
-    <div class="cw-footer-note">
-      Tip: use keyboard to type letters; tap any cell on mobile. Answers accept letters only (ignore underscores).
+  <div class="cw-main">
+    <div class="crossword">
+      <div id="cw-grid" class="cw-grid"></div>
     </div>
-  </main>
 
-  <div id="footer"></div>
+    <div class="cw-clues">
+      <h3>Across</h3>
+      <ul id="across-clues" class="clue-list"></ul>
+
+      <h3>Down</h3>
+      <ul id="down-clues" class="clue-list"></ul>
+    </div>
+  </div>
+
+  <p class="cw-footer-note">Complete all words to finish the crossword!</p>
+</div>
+
+<div id="footer"></div>
+
+<script src="/assets/js/crossword.js"></script>
 </body>
 </html>
