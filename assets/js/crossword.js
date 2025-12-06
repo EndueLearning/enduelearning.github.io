@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {id:6, clue:"The number from which you subtract", answer:"MINUEND", row:5, col:12, dir:"across"},
     {id:7, clue:"The before number", answer:"PREDECESSOR", row:8, col:5, dir:"across"},
     {id:8, clue:"The answer in multiplication", answer:"PRODUCT", row:10, col:18, dir:"down"},
-    {id:9, clue:"The next number", answer:"SUCCESSOR", row:11, col:11, dir:"down"},
+    {id:9, clue:"The next number", answer:"SUCCESSOR", row:11, col:11, dir:"across"},
     {id:10, clue:"The numbers to be added", answer:"ADDENDS", row:13, col:14, dir:"across"}
     ];
 
