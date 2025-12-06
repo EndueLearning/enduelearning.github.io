@@ -1,39 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Math Crossword — Endue Learning</title>
-
-  <link rel="stylesheet" href="/assets/css/header.css">
-  <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="stylesheet" href="/assets/css/crossword.css">
-  <link rel="stylesheet" href="/assets/css/style.css" />
-  <link rel="stylesheet" href="/assets/css/footer.css" />
-
-
-  <script src="/assets/js/header.js" defer></script>
-  <script src="/assets/js/footer.js" defer></script>
-  <script src="/assets/js/crossword.js" defer></script>
-
-  <link rel="stylesheet" href="/assets/css/crossword.css">
-
-  <!-- Confetti + Sounds -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<meta charset="UTF-8">
+<title>Math Crossword</title>
+<link rel="stylesheet" href="/assets/css/header.css">
+<link rel="stylesheet" href="/assets/css/crossword.css">
+<script src="/assets/js/header.js" defer></script>
+<script src="/assets/js/footer.js" defer></script>
+<script src="/assets/js/crossword.js" defer></script>
 </head>
 
 <body>
 
-<div id="header"></div>
+<h1 class="cw-title">Math Crossword Puzzle</h1>
 
 <div class="cw-container">
-  <h1>Math Crossword Puzzle</h1>
-
-  <div class="cw-topbar">
-    <button class="cw-btn" onclick="location.reload()">🔁 Reset</button>
-    <button class="cw-btn secondary" onclick="print()">🖨 Print</button>
-  </div>
-
   <div class="cw-main">
     <div class="crossword">
       <div id="cw-grid" class="cw-grid"></div>
@@ -41,18 +22,16 @@
 
     <div class="cw-clues">
       <h3>Across</h3>
-      <ul id="across-clues" class="clue-list"></ul>
+      <ul id="across-list" class="clue-list"></ul>
 
       <h3>Down</h3>
-      <ul id="down-clues" class="clue-list"></ul>
+      <ul id="down-list" class="clue-list"></ul>
     </div>
   </div>
 
-  <p class="cw-footer-note">Complete all words to finish the crossword!</p>
+  <button class="cw-btn" id="check-btn">Check Answers</button>
+  <div class="cw-footer-note">Type letters in the boxes. Use Across/Down clues to solve!</div>
 </div>
 
-<div id="footer"></div>
-
-<script src="/assets/js/crossword.js"></script>
 </body>
 </html>
