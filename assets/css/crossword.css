@@ -33,15 +33,15 @@ body { background: var(--bg); color:#123; margin:0; padding:0; }
 .cw-grid { display:grid; gap:4px; padding:6px; }
 .cw-cell 
 { 
-  width:30px; 
-  height:30px; 
+  width:35px; 
+  height:35px; 
   display:flex; 
   align-items:center; 
   justify-content:center; 
   border-radius:6px; 
   background:#eef6ff; 
   font-weight:700; 
-  font-size:15px; 
+  font-size:16px; 
   text-transform:uppercase; 
   position:relative; 
 }
@@ -52,7 +52,7 @@ body { background: var(--bg); color:#123; margin:0; padding:0; }
   border:none; 
   text-align:center; 
   font-weight:700; 
-  font-size:13px; 
+  font-size:14px; 
   text-transform:uppercase; 
   background:transparent; 
   outline:none; 
