@@ -1,69 +1,137 @@
+/* ---------------- QUIZ MAIN BOX ---------------- */
+
 #quiz-box {
-  width: 90%;
-  max-width: 700px;
-  margin: auto;
-  background: white;
+  max-width: 650px;
+  margin: 100px auto;
   padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
 }
 
+/* Question text */
 #question {
-  font-size: 1rem;
-  margin-bottom: 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
+
+/* ---------------- OPTION BUTTONS ---------------- */
 
 .option-btn {
+  display: block;
   width: 100%;
   text-align: left;
-  padding: 12px;
-  margin: 8px 0;
-  background: #f5f5f5;
-  border: 1px solid #bbb;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 14px 18px;
+  font-size: 1.05rem;
+  margin: 10px 0;
+  background: #f5f8ff;
+  border: 2px solid #dce3ff;
+  border-radius: 10px;
   cursor: pointer;
+  transition: 0.25s;
 }
 
 .option-btn:hover {
-  background: #eee;
+  background: #e9efff;
 }
 
+/* Correct / wrong states */
 .correct {
-  background: #b2ffb2 !important;
-  border-color: green !important;
+  background: #c8ffd4 !important;
+  border-color: #1fa836 !important;
 }
 
 .wrong {
-  background: #ffb2b2 !important;
-  border-color: red !important;
+  background: #ffd1d1 !important;
+  border-color: #d62828 !important;
 }
 
+/* Explanation Box */
 #explanation {
-  margin-top: 20px;
-  padding: 20px;
-  background: #e8f1ff;
-  border-left: 4px solid #2471ff;
-  border-radius: 6px;
+  margin-top: 15px;
+  padding: 12px;
+  display: none;
+  background: #fff8e6;
+  border-left: 4px solid #ffbf00;
+  border-radius: 8px;
+  animation: fadeIn 0.6s;
+}
+
+/* Next button */
+.next-btn {
+  padding: 12px 20px;
+  margin-top: 25px;
+  background: #4b7bff;
+  color: white;
+  font-size: 1.1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
   display: none;
 }
 
-.next-btn {
-  background-color: #007bff; /* Blue background */
-    color: white; /* White text */
-    border: none; /* No border */
-    padding: 10px 20px; /* Padding inside the button */
-    text-align: center; /* Center the text */
-    text-decoration: none; /* Remove underline */
-    display: inline-block; /* Allow setting width/height and padding */
-    font-size: 16px; /* Font size */
-    margin: 4px 2px; /* Margin around the button */
-    cursor: pointer; /* Change cursor on hover */
-    border-radius: 8px; /* Rounded corners */
-    transition: background-color 0.3s ease; /* Smooth transition on hover */
-
+.next-btn:hover {
+  background: #345dea;
 }
 
-.next-btn:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+/* ---------------- SCORE CARD ---------------- */
+
+#score-card {
+  text-align: center;
+  padding: 20px;
+  animation: popIn 0.8s ease;
+}
+
+.score-circle {
+  width: 140px;
+  height: 140px;
+  background: #4b7bff;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px auto;
+  font-size: 2.5rem;
+  font-weight: 700;
+  animation: spinIn 1s;
+}
+
+.remark {
+  font-size: 1.3rem;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.score-btn {
+  padding: 12px 16px;
+  margin: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #4b7bff;
+  color: white;
+  cursor: pointer;
+}
+
+.score-btn:hover {
+  background: #345dea;
+}
+
+/* ---------------- Animations ---------------- */
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1); opacity: 1; }
+}
+
+@keyframes spinIn {
+  from { transform: scale(0) rotate(180deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
