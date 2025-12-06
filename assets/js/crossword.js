@@ -7,19 +7,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   // WORD LIST (answers are uppercase, underscores allowed for readability)
   const words = [
-    {id:1, clue:"Any number multiplied by zero is", answer:"ZERO", row:0, col:8, dir:"down"},
-    {id:2, clue:"The number left over after division", answer:"REMAINDER", row:2, col:0, dir:"across"},
-    {id:3, clue:"The number by which we divide", answer:"DIVISOR", row:3, col:6, dir:"down"},
-    {id:4, clue:"An eight digit number starts with this place", answer:"CRORE", row:4, col:9, dir:"down"},
-    {id:5, clue:"The number you subtract", answer:"SUBTRAHEND", row:4, col:15, dir:"down"},
-    {id:6, clue:"The number from which you subtract", answer:"MINUEND", row:5, col:12, dir:"across"},
-    {id:7, clue:"The before number", answer:"PREDECESSOR", row:8, col:5, dir:"across"},
-    {id:8, clue:"The answer in multiplication", answer:"PRODUCT", row:10, col:18, dir:"down"},
-    {id:9, clue:"The next number", answer:"SUCCESSOR", row:11, col:11, dir:"across"},
-    {id:10, clue:"The numbers to be added", answer:"ADDENDS", row:13, col:14, dir:"across"}
+    {id:9, clue:"Any number multiplied by zero equals _________.", answer:"ZERO", row:11, col:12, dir:"down"},
+    {id:8, clue:"The number left over after division", answer:"REMAINDER", row:10, col:3, dir:"across"},
+    {id:2, clue:"The number by which we divide", answer:"DIVISOR", row:0, col:13, dir:"down"},
+    {id:5, clue:"An eight digit number starts with this place", answer:"CRORE", row:5, col:11, dir:"across"},
+    {id:4, clue:"The number being subtracted", answer:"SUBTRAHEND", row:5, col:6, dir:"down"},
+    {id:3, clue:"The number from which you subtract", answer:"MINUEND", row:3, col:5, dir:"across"},
+    {id:1, clue:"The number that comes before another number", answer:"PREDECESSOR", row:0, col:11, dir:"down"},
+    {id:7, clue:"The answer in multiplication", answer:"PRODUCT", row:8, col:0, dir:"across"},
+    {id:10, clue:"Number that comes after another number", answer:"SUCCESSOR", row:12, col:8, dir:"across"},
+    {id:6, clue:"Numbers that are added", answer:"ADDENDS", row:6, col:8, dir:"down"}
     ];
 
-  const ROWS = 21, COLS = 21;
+  const ROWS = 17, COLS = 17;
   const grid = Array.from({length:ROWS}, ()=>Array.from({length:COLS}, ()=>null));
 
    // Place words into grid model
