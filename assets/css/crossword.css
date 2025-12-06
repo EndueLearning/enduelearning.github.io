@@ -1,117 +1,115 @@
-/* ===============================
-   CROSSWORD CSS — Final Version
-   =============================== */
-
 :root{
-  --bg: #f4fbff;
-  --card: #ffffff;
-  --accent: #4b7bff;
-  --accent-2: #6dd5ed;
-  --success: #1ea96a;
-  --danger: #ff4141;
-  --muted: #6b7a8a;
-  font-family: 'Poppins', sans-serif;
+  --bg:#f6fbff;
+  --cell:#e8f1ff;
+  --cell-dark:#0a2740;
+  --correct:#d4ffe4;
+  --wrong:#ffe3e3;
+  --accent:#4b7bff;
+  font-family:'Poppins', sans-serif;
 }
 
-body { background: var(--bg); margin:0; }
-
-/* container */
-.cw-container { max-width:1100px; margin:28px auto; padding:18px; }
-.cw-container h1 { color:var(--accent); margin-bottom:10px; }
-
-/* top bar */
-.cw-topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
-.cw-btn { background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#fff; border:none; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:600; }
-.cw-btn.secondary { background:#fff; color:var(--accent); border:1px solid #e0eaff; }
-
-/* main area */
-.cw-main { display:flex; gap:20px; align-items:flex-start; }
-.crossword { background:var(--card); padding:18px; border-radius:12px; }
-
-/* CLUES */
-.cw-clues { width:320px; background:var(--card); padding:14px; border-radius:12px; }
-.clue-list { list-style:none; padding-left:0; }
-.clue-list li { margin-bottom:10px; }
-
-/* GRID */
-.cw-grid { display:grid; gap:3px; }
-
-/* BLACK cell = light */
-.cw-cell.black {
-  width:40px;
-  height:40px;
-  background:#d0e6ff;
-  border-radius:6px;
+body{
+  background:var(--bg);
+  margin:0;
+  padding:0;
 }
 
-/* WRITE cells = darker */
-.cw-cell {
-  width:40px;
-  height:40px;
-  background:#0c1f3a;
-  border-radius:6px;
-  position:relative;
+.cw-title{
+  text-align:center;
+  margin:20px 0 10px;
+  color:var(--accent);
+}
+
+.cw-container{
+  max-width:1100px;
+  margin:0 auto;
+  padding:15px;
+}
+
+.cw-main{
   display:flex;
-  justify-content:center;
-  align-items:center;
+  gap:20px;
 }
 
-/* number */
-.cw-number {
-  position:absolute;
-  font-size:10px;
-  top:2px;
-  left:3px;
-  color:#fff;
-  opacity:0.7;
+.cw-grid{
+  display:grid;
+  grid-template-columns:repeat(12,40px);
+  gap:3px;
 }
 
-/* INPUT */
-.cw-cell input {
+.cw-cell{
+  width:40px;
+  height:40px;
+  background:var(--cell);
+  position:relative;
+  border-radius:6px;
+}
+
+.cw-cell.black{
+  background:var(--cell-dark);
+}
+
+.cw-cell input{
   width:100%;
   height:100%;
-  background:transparent;
   border:none;
-  outline:none;
-  color:white;
+  background:transparent;
   text-align:center;
   font-size:18px;
   font-weight:700;
   text-transform:uppercase;
 }
 
-/* Hover animation */
-.cw-cell:not(.black):hover {
-  transform: scale(1.09);
-  transition: 0.15s;
-  background:#14355f;
+.cw-number{
+  position:absolute;
+  top:2px;
+  left:4px;
+  font-size:11px;
+  font-weight:700;
+  color:#1f3e60;
 }
 
-/* Correct */
-.cw-cell.correct {
-  background:#1ea96a !important;
-  animation: correctGlow 0.4s ease;
-}
-@keyframes correctGlow {
-  from { box-shadow:0 0 0 #1ea96a; }
-  to { box-shadow:0 0 12px #a1ffd8; }
+.cw-cell.correct{ background:var(--correct); }
+.cw-cell.wrong{ background:var(--wrong); }
+
+.cw-clues{
+  width:320px;
+  background:white;
+  padding:15px;
+  border-radius:8px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.08);
 }
 
-/* Wrong */
-.cw-cell.wrong {
-  background:#ff4141 !important;
-  animation: wrongFlash 0.25s ease;
-}
-@keyframes wrongFlash {
-  from { box-shadow:0 0 0 #ff4141; }
-  to { box-shadow:0 0 10px #ff9a9a; }
+.clue-list{
+  list-style:none;
+  padding:0;
 }
 
-/* MOBILE */
+.clue-list li{
+  margin-bottom:10px;
+}
+
+.cw-btn{
+  display:block;
+  margin:20px auto;
+  padding:10px 16px;
+  border:none;
+  border-radius:8px;
+  background:var(--accent);
+  color:white;
+  cursor:pointer;
+  font-weight:600;
+}
+
 @media(max-width:900px){
-  .cw-main { flex-direction:column; }
-  .cw-clues { width:100%; }
-  .cw-cell, .cw-cell.black { width:34px; height:34px; }
+  .cw-main{
+    flex-direction:column;
+  }
+  .cw-grid{
+    grid-template-columns:repeat(12,32px);
+  }
+  .cw-cell{
+    width:32px;
+    height:32px;
+  }
 }
-
-.cw-footer-note { text-align:center; color:var(--muted); margin-top:20px; }
