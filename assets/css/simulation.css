@@ -1,0 +1,41 @@
+/* simulation.css */
+.sim-container {
+  width: 94%;
+  max-width: 1200px;
+  margin: 28px auto;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+}
+
+.sim-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:12px;
+}
+
+.tabs { display:flex; gap:8px; }
+.tab {
+  padding:8px 12px; border-radius:8px; border:1px solid #e0e6ff; background:#f7f9ff; cursor:pointer;
+}
+.tab.active { background: linear-gradient(90deg,#4b7bff,#6dd5ed); color:white; border:none; }
+
+.controls label { margin-right:12px; font-size:0.95rem; }
+
+.sim-stage { display:flex; gap:18px; align-items:flex-start; }
+canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radius:12px; box-shadow:0 8px 30px rgba(12,34,80,0.06); }
+
+.sim-info { width:320px; }
+.info-card { background:#fff; padding:12px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.04); margin-bottom:12px; }
+.info-card h3 { margin-top:0; }
+
+/* formulas styling */
+.formula { font-family: monospace; background:#f3f7ff; padding:8px; border-radius:6px; }
+
+/* responsive */
+@media (max-width: 900px) {
+  .sim-stage { flex-direction:column; align-items:center; }
+  .sim-info { width:100%; }
+  canvas#simCanvas { width:100%; height:auto; }
+}
