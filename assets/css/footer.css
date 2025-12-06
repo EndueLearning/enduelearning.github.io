@@ -1,0 +1,176 @@
+/* ======================
+        FOOTER BASE
+   ====================== */
+.site-footer {
+  background: #0A2640;
+  color: #fff;
+  padding-top: 0;
+  margin-top: -5px;
+  position: relative;
+}
+
+.footer-wave svg {
+  width: 100%;
+  display: block;
+  margin-bottom: -8px;
+}
+
+/* ======================
+        GRID LAYOUT
+   ====================== */
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 40px 8%;
+  flex-wrap: nowrap;
+}
+
+.footer-col {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-col h3 {
+  margin-bottom: 8px;
+}
+
+.footer-col ul {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.footer-col ul li {
+  margin-bottom: 6px;
+}
+
+.footer-col a {
+  color: #cfe9ff;
+  text-decoration: none;
+}
+
+.footer-col a:hover {
+  color: #ffffff;
+}
+
+/* ======================
+      FOOTER MASCOT
+   ====================== */
+.footer-mascot {
+  width: 120px;
+  margin-bottom: 12px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+/* ======================
+        SOCIAL ICONS
+   ====================== */
+.social-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+}
+
+.social-row svg {
+  width: 26px;
+  height: 26px;
+  color: #cfe9ff;
+  transition: 0.3s;
+}
+
+.social-row svg:hover {
+  color: #fff;
+  transform: scale(1.2);
+}
+
+/* ======================
+        SUBSCRIBE BOX
+   ====================== */
+#subscribeForm input {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  width: 70%;
+}
+
+#subscribeForm button {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: none;
+  background: #2b9cff;
+  color: white;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* ======================
+          BACK TO TOP
+   ====================== */
+.back-top {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  background: #2b9cff;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: none;
+  transition: 0.3s;
+}
+
+.back-top:hover {
+  background: #187acc;
+}
+
+window.onscroll = () => {
+  const btn = document.getElementById("backTop");
+  if (btn) btn.style.display = window.scrollY > 300 ? "block" : "none";
+};
+
+/* ======================
+         COPYRIGHT
+   ====================== */
+.copyright {
+  text-align: center;
+  padding-bottom: 18px;
+  padding-top: 10px;
+  color: #a7cbe8;
+}
+
+/* ======================
+      DARK MODE
+   ====================== */
+body.dark-mode .site-footer {
+  background: #000c1c;
+}
+
+body.dark-mode .footer-col a {
+  color: #bbddff;
+}
+
+/* ======================
+     RESPONSIVE MOBILE
+   ====================== */
+@media(max-width: 900px) {
+  .footer-grid {
+    flex-direction: column;
+    text-align: center;
+    gap: 28px;
+  }
+  .footer-col {
+    min-width: 100%;
+  }
+  .social-row {
+    justify-content: center;
+  }
+}
