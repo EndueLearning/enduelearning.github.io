@@ -6,15 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("footer").innerHTML = `
   
-  <!-- Wave SVG -->
-  <div class="footer-wave">
-    <svg viewBox="0 0 1440 320">
-      <path fill="#0A2640" 
-            d="M0,224L60,213.3C120,203,240,181,360,181.3C480,181,600,203,720,186.7C840,171,960,117,1080,122.7C1200,128,1320,192,1380,224L1440,256V0H0Z">
-      </path>
-    </svg>
-  </div>
-
   <footer class="site-footer fade-in">
 
     <div class="footer-grid">
@@ -24,10 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <img src="/assets/images/mascot_footer.png" class="footer-mascot" alt="Mascot">
         <h3>Endue Learning</h3>
         <p>Fun learning anywhere — worksheets, games, activities & simulations for kids.</p>
-
-        <button id="themeToggle" class="theme-toggle">
-          🌙 Dark Mode
-        </button>
       </div>
 
       <!-- Column 2 -->
@@ -96,14 +83,4 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("backTop").addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
-
-  /* DARK MODE TOGGLE */
-  const btn = document.getElementById("themeToggle");
-  btn.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
-    btn.textContent = document.body.classList.contains("dark-mode")
-      ? "☀ Light Mode"
-      : "🌙 Dark Mode";
-  });
-
 });
