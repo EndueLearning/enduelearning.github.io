@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {id:10, clue:"The numbers to be added", answer:"ADDENDS", row:13, col:14, dir:"across"}
     ];
 
-  const ROWS = 17, COLS = 21;
+  const ROWS = 21, COLS = 21;
   const grid = Array.from({length:ROWS}, ()=>Array.from({length:COLS}, ()=>null));
 
    // Place words into grid model
