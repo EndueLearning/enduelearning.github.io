@@ -1,13 +1,11 @@
-/* crossword.js
- - lightweight, deterministic crossword for math terms
- - saves to localStorage under 'cw_math_v1'
+/* crossword.js - fixed version
+   - fixes incorrect initial score when no answers entered
+   - smarter moveNext to support vertical typing
+   - robust saved-state handling
 */
 
 document.addEventListener("DOMContentLoaded", () => {
   // WORD LIST (answers are uppercase, underscores allowed for readability)
-  // Each entry: id, clue, answer, row, col, dir ('across'|'down')
-  // grid indexing: row & col start at 0
-  // grid size chosen to fit these words
   const words = [
     {id:1, clue:"Basic operation: add two numbers", answer:"ADDITION", row:0, col:0, dir:"across"},
     {id:2, clue:"Remove a number from another", answer:"SUBTRACTION", row:2, col:0, dir:"across"},
@@ -24,11 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
     {id:13, clue:"Letter that represents a number", answer:"VARIABLE", row:4, col:7, dir:"down"}
   ];
 
-  // grid size choose conservative: rows 16, cols 16
   const ROWS = 16, COLS = 16;
   const grid = Array.from({length:ROWS}, ()=>Array.from({length:COLS}, ()=>null));
 
-  // place words
+  // Place words into grid model
   words.forEach(w=>{
     const ans = w.answer.replace(/\s+/g,'').toUpperCase();
     if (w.dir === 'across') {
@@ -46,27 +43,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Helper: build HTML grid
+  // Build DOM grid
   const crosswordDiv = document.getElementById("crossword");
+  crosswordDiv.innerHTML = ""; // ensure clean
   const gridEl = document.createElement("div");
   gridEl.className = "cw-grid";
-  // grid size determines grid-template
   gridEl.style.gridTemplateColumns = `repeat(${COLS}, auto)`;
 
-  // numbering: first cell of each word gets number
+  // numbering
   const numberMap = {};
   let num = 1;
-  words.forEach(w=>{
-    numberMap[w.id] = num++;
-  });
+  words.forEach(w => numberMap[w.id] = num++);
 
-  // create cells
   for (let r=0;r<ROWS;r++){
     for (let c=0;c<COLS;c++){
       const cellData = grid[r][c];
       const cell = document.createElement("div");
       cell.className = "cw-cell";
-      // black cell for empty
+
       if (!cellData){
         cell.classList.add("black");
         cell.setAttribute("aria-hidden","true");
@@ -74,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         continue;
       }
 
-      // if this cell is start of any word? find id whose start matches coordinates
+      // number if this is start of a word
       const starts = words.filter(w=>{
         if (w.dir === 'across') return (w.row===r && w.col===c);
         return (w.dir==='down' && w.row===r && w.col===c);
@@ -96,8 +90,12 @@ document.addEventListener("DOMContentLoaded", () => {
       input.spellcheck = false;
       input.addEventListener("input", onInput);
       input.addEventListener("keydown", onKeyDown);
+      input.addEventListener("focus", ()=> {
+        // when user focuses a cell, store preferred direction based on context
+        const preferred = detectPreferredDirection(r, c);
+        input.dataset.pref = preferred; // 'across' or 'down'
+      });
       cell.appendChild(input);
-
       gridEl.appendChild(cell);
     }
   }
@@ -107,6 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // build clue lists
   const acrossList = document.getElementById("acrossList");
   const downList = document.getElementById("downList");
+  acrossList.innerHTML = ""; downList.innerHTML = "";
   words.forEach(w=>{
     const li = document.createElement("li");
     li.innerHTML = `<strong>${numberMap[w.id]}.</strong> ${w.clue}`;
@@ -114,84 +113,146 @@ document.addEventListener("DOMContentLoaded", () => {
     else downList.appendChild(li);
   });
 
-  // restore saved
+  // saved-state handling
   const STORAGE_KEY = "cw_math_v1";
-  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
-  if (saved && saved.cells) {
-    // set inputs
+  const rawSaved = localStorage.getItem(STORAGE_KEY);
+  let saved = {};
+  try { saved = JSON.parse(rawSaved || "{}"); } catch(e){ saved = {}; }
+
+  if (saved && saved.cells && Object.keys(saved.cells).length > 0) {
+    // populate inputs
     document.querySelectorAll(".cw-cell input").forEach(inp=>{
       const r = inp.dataset.row, c = inp.dataset.col;
       const key = `${r},${c}`;
       if (saved.cells[key]) inp.value = saved.cells[key];
     });
     document.getElementById("savedStatus").textContent = "Yes";
+  } else {
+    // ensure empty
+    document.querySelectorAll(".cw-cell input").forEach(inp=> inp.value = "");
+    document.getElementById("savedStatus").textContent = "No";
   }
 
-  // input handlers
+  // Input handlers
   function onInput(e){
-    const val = (e.target.value || "").toUpperCase().replace(/[^A-Z]/g,'');
-    e.target.value = val;
-    // auto move to next cell in the same word if exists
-    moveNext(e.target.dataset.row|0, e.target.dataset.col|0);
+    const t = e.target;
+    const before = t.value;
+    const val = (before || "").toUpperCase().replace(/[^A-Z]/g,'');
+    t.value = val;
+    // move to next cell based on preferred direction or smart detection
+    const r = +t.dataset.row, c = +t.dataset.col;
+    const preferred = t.dataset.pref || detectPreferredDirection(r,c);
+    moveNextSmart(r, c, preferred);
     saveState();
   }
 
   function onKeyDown(e){
-    const row = e.target.dataset.row|0, col = e.target.dataset.col|0;
-    if (e.key === "ArrowRight") { e.preventDefault(); focusCell(row, col+1); }
-    else if (e.key === "ArrowLeft") { e.preventDefault(); focusCell(row, col-1); }
-    else if (e.key === "ArrowUp") { e.preventDefault(); focusCell(row-1, col); }
-    else if (e.key === "ArrowDown") { e.preventDefault(); focusCell(row+1, col); }
+    const t = e.target;
+    const r = +t.dataset.row, c = +t.dataset.col;
+    if (e.key === "ArrowRight") { e.preventDefault(); focusCell(r, c+1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); focusCell(r, c-1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); focusCell(r-1, c); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); focusCell(r+1, c); }
     else if (e.key === "Backspace") {
-      if (!e.target.value) {
-        focusCell(row, col-1);
-      } else {
-        // clear current
+      // if current is empty, move to previous
+      if (!t.value) {
+        e.preventDefault();
+        // move backward in preferred direction
+        const preferred = t.dataset.pref || detectPreferredDirection(r,c);
+        movePrevSmart(r, c, preferred);
       }
     }
   }
 
+  // Focus helper
   function focusCell(r,c){
     const el = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
     if (el) el.focus();
   }
 
-  function moveNext(r,c){
-    // find next non-black cell in row (to the right)
-    for (let cc = c+1; cc<COLS; cc++){
-      if (grid[r][cc]) { focusCell(r,cc); return; }
+  // Smart next: tries next cell in preferred direction, else finds next available
+  function moveNextSmart(r,c, preferred) {
+    // normalize
+    preferred = preferred === 'down' ? 'down' : 'across';
+    if (preferred === 'across') {
+      // try right
+      for (let cc = c+1; cc<COLS; cc++){
+        if (grid[r][cc]) { focusCell(r,cc); return; }
+      }
+      // fallback: try down from current
+      for (let rr = r+1; rr<ROWS; rr++){
+        if (grid[rr][c]) { focusCell(rr,c); return; }
+      }
+    } else {
+      // preferred down
+      for (let rr = r+1; rr<ROWS; rr++){
+        if (grid[rr][c]) { focusCell(rr,c); return; }
+      }
+      // fallback to right
+      for (let cc = c+1; cc<COLS; cc++){
+        if (grid[r][cc]) { focusCell(r,cc); return; }
+      }
     }
-    // else try next row same col
-    for (let rr = r; rr<ROWS; rr++){
-      if (grid[rr][0]) { focusCell(rr,0); return; }
+    // if none found, do nothing
+  }
+
+  function movePrevSmart(r,c, preferred) {
+    preferred = preferred === 'down' ? 'down' : 'across';
+    if (preferred === 'across') {
+      for (let cc = c-1; cc>=0; cc--){
+        if (grid[r][cc]) { focusCell(r,cc); return; }
+      }
+      for (let rr = r-1; rr>=0; rr--){
+        if (grid[rr][c]) { focusCell(rr,c); return; }
+      }
+    } else {
+      for (let rr = r-1; rr>=0; rr--){
+        if (grid[rr][c]) { focusCell(rr,c); return; }
+      }
+      for (let cc = c-1; cc>=0; cc--){
+        if (grid[r][cc]) { focusCell(r,cc); return; }
+      }
     }
   }
 
-  // check answers
-  document.getElementById("checkBtn").addEventListener("click", ()=>{
-    checkAnswers(false);
-  });
+  // Detect preferred direction for a given cell:
+  // - if there's a non-black cell to the right => across exists
+  // - if there's a non-black cell below => down exists
+  // Decision heuristic:
+  //  - If only across exists -> across
+  //  - If only down exists -> down
+  //  - If both exist -> prefer across unless left is black and above exists (likely start of down)
+  function detectPreferredDirection(r,c) {
+    const hasRight = (c+1<COLS) && !!grid[r][c+1];
+    const hasLeft = (c-1>=0) && !!grid[r][c-1];
+    const hasDown = (r+1<ROWS) && !!grid[r+1][c];
+    const hasUp = (r-1>=0) && !!grid[r-1][c];
 
-  document.getElementById("revealBtn").addEventListener("click", ()=>{
-    revealAnswers();
-  });
+    if (hasRight && !hasDown) return 'across';
+    if (hasDown && !hasRight) return 'down';
+    if (hasRight && hasDown) {
+      // if this is likely starting cell of down word (no left but has up) prefer down
+      if (!hasLeft && hasDown) return 'down';
+      return 'across';
+    }
+    // default
+    return hasRight ? 'across' : (hasDown ? 'down' : 'across');
+  }
 
-  document.getElementById("clearBtn").addEventListener("click", ()=>{
+  // Buttons
+  document.getElementById("checkBtn").addEventListener("click", ()=> checkAnswers(false));
+  document.getElementById("revealBtn").addEventListener("click", ()=> revealAnswers());
+  document.getElementById("clearBtn").addEventListener("click", ()=> {
     if (!confirm("Clear all answers?")) return;
     document.querySelectorAll(".cw-cell input").forEach(inp => inp.value="");
-    saveState();
-    document.getElementById("savedStatus").textContent = "No";
-    // remove classes
     document.querySelectorAll(".cw-cell").forEach(c=>c.classList.remove("correct","wrong"));
+    localStorage.removeItem(STORAGE_KEY);
+    document.getElementById("savedStatus").textContent = "No";
   });
+  document.getElementById("printBtn").addEventListener("click", ()=> window.print());
 
-  document.getElementById("printBtn").addEventListener("click", ()=>{
-    window.print();
-  });
-
-  // show/hide solution
+  // Reveal solution: fill letters (and save)
   function revealAnswers(){
-    // fill each cell with its char
     words.forEach(w=>{
       const ans = w.answer.replace(/\s+/g,'').toUpperCase();
       for (let i=0;i<ans.length;i++){
@@ -202,25 +263,40 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     saveState();
-    checkAnswers(true);
+    // mark all as correct
+    words.forEach(w=>{
+      const ans = w.answer.replace(/\s+/g,'').toUpperCase();
+      for (let i=0;i<ans.length;i++){
+        const r = w.row + (w.dir==='down'?i:0);
+        const c = w.col + (w.dir==='across'?i:0);
+        const cell = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`).parentElement;
+        if (cell) cell.classList.add("correct");
+      }
+    });
   }
 
+  // Check answers: only count a word as correct when ALL its letters match
   function checkAnswers(showAll){
-    // For each word, verify letters
-    // Reset classes
+    // clear classes
     document.querySelectorAll(".cw-cell").forEach(c=>c.classList.remove("correct","wrong"));
-    let total=0, correct=0;
-    // check across
+
+    let total = 0;
+    let correct = 0;
+
     words.forEach(w=>{
       const ans = w.answer.replace(/\s+/g,'').toUpperCase();
       let wordCorrect = true;
+      let anyLetterEntered = false;
+
       for (let i=0;i<ans.length;i++){
         const r = w.row + (w.dir==='down'?i:0);
         const c = w.col + (w.dir==='across'?i:0);
         const inp = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
-        const val = inp ? (inp.value || "") : "";
+        const val = inp ? (inp.value || "").toUpperCase() : "";
+        if (val) anyLetterEntered = true;
         if (val !== ans[i]) wordCorrect = false;
       }
+
       total++;
       if (wordCorrect) {
         correct++;
@@ -229,26 +305,32 @@ document.addEventListener("DOMContentLoaded", () => {
           const r = w.row + (w.dir==='down'?i:0);
           const c = w.col + (w.dir==='across'?i:0);
           const cell = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`).parentElement;
-          cell.classList.add("correct");
+          if (cell) cell.classList.add("correct");
         }
       } else {
-        // optionally mark wrong cells
-        for (let i=0;i<ans.length;i++){
-          const r = w.row + (w.dir==='down'?i:0);
-          const c = w.col + (w.dir==='across'?i:0);
-          const inp = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
-          const cell = inp ? inp.parentElement : null;
-          if (!cell) continue;
-          const val = inp.value || "";
-          if (val && val !== ans[i]) cell.classList.add("wrong");
-          if (showAll && inp) inp.value = ans[i];
+        // mark wrong cells only if some letters entered for that word
+        if (anyLetterEntered) {
+          for (let i=0;i<ans.length;i++){
+            const r = w.row + (w.dir==='down'?i:0);
+            const c = w.col + (w.dir==='across'?i:0);
+            const inp = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
+            const cell = inp ? inp.parentElement : null;
+            if (!cell) continue;
+            const val = (inp.value || "").toUpperCase();
+            if (val && val !== ans[i]) cell.classList.add("wrong");
+          }
         }
       }
     });
+
+    // If no letters entered anywhere, report 0/total rather than misleading positive
+    const anyFilled = Array.from(document.querySelectorAll(".cw-cell input")).some(inp => inp.value);
+    if (!anyFilled) correct = 0; // enforce 0 when all empty
+
     alert(`You got ${correct} out of ${total} words correct.`);
   }
 
-  // save state to localStorage
+  // Save to localStorage
   function saveState(){
     const cells = {};
     document.querySelectorAll(".cw-cell input").forEach(inp=>{
@@ -256,11 +338,16 @@ document.addEventListener("DOMContentLoaded", () => {
       const key = `${r},${c}`;
       if (inp.value) cells[key] = inp.value.toUpperCase();
     });
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({cells}));
-    document.getElementById("savedStatus").textContent = "Yes";
+    if (Object.keys(cells).length > 0) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({cells}));
+      document.getElementById("savedStatus").textContent = "Yes";
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+      document.getElementById("savedStatus").textContent = "No";
+    }
   }
 
-  // show back button on scroll
+  // Back-to-top visibility (if footer loader uses id backTop)
   const backBtn = document.getElementById("backTop");
   window.addEventListener("scroll", () => {
     if (!backBtn) return;
