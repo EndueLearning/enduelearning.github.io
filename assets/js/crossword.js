@@ -1,0 +1,271 @@
+/* crossword.js
+ - lightweight, deterministic crossword for math terms
+ - saves to localStorage under 'cw_math_v1'
+*/
+
+document.addEventListener("DOMContentLoaded", () => {
+  // WORD LIST (answers are uppercase, underscores allowed for readability)
+  // Each entry: id, clue, answer, row, col, dir ('across'|'down')
+  // grid indexing: row & col start at 0
+  // grid size chosen to fit these words
+  const words = [
+    {id:1, clue:"Basic operation: add two numbers", answer:"ADDITION", row:0, col:0, dir:"across"},
+    {id:2, clue:"Remove a number from another", answer:"SUBTRACTION", row:2, col:0, dir:"across"},
+    {id:3, clue:"Repeated addition", answer:"MULTIPLICATION", row:4, col:0, dir:"across"},
+    {id:4, clue:"Share or split numbers", answer:"DIVISION", row:6, col:0, dir:"across"},
+    {id:5, clue:"Power of a number", answer:"EXPONENT", row:8, col:0, dir:"across"},
+    {id:6, clue:"Square root symbol or operation", answer:"SQUAREROOT", row:10, col:0, dir:"across"},
+    {id:7, clue:"n! — product of all positive integers to n", answer:"FACTORIAL", row:0, col:11, dir:"down"},
+    {id:8, clue:"Remainder operation", answer:"MODULO", row:3, col:11, dir:"down"},
+    {id:9, clue:"Part of a whole (a/b)", answer:"FRACTION", row:6, col:11, dir:"down"},
+    {id:10, clue:"Numbers with decimal point", answer:"DECIMAL", row:9, col:8, dir:"across"},
+    {id:11, clue:"Symbol for per hundred", answer:"PERCENT", row:12, col:0, dir:"across"},
+    {id:12, clue:"Mathematical sentence with equals", answer:"EQUATION", row:14, col:0, dir:"across"},
+    {id:13, clue:"Letter that represents a number", answer:"VARIABLE", row:4, col:7, dir:"down"}
+  ];
+
+  // grid size choose conservative: rows 16, cols 16
+  const ROWS = 16, COLS = 16;
+  const grid = Array.from({length:ROWS}, ()=>Array.from({length:COLS}, ()=>null));
+
+  // place words
+  words.forEach(w=>{
+    const ans = w.answer.replace(/\s+/g,'').toUpperCase();
+    if (w.dir === 'across') {
+      for (let i=0;i<ans.length;i++){
+        const r = w.row, c = w.col + i;
+        grid[r][c] = grid[r][c] || {char: ans[i], entries:[]};
+        grid[r][c].entries.push(w.id);
+      }
+    } else {
+      for (let i=0;i<ans.length;i++){
+        const r = w.row + i, c = w.col;
+        grid[r][c] = grid[r][c] || {char: ans[i], entries:[]};
+        grid[r][c].entries.push(w.id);
+      }
+    }
+  });
+
+  // Helper: build HTML grid
+  const crosswordDiv = document.getElementById("crossword");
+  const gridEl = document.createElement("div");
+  gridEl.className = "cw-grid";
+  // grid size determines grid-template
+  gridEl.style.gridTemplateColumns = `repeat(${COLS}, auto)`;
+
+  // numbering: first cell of each word gets number
+  const numberMap = {};
+  let num = 1;
+  words.forEach(w=>{
+    numberMap[w.id] = num++;
+  });
+
+  // create cells
+  for (let r=0;r<ROWS;r++){
+    for (let c=0;c<COLS;c++){
+      const cellData = grid[r][c];
+      const cell = document.createElement("div");
+      cell.className = "cw-cell";
+      // black cell for empty
+      if (!cellData){
+        cell.classList.add("black");
+        cell.setAttribute("aria-hidden","true");
+        gridEl.appendChild(cell);
+        continue;
+      }
+
+      // if this cell is start of any word? find id whose start matches coordinates
+      const starts = words.filter(w=>{
+        if (w.dir === 'across') return (w.row===r && w.col===c);
+        return (w.dir==='down' && w.row===r && w.col===c);
+      });
+      if (starts.length) {
+        const numSpan = document.createElement("span");
+        numSpan.className = "cw-number";
+        numSpan.textContent = numberMap[starts[0].id];
+        cell.appendChild(numSpan);
+      }
+
+      const input = document.createElement("input");
+      input.setAttribute("maxlength", "1");
+      input.setAttribute("data-row", r);
+      input.setAttribute("data-col", c);
+      input.setAttribute("aria-label", `Crossword cell r${r}c${c}`);
+      input.autocapitalize = "characters";
+      input.autocomplete = "off";
+      input.spellcheck = false;
+      input.addEventListener("input", onInput);
+      input.addEventListener("keydown", onKeyDown);
+      cell.appendChild(input);
+
+      gridEl.appendChild(cell);
+    }
+  }
+
+  crosswordDiv.appendChild(gridEl);
+
+  // build clue lists
+  const acrossList = document.getElementById("acrossList");
+  const downList = document.getElementById("downList");
+  words.forEach(w=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<strong>${numberMap[w.id]}.</strong> ${w.clue}`;
+    if (w.dir === 'across') acrossList.appendChild(li);
+    else downList.appendChild(li);
+  });
+
+  // restore saved
+  const STORAGE_KEY = "cw_math_v1";
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  if (saved && saved.cells) {
+    // set inputs
+    document.querySelectorAll(".cw-cell input").forEach(inp=>{
+      const r = inp.dataset.row, c = inp.dataset.col;
+      const key = `${r},${c}`;
+      if (saved.cells[key]) inp.value = saved.cells[key];
+    });
+    document.getElementById("savedStatus").textContent = "Yes";
+  }
+
+  // input handlers
+  function onInput(e){
+    const val = (e.target.value || "").toUpperCase().replace(/[^A-Z]/g,'');
+    e.target.value = val;
+    // auto move to next cell in the same word if exists
+    moveNext(e.target.dataset.row|0, e.target.dataset.col|0);
+    saveState();
+  }
+
+  function onKeyDown(e){
+    const row = e.target.dataset.row|0, col = e.target.dataset.col|0;
+    if (e.key === "ArrowRight") { e.preventDefault(); focusCell(row, col+1); }
+    else if (e.key === "ArrowLeft") { e.preventDefault(); focusCell(row, col-1); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); focusCell(row-1, col); }
+    else if (e.key === "ArrowDown") { e.preventDefault(); focusCell(row+1, col); }
+    else if (e.key === "Backspace") {
+      if (!e.target.value) {
+        focusCell(row, col-1);
+      } else {
+        // clear current
+      }
+    }
+  }
+
+  function focusCell(r,c){
+    const el = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
+    if (el) el.focus();
+  }
+
+  function moveNext(r,c){
+    // find next non-black cell in row (to the right)
+    for (let cc = c+1; cc<COLS; cc++){
+      if (grid[r][cc]) { focusCell(r,cc); return; }
+    }
+    // else try next row same col
+    for (let rr = r; rr<ROWS; rr++){
+      if (grid[rr][0]) { focusCell(rr,0); return; }
+    }
+  }
+
+  // check answers
+  document.getElementById("checkBtn").addEventListener("click", ()=>{
+    checkAnswers(false);
+  });
+
+  document.getElementById("revealBtn").addEventListener("click", ()=>{
+    revealAnswers();
+  });
+
+  document.getElementById("clearBtn").addEventListener("click", ()=>{
+    if (!confirm("Clear all answers?")) return;
+    document.querySelectorAll(".cw-cell input").forEach(inp => inp.value="");
+    saveState();
+    document.getElementById("savedStatus").textContent = "No";
+    // remove classes
+    document.querySelectorAll(".cw-cell").forEach(c=>c.classList.remove("correct","wrong"));
+  });
+
+  document.getElementById("printBtn").addEventListener("click", ()=>{
+    window.print();
+  });
+
+  // show/hide solution
+  function revealAnswers(){
+    // fill each cell with its char
+    words.forEach(w=>{
+      const ans = w.answer.replace(/\s+/g,'').toUpperCase();
+      for (let i=0;i<ans.length;i++){
+        let r = w.row + (w.dir==='down'?i:0);
+        let c = w.col + (w.dir==='across'?i:0);
+        const inp = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
+        if (inp) inp.value = ans[i];
+      }
+    });
+    saveState();
+    checkAnswers(true);
+  }
+
+  function checkAnswers(showAll){
+    // For each word, verify letters
+    // Reset classes
+    document.querySelectorAll(".cw-cell").forEach(c=>c.classList.remove("correct","wrong"));
+    let total=0, correct=0;
+    // check across
+    words.forEach(w=>{
+      const ans = w.answer.replace(/\s+/g,'').toUpperCase();
+      let wordCorrect = true;
+      for (let i=0;i<ans.length;i++){
+        const r = w.row + (w.dir==='down'?i:0);
+        const c = w.col + (w.dir==='across'?i:0);
+        const inp = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
+        const val = inp ? (inp.value || "") : "";
+        if (val !== ans[i]) wordCorrect = false;
+      }
+      total++;
+      if (wordCorrect) {
+        correct++;
+        // mark each cell green
+        for (let i=0;i<ans.length;i++){
+          const r = w.row + (w.dir==='down'?i:0);
+          const c = w.col + (w.dir==='across'?i:0);
+          const cell = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`).parentElement;
+          cell.classList.add("correct");
+        }
+      } else {
+        // optionally mark wrong cells
+        for (let i=0;i<ans.length;i++){
+          const r = w.row + (w.dir==='down'?i:0);
+          const c = w.col + (w.dir==='across'?i:0);
+          const inp = document.querySelector(`.cw-cell input[data-row="${r}"][data-col="${c}"]`);
+          const cell = inp ? inp.parentElement : null;
+          if (!cell) continue;
+          const val = inp.value || "";
+          if (val && val !== ans[i]) cell.classList.add("wrong");
+          if (showAll && inp) inp.value = ans[i];
+        }
+      }
+    });
+    alert(`You got ${correct} out of ${total} words correct.`);
+  }
+
+  // save state to localStorage
+  function saveState(){
+    const cells = {};
+    document.querySelectorAll(".cw-cell input").forEach(inp=>{
+      const r = inp.dataset.row, c = inp.dataset.col;
+      const key = `${r},${c}`;
+      if (inp.value) cells[key] = inp.value.toUpperCase();
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({cells}));
+    document.getElementById("savedStatus").textContent = "Yes";
+  }
+
+  // show back button on scroll
+  const backBtn = document.getElementById("backTop");
+  window.addEventListener("scroll", () => {
+    if (!backBtn) return;
+    if (window.scrollY > 300) backBtn.classList.add("show");
+    else backBtn.classList.remove("show");
+  });
+
+});
