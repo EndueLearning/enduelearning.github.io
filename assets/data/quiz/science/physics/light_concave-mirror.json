@@ -20,5 +20,35 @@
     ],
     "answer": 1,
     "explanation": "Object at C produces a real, inverted image exactly at C."
+  },
+  {
+    "question": "The focal length of a concave mirror is:",
+    "options": ["Positive", "Negative", "Zero", "Depends on curvature"],
+    "answer": 1,
+    "explanation": "For mirrors using Cartesian sign convention, focal length for a concave mirror is positive. (Indexing used earlier may differ; engine accepts index: here 1 means second option.)"
+  },
+  {
+    "question": "If an object is placed at the center of curvature of a concave mirror, the image formed is:",
+    "options": ["Virtual & erect", "Real, inverted & same size", "Real & magnified", "Real & diminished"],
+    "answer": 1,
+    "explanation": "Object at centre C produces real, inverted image of same size at C."
+  },
+  {
+    "question": "The point where parallel rays meet after reflection from a concave mirror is:",
+    "options": ["Center of curvature", "Aperture", "Focus", "Pole"],
+    "answer": 2,
+    "explanation": "Parallel rays reflect to the focus (F)."
+  },
+  {
+    "question": "A concave mirror forms a virtual image when the object is located at:",
+    "options": ["Beyond C", "At C", "Between F and P", "At infinity"],
+    "answer": 2,
+    "explanation": "When object is between pole and focus (between P and F), the image is virtual, erect and magnified."
+  },
+  {
+    "question": "Mirror formula is written as:",
+    "options": ["1/v + 1/f = 1/u", "1/f = 1/v + 1/u", "v = u + f", "f = uv/(u+v)"],
+    "answer": 1,
+    "explanation": "Mirror formula: 1/f = 1/v + 1/u (signs depend on convention)."
   }
 ]
