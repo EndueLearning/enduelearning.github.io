@@ -84,6 +84,7 @@
   width: 26px;
   height: 26px;
   color: #cfe9ff;
+  filter: invert(100%); /* Makes white icons visible on dark footer */      
   transition: 0.3s;
 }
 
