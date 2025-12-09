@@ -21,23 +21,25 @@
     <script src="/assets/js/flashcards.js" defer></script>
     
   </head>
-<body>
 
+<body>
 <div id="header"></div>
 
-<div class="flash-container">
-  <h1>English Antonyms Flash Cards</h1>
+<div class="fc-container">
 
-  <div id="flashCard" class="flash-card">
-      <div class="flash-card-inner">
-        <div class="flash-card-front" id="cardFront"></div>
-        <div class="flash-card-back" id="cardBack"></div>
-      </div>
+  <h1 class="fc-title">English Antonyms Flash Cards</h1>
+  <div class="fc-progress" id="fcProgress">1 / 10</div>
+
+  <div id="flashCard" class="fc-card">
+    <div class="fc-inner">
+      <div class="fc-front" id="cardFront"></div>
+      <div class="fc-back" id="cardBack"></div>
+    </div>
   </div>
 
-  <div class="nav-arrows">
-    <button id="prevCard" class="arrow-btn">⟵</button>
-    <button id="nextCard" class="arrow-btn">⟶</button>
+  <div class="fc-nav">
+    <button id="prevCard" class="fc-btn">⟵</button>
+    <button id="nextCard" class="fc-btn">⟶</button>
   </div>
 
 </div>
