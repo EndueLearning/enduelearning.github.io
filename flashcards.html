@@ -17,10 +17,32 @@
     <!-- Header + Footer Scripts -->
     <script src="/assets/js/header.js" defer></script>
     <script src="/assets/js/footer.js" defer></script>
+
+    <script src="/assets/js/flashcards.js" defer></script>
     
   </head>
-  <body>
-    <div id='header'>
-      
-    </div>
-    <main class='container'><h1>Flash Cards</h1><p>Flash Cards coming soon!!.</p></main><div id='footer'></div></body></html>
+<body>
+
+<div id="header"></div>
+
+<div class="fc-container">
+  <h1>English Flash Cards — Antonyms</h1>
+
+  <div class="fc-card" id="flashCard">
+      <div class="fc-front" id="frontText"></div>
+      <div class="fc-back" id="backText"></div>
+  </div>
+
+  <div class="fc-controls">
+    <button id="prevBtn">⟵ Previous</button>
+    <button id="flipBtn">Flip</button>
+    <button id="nextBtn">Next ⟶</button>
+  </div>
+
+  <button id="shuffleBtn" class="fc-shuffle">🔀 Shuffle Cards</button>
+</div>
+
+<div id="footer"></div>
+
+</body>
+</html>
