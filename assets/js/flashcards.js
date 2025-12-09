@@ -1,64 +1,60 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // SAMPLE DATA — add more anytime
+  // --- Antonym Data ---
   const cards = [
-    { word: "Hot", antonym: "Cold" },
-    { word: "Brave", antonym: "Cowardly" },
-    { word: "Early", antonym: "Late" },
-    { word: "Happy", antonym: "Sad" },
-    { word: "Strong", antonym: "Weak" },
-    { word: "Generous", antonym: "Stingy" },
-    { word: "Accept", antonym: "Reject" },
-    { word: "Calm", antonym: "Agitated" },
-    { word: "Increase", antonym: "Decrease" },
-    { word: "Wide", antonym: "Narrow" }
+    { front: "Hot", back: "Cold" },
+    { front: "Brave", back: "Cowardly" },
+    { front: "Early", back: "Late" },
+    { front: "Strong", back: "Weak" },
+    { front: "Accept", back: "Reject" },
+    { front: "Calm", back: "Agitated" },
+    { front: "Increase", back: "Decrease" },
+    { front: "Wide", back: "Narrow" },
+    { front: "Happy", back: "Sad" },
+    { front: "Generous", back: "Stingy" }
   ];
 
   let index = 0;
 
-  const cardEl = document.getElementById("flashCard");
-  const frontText = document.getElementById("frontText");
-  const backText = document.getElementById("backText");
+  const cardBox = document.getElementById("flashCard");
+  const front = document.getElementById("cardFront");
+  const back = document.getElementById("cardBack");
 
-  const prevBtn = document.getElementById("prevBtn");
-  const nextBtn = document.getElementById("nextBtn");
-  const flipBtn = document.getElementById("flipBtn");
-  const shuffleBtn = document.getElementById("shuffleBtn");
+  const prevBtn = document.getElementById("prevCard");
+  const nextBtn = document.getElementById("nextCard");
 
   function loadCard() {
     const c = cards[index];
-    frontText.textContent = c.word;
-    backText.textContent = c.antonym;
-    cardEl.classList.remove("flipped");
+    front.textContent = c.front;
+    back.textContent = c.back;
+    cardBox.classList.remove("flipped");
   }
 
-  /* Flip Card */
-  flipBtn.addEventListener("click", () => {
-    cardEl.classList.toggle("flipped");
+  // Flip card on tap
+  cardBox.addEventListener("click", () => {
+    cardBox.classList.toggle("flipped");
   });
 
-  cardEl.addEventListener("click", () => {
-    cardEl.classList.toggle("flipped");
-  });
-
-  /* Next / Prev */
+  // Next card
   nextBtn.addEventListener("click", () => {
     index = (index + 1) % cards.length;
     loadCard();
   });
 
+  // Previous card
   prevBtn.addEventListener("click", () => {
     index = (index - 1 + cards.length) % cards.length;
     loadCard();
   });
 
-  /* Shuffle */
-  shuffleBtn.addEventListener("click", () => {
-    cards.sort(() => Math.random() - 0.5);
-    index = 0;
-    loadCard();
+  // Swipe support (mobile)
+  let startX = 0;
+  cardBox.addEventListener("touchstart", e => startX = e.changedTouches[0].clientX);
+  cardBox.addEventListener("touchend", e => {
+    let endX = e.changedTouches[0].clientX;
+    if (endX - startX > 50) prevBtn.click();
+    if (startX - endX > 50) nextBtn.click();
   });
 
-  // Load first card
   loadCard();
 });
