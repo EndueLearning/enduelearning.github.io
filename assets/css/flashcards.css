@@ -3,74 +3,96 @@ body {
   font-family: Poppins, sans-serif;
 }
 
-.fc-container {
+/* Container */
+.flash-container {
   width: 90%;
-  max-width: 700px;
-  margin: 50px auto;
+  max-width: 600px;
+  margin: 40px auto;
   text-align: center;
 }
 
-h1 {
+.flash-container h1 {
   color: #0a2640;
   margin-bottom: 20px;
 }
 
-.fc-card {
-  width: 300px;
-  height: 180px;
-  margin: 20px auto;
+/* Flash Card Box */
+.flash-card {
+  width: 320px;
+  height: 200px;
+  margin: 25px auto;
   perspective: 1000px;
+  cursor: pointer;
 }
 
-.fc-card > div {
+.flash-card-inner {
   width: 100%;
   height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .6s ease;
+}
+
+/* Front / Back faces */
+.flash-card-front, .flash-card-back {
   position: absolute;
-  backface-visibility: hidden;
+  width: 100%;
+  height: 100%;
   border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 28px;
+  backface-visibility: hidden;
+  font-size: 30px;
   padding: 15px;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  transition: transform 0.6s;
+  font-weight: 600;
 }
 
-.fc-front {
+.flash-card-front {
   background: #4b7bff;
   color: #fff;
 }
 
-.fc-back {
+.flash-card-back {
   background: #3ecf8e;
-  transform: rotateY(180deg);
   color: #fff;
-}
-
-.fc-card.flipped .fc-front {
   transform: rotateY(180deg);
 }
 
-.fc-card.flipped .fc-back {
-  transform: rotateY(360deg);
+/* Flip class */
+.flash-card.flipped .flash-card-inner {
+  transform: rotateY(180deg);
 }
 
-/* Buttons */
-.fc-controls button,
-.fc-shuffle {
-  margin: 10px 8px;
-  padding: 10px 18px;
-  font-size: 16px;
+/* Navigation Arrows */
+.nav-arrows {
+  margin-top: 15px;
+}
+
+.arrow-btn {
+  font-size: 22px;
+  padding: 8px 18px;
   border-radius: 8px;
   border: none;
-  cursor: pointer;
   background: #0a2640;
-  color: #fff;
-  transition: 0.3s;
+  color: white;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: .3s;
 }
 
-.fc-controls button:hover,
-.fc-shuffle:hover {
+.arrow-btn:hover {
   background: #2b9cff;
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+  .flash-card {
+    width: 260px !important;
+    height: 170px !important;
+  }
+  .flash-card-front, .flash-card-back {
+    font-size: 24px;
+  }
 }
