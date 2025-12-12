@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Solar System Simulation</title>
-
 <style>
   body {
     margin: 0;
-    background: radial-gradient(circle, #000010, #000000);
+    background: #000;
+    font-family: Arial, sans-serif;
     overflow: hidden;
-    font-family: Arial;
   }
 
   .solar-system {
@@ -18,200 +15,157 @@
     height: 100vh;
   }
 
-  /* ----- SUN ----- */
   .sun {
     position: absolute;
-    width: 140px;
-    height: 140px;
-    background: url("https://raw.githubusercontent.com/hjtcn/planets-assets/main/sun.jpg");
-    background-size: cover;
+    top: 50%; left: 50%;
+    width: 120px; height: 120px;
+    margin-left: -60px; margin-top: -60px;
+    background: radial-gradient(circle, yellow, orange, red);
     border-radius: 50%;
-    top: 50%; 
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 60px yellow;
+    box-shadow: 0 0 45px yellow;
   }
 
-  /* ----- ORBITS (ELLIPTICAL) ----- */
   .orbit {
     position: absolute;
     top: 50%; left: 50%;
-    border: 1px dashed rgba(255,255,255,0.1);
+    border: 1px dashed rgba(255,255,255,0.2);
     border-radius: 50%;
-    transform-origin: center center;
+    transform-origin: center;
   }
 
-  /* ----- PLANET CONTAINER ----- */
   .planet-container {
     position: absolute;
-    top: 50%; left: 0%;
+    top: 50%; left: 0;
     transform: translate(-50%, -50%);
-    transition: transform 0.2s ease-in-out;
-  }
-
-  .planet-container:hover {
-    transform: translate(-50%, -50%) scale(1.8);
-    z-index: 20;
   }
 
   .planet {
     border-radius: 50%;
-    background-size: cover;
-    background-position: center;
   }
 
-  /* Saturn Rings */
-  .ring {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80px; height: 25px;
-    background: url("https://raw.githubusercontent.com/hjtcn/planets-assets/main/saturn_rings.png");
-    background-size: cover;
-    pointer-events: none;
+  .label {
+    color: white;
+    font-size: 12px;
+    margin-top: 5px;
+    text-align: center;
   }
 
   /* Hover Info Box */
   .info-box {
     position: fixed;
-    right: 20px; top: 20px;
+    top: 20px;
+    right: 20px;
     width: 260px;
     padding: 15px;
-    background: rgba(0,0,0,0.85);
-    border-radius: 10px;
+    background: rgba(0,0,0,0.8);
     color: white;
-    border: 1px solid #444;
+    border-radius: 10px;
     display: none;
+    border: 1px solid #444;
   }
 
   .info-box h3 {
-    margin: 0 0 10px 0;
+    margin: 0;
+    font-size: 18px;
     color: #ffd700;
   }
 </style>
 </head>
 
 <body>
-
 <div class="solar-system">
   <div class="sun"></div>
 
-  <!-- ************** PLANETS ************** -->
-
-  <!-- MERCURY -->
-  <div class="orbit" style="width:180px;height:120px;margin-left:-90px;margin-top:-60px;">
-    <div class="planet-container" 
-         data-info="Mercury|4,879 km|58 million km|88 days|59 days|Smallest planet">
-      <div class="planet" 
-           style="width:14px;height:14px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/mercury.jpg');">
-      </div>
+  <!-- Planet Orbits + Containers -->
+  <div class="orbit" style="width:160px;height:160px;margin-left:-80px;margin-top:-80px;animation-duration:4s;">
+    <div class="planet-container" data-info="Mercury|4,879 km|58 million km|88 days|Smallest planet">
+      <div class="planet" style="width:10px;height:10px;background:gray;"></div>
+      <div class="label">Mercury</div>
     </div>
   </div>
 
-  <!-- VENUS -->
-  <div class="orbit" style="width:260px;height:160px;margin-left:-130px;margin-top:-80px;">
-    <div class="planet-container" 
-         data-info="Venus|12,104 km|108 million km|225 days|243 days|Hottest planet">
-      <div class="planet" 
-           style="width:24px;height:24px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/venus.jpg');">
-      </div>
+  <div class="orbit" style="width:220px;height:220px;margin-left:-110px;margin-top:-110px;animation-duration:7s;">
+    <div class="planet-container" data-info="Venus|12,104 km|108 million km|225 days|Hottest planet">
+      <div class="planet" style="width:18px;height:18px;background:#e1b469;"></div>
+      <div class="label">Venus</div>
     </div>
   </div>
 
-  <!-- EARTH -->
-  <div class="orbit" style="width:340px;height:200px;margin-left:-170px;margin-top:-100px;">
-    <div class="planet-container" 
-         data-info="Earth|12,742 km|150 million km|365 days|24 hours|Only known life planet">
-      <div class="planet" 
-           style="width:26px;height:26px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/earth.jpg');">
-      </div>
+  <div class="orbit" style="width:300px;height:300px;margin-left:-150px;margin-top:-150px;animation-duration:10s;">
+    <div class="planet-container" data-info="Earth|12,742 km|150 million km|365 days|Our home planet">
+      <div class="planet" style="width:20px;height:20px;background:blue;"></div>
+      <div class="label">Earth</div>
     </div>
   </div>
 
-  <!-- MARS -->
-  <div class="orbit" style="width:420px;height:250px;margin-left:-210px;margin-top:-125px;">
-    <div class="planet-container" 
-         data-info="Mars|6,779 km|228 million km|687 days|24.6 hrs|The red planet">
-      <div class="planet" 
-           style="width:18px;height:18px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/mars.jpg');">
-      </div>
+  <div class="orbit" style="width:360px;height:360px;margin-left:-180px;margin-top:-180px;animation-duration:12s;">
+    <div class="planet-container" data-info="Mars|6,779 km|228 million km|687 days|The red planet">
+      <div class="planet" style="width:14px;height:14px;background:red;"></div>
+      <div class="label">Mars</div>
     </div>
   </div>
 
-  <!-- JUPITER -->
-  <div class="orbit" style="width:550px;height:290px;margin-left:-275px;margin-top:-145px;">
-    <div class="planet-container" 
-         data-info="Jupiter|139,820 km|778 million km|12 years|10 hrs|Largest planet">
-      <div class="planet" 
-           style="width:55px;height:55px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/jupiter.jpg');">
-      </div>
+  <div class="orbit" style="width:440px;height:440px;margin-left:-220px;margin-top:-220px;animation-duration:18s;">
+    <div class="planet-container" data-info="Jupiter|139,820 km|778 million km|12 years|Largest planet">
+      <div class="planet" style="width:40px;height:40px;background:orange;"></div>
+      <div class="label">Jupiter</div>
     </div>
   </div>
 
-  <!-- SATURN -->
-  <div class="orbit" style="width:680px;height:330px;margin-left:-340px;margin-top:-165px;">
-    <div class="planet-container" 
-         data-info="Saturn|116,460 km|1.4 billion km|29 years|10.7 hrs|Planet with rings">
-      <div class="planet" 
-           style="width:45px;height:45px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/saturn.jpg');">
-      </div>
-      <div class="ring"></div>
+  <div class="orbit" style="width:520px;height:520px;margin-left:-260px;margin-top:-260px;animation-duration:22s;">
+    <div class="planet-container" data-info="Saturn|116,460 km|1.4 billion km|29 years|Has beautiful rings">
+      <div class="planet" style="width:38px;height:38px;background:#d2b48c;"></div>
+      <div class="label">Saturn</div>
     </div>
   </div>
 
-  <!-- URANUS -->
-  <div class="orbit" style="width:760px;height:360px;margin-left:-380px;margin-top:-180px;">
-    <div class="planet-container" 
-         data-info="Uranus|50,724 km|2.9 billion km|84 years|17 hours|Ice giant">
-      <div class="planet" 
-           style="width:32px;height:32px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/uranus.jpg');">
-      </div>
+  <div class="orbit" style="width:600px;height:600px;margin-left:-300px;margin-top:-300px;animation-duration:26s;">
+    <div class="planet-container" data-info="Uranus|50,724 km|2.9 billion km|84 years|Rotates sideways">
+      <div class="planet" style="width:28px;height:28px;background:lightblue;"></div>
+      <div class="label">Uranus</div>
     </div>
   </div>
 
-  <!-- NEPTUNE -->
-  <div class="orbit" style="width:840px;height:400px;margin-left:-420px;margin-top:-200px;">
-    <div class="planet-container" 
-         data-info="Neptune|49,244 km|4.5 billion km|165 years|16 hours|Farthest planet">
-      <div class="planet" 
-           style="width:32px;height:32px;background-image:url('https://raw.githubusercontent.com/hjtcn/planets-assets/main/neptune.jpg');">
-      </div>
+  <div class="orbit" style="width:680px;height:680px;margin-left:-340px;margin-top:-340px;animation-duration:30s;">
+    <div class="planet-container" data-info="Neptune|49,244 km|4.5 billion km|165 years|Farthest planet">
+      <div class="planet" style="width:28px;height:28px;background:royalblue;"></div>
+      <div class="label">Neptune</div>
     </div>
   </div>
 </div>
 
+<!-- Info Box -->
 <div class="info-box" id="infoBox"></div>
 
 <script>
-  /* ---------- ORBIT ANIMATION (SLOWER) ---------- */
-  document.querySelectorAll(".orbit").forEach((orbit, index) => {
+  // Animate orbits
+  const orbits = document.querySelectorAll(".orbit");
+  orbits.forEach(orbit => {
     orbit.animate(
       [{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }],
       {
-        duration: 15000 + index * 5000,  // Slow speeds
+        duration: parseInt(orbit.style.animationDuration) * 1000,
         iterations: Infinity,
         easing: "linear"
       }
     );
   });
 
-  /* ---------- HOVER INFO BOX ---------- */
+  // Hover Info Box Logic
   const infoBox = document.getElementById("infoBox");
 
   document.querySelectorAll(".planet-container").forEach(planet => {
     planet.addEventListener("mouseenter", () => {
-      const [name, size, distance, orbitTime, rotation, fact] =
-        planet.getAttribute("data-info").split("|");
+      const [name, size, distance, orbitTime, fact] = planet.getAttribute("data-info").split("|");
 
-      infoBox.style.display = "block";
       infoBox.innerHTML = `
         <h3>${name}</h3>
         <p><strong>Size:</strong> ${size}</p>
         <p><strong>Distance from Sun:</strong> ${distance}</p>
-        <p><strong>Revolution Time:</strong> ${orbitTime}</p>
-        <p><strong>Rotation Time:</strong> ${rotation}</p>
-        <p><strong>Fact:</strong> ${fact}</p>
+        <p><strong>Orbit Time:</strong> ${orbitTime}</p>
+        <p><strong>Fun Fact:</strong> ${fact}</p>
       `;
+      infoBox.style.display = "block";
     });
 
     planet.addEventListener("mouseleave", () => {
@@ -221,4 +175,4 @@
 </script>
 
 </body>
-</html>
+</html> 
