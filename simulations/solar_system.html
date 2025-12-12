@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+  body {
+    margin: 0;
+    background: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+  }
+
+  .solar-system {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .sun {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 120px; height: 120px;
+    margin-left: -60px; margin-top: -60px;
+    background: radial-gradient(circle, yellow, orange, red);
+    border-radius: 50%;
+    box-shadow: 0 0 50px yellow;
+  }
+
+  .orbit {
+    position: absolute;
+    top: 50%; left: 50%;
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform-origin: center;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+
+  .planet {
+    position: absolute;
+    top: 50%; left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+  }
+
+  .label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 30px);
+    font-size: 12px;
+    text-align: center;
+  }
+</style>
+</head>
+
+<body>
+<div class="solar-system">
+  <div class="sun"></div>
+
+  <!-- Mercury -->
+  <div class="orbit" style="width: 160px; height: 160px; margin-left:-80px; margin-top:-80px; animation-duration: 4s;">
+    <div class="planet" style="width: 10px; height: 10px; background: gray;"></div>
+    <div class="label">Mercury</div>
+  </div>
+
+  <!-- Venus -->
+  <div class="orbit" style="width: 220px; height: 220px; margin-left:-110px; margin-top:-110px; animation-duration: 7s;">
+    <div class="planet" style="width: 18px; height: 18px; background: #b8860b;"></div>
+    <div class="label">Venus</div>
+  </div>
+
+  <!-- Earth -->
+  <div class="orbit" style="width: 300px; height: 300px; margin-left:-150px; margin-top:-150px; animation-duration: 10s;">
+    <div class="planet" style="width: 20px; height: 20px; background: blue;"></div>
+    <div class="label">Earth</div>
+  </div>
+
+  <!-- Mars -->
+  <div class="orbit" style="width: 360px; height: 360px; margin-left:-180px; margin-top:-180px; animation-duration: 12s;">
+    <div class="planet" style="width: 14px; height: 14px; background: red;"></div>
+    <div class="label">Mars</div>
+  </div>
+
+  <!-- Jupiter -->
+  <div class="orbit" style="width: 440px; height: 440px; margin-left:-220px; margin-top:-220px; animation-duration: 18s;">
+    <div class="planet" style="width: 40px; height: 40px; background: orange;"></div>
+    <div class="label">Jupiter</div>
+  </div>
+
+  <!-- Saturn -->
+  <div class="orbit" style="width: 520px; height: 520px; margin-left:-260px; margin-top:-260px; animation-duration: 22s;">
+    <div class="planet" style="width: 38px; height: 38px; background: #d2b48c;"></div>
+    <div class="label">Saturn</div>
+  </div>
+
+  <!-- Uranus -->
+  <div class="orbit" style="width: 600px; height: 600px; margin-left:-300px; margin-top:-300px; animation-duration: 26s;">
+    <div class="planet" style="width: 28px; height: 28px; background: lightblue;"></div>
+    <div class="label">Uranus</div>
+  </div>
+
+  <!-- Neptune -->
+  <div class="orbit" style="width: 680px; height: 680px; margin-left:-340px; margin-top:-340px; animation-duration: 30s;">
+    <div class="planet" style="width: 28px; height: 28px; background: royalblue;"></div>
+    <div class="label">Neptune</div>
+  </div>
+</div>
+
+<script>
+  // Orbit animation logic
+  const orbits = document.querySelectorAll('.orbit');
+  orbits.forEach(orbit => {
+    orbit.animate(
+      [{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }],
+      {
+        duration: parseInt(orbit.style.animationDuration) * 1000,
+        iterations: Infinity
+      }
+    );
+  });
+</script>
+</body>
+</html>
