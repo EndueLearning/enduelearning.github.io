@@ -1,49 +1,180 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width,initial-scale=1'>
-    <title>Flash Cards</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Flash Cards | Endue Learning</title>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
-    
-    <!-- Main Styles -->
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/assets/css/header.css" />
-    <link rel="stylesheet" href="/assets/css/footer.css" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+<style>
+/* ---------------------------------------------
+   FLASHCARD STYLES (Guaranteed to display)
+--------------------------------------------- */
+body {
+  background: #eef7ff;
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
 
-    <!-- Header + Footer Scripts -->
-    <script src="/assets/js/header.js" defer></script>
-    <script src="/assets/js/footer.js" defer></script>
+.fc-wrapper {
+  margin-top: 60px;
+}
 
-    <script src="/assets/js/flashcards.js" defer></script>
-    
-  </head>
+.fc-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #0a2640;
+}
+
+.fc-progress {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+/* FLASHCARD BOX */
+.flashcard {
+  width: 420px;
+  height: 260px;
+  background: white;
+  margin: auto;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  perspective: 1200px;
+  cursor: pointer;
+}
+
+.fc-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+/* card sides */
+.fc-front,
+.fc-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40px;
+  font-weight: 600;
+}
+
+.fc-front {
+  background: white;
+  color: #0a2640;
+}
+
+.fc-back {
+  background: #4b7bff;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+/* Flipped state */
+.flashcard.flipped .fc-inner {
+  transform: rotateY(180deg);
+}
+
+/* Buttons */
+.fc-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 25px;
+}
+
+.fc-btn {
+  background: #0a2640;
+  color: white;
+  padding: 12px 20px;
+  font-size: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.fc-btn:hover {
+  background: #2b9cff;
+}
+</style>
+</head>
 
 <body>
-<div id="header"></div>
 
-<div class="fc-container">
-
+<div class="fc-wrapper">
   <h1 class="fc-title">English Antonyms Flash Cards</h1>
-  <div class="fc-progress" id="fcProgress">1 / 10</div>
+  <div id="fcProgress" class="fc-progress">1 / 10</div>
 
-  <div id="flashCard" class="fc-card">
+  <!-- FLASHCARD -->
+  <div id="flashcard" class="flashcard">
     <div class="fc-inner">
-      <div class="fc-front" id="cardFront"></div>
-      <div class="fc-back" id="cardBack"></div>
+      <div id="fcFront" class="fc-front"></div>
+      <div id="fcBack" class="fc-back"></div>
     </div>
   </div>
 
-  <div class="fc-nav">
-    <button id="prevCard" class="fc-btn">⟵</button>
-    <button id="nextCard" class="fc-btn">⟶</button>
+  <div class="fc-controls">
+    <button class="fc-btn" id="prevBtn">⟵</button>
+    <button class="fc-btn" id="nextBtn">⟶</button>
   </div>
-
 </div>
 
-<div id="footer"></div>
+<script>
+/* ---------------------------------------------
+   FLASHCARD SCRIPT — FULLY WORKING
+--------------------------------------------- */
+
+const cards = [
+  { front: "Hot", back: "Cold" },
+  { front: "Brave", back: "Cowardly" },
+  { front: "Early", back: "Late" },
+  { front: "Strong", back: "Weak" },
+  { front: "Accept", back: "Reject" },
+  { front: "Calm", back: "Agitated" },
+  { front: "Increase", back: "Decrease" },
+  { front: "Wide", back: "Narrow" },
+  { front: "Happy", back: "Sad" },
+  { front: "Generous", back: "Stingy" }
+];
+
+let index = 0;
+
+const cardBox = document.getElementById("flashcard");
+const front = document.getElementById("fcFront");
+const back = document.getElementById("fcBack");
+const progress = document.getElementById("fcProgress");
+
+function loadCard() {
+  front.textContent = cards[index].front;
+  back.textContent = cards[index].back;
+  progress.textContent = `${index+1} / ${cards.length}`;
+  cardBox.classList.remove("flipped");
+}
+
+cardBox.addEventListener("click", () => {
+  cardBox.classList.toggle("flipped");
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  index = (index + 1) % cards.length;
+  loadCard();
+});
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  index = (index - 1 + cards.length) % cards.length;
+  loadCard();
+});
+
+loadCard();
+</script>
+
 </body>
 </html>
