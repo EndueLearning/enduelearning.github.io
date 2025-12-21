@@ -104,12 +104,15 @@ function draw() {
       ctx.stroke();
     }
 
-    // Label
-    if (teacherMode || hoveredPlanet===p || lockedPlanet===p) {
-      ctx.fillStyle = "white";
-      ctx.font = "12px Arial";
-      ctx.fillText(p.name, x+8, y-8);
-    }
+// Label logic (corrected)
+if (
+  teacherMode ||
+  (!teacherMode && (hoveredPlanet === p || lockedPlanet === p))
+) {
+  ctx.fillStyle = "white";
+  ctx.font = "12px Arial";
+  ctx.fillText(p.name, x + 8, y - 8);
+}
 
     p.x = x;
     p.y = y;
