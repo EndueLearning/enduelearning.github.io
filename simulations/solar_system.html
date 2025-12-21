@@ -22,34 +22,34 @@
 
   <!-- HEADER (existing site header loads here) -->
 
-  <div class="sim-container">
-    <h2 class="sim-title">🌍 Solar System Simulation</h2>
+<header class="site-header">
+  <h2>🌞 Solar System – Interactive Simulation</h2>
+</header>
 
-    <div class="controls">
-      <button id="zoomIn">Zoom +</button>
-      <button id="zoomOut">Zoom −</button>
-      <button id="pauseBtn">⏸ Pause</button>
+<div class="controls">
+  <button id="zoomIn">＋ Zoom</button>
+  <button id="zoomOut">－ Zoom</button>
+  <button id="pause">⏸ Pause</button>
 
-      <label>
-        Speed
-        <input type="range" id="speedControl" min="0.2" max="3" step="0.2" value="1">
-      </label>
+  <label>
+    Speed
+    <input type="range" id="speed" min="0.2" max="3" step="0.1" value="1">
+  </label>
 
-      <label>
-        <input type="checkbox" id="toggleLabels" checked>
-        Show Planet Names
-      </label>
-    </div>
+  <label>
+    <input type="checkbox" id="teacherMode" checked>
+    Teacher Mode (Labels ON)
+  </label>
+</div>
 
-    <canvas id="solarCanvas" width="900" height="600"></canvas>
+<canvas id="solarCanvas" width="1200" height="700"></canvas>
 
-    <div class="legend">
-      📏 Scale: <strong>1 AU = 80 pixels</strong>
-    </div>
+<div class="info-box" id="infoBox"></div>
 
-    <div class="info-box" id="infoBox"></div>
-  </div>
-
+<footer class="site-footer">
+  <p>Endue Learning © Interactive Science</p>
+</footer>
+  
   <!-- FOOTER (existing site footer loads here) -->
 
   <script src="/assets/js/solar.js"></script>
