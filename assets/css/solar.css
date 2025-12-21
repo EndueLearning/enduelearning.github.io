@@ -1,58 +1,49 @@
-.sim-container {
-  max-width: 1000px;
-  margin: 20px auto;
-  padding: 10px;
-  position: relative;
+body {
+  margin: 0;
   background: #000;
-  border-radius: 12px;
+  color: white;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
 }
 
-.sim-title {
-  color: #fff;
+.site-header, .site-footer {
   text-align: center;
-  margin-bottom: 10px;
-}
-
-canvas {
-  width: 100%;
-  border-radius: 10px;
-  background: #000;
-  display: block;
+  padding: 10px;
+  background: #111;
 }
 
 .controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
   justify-content: center;
-  margin-bottom: 10px;
+  gap: 15px;
+  padding: 10px;
+  background: #111;
 }
 
-.controls button,
-.controls input {
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: none;
+button {
+  padding: 6px 12px;
   cursor: pointer;
 }
 
-.legend {
-  color: #ccc;
-  text-align: center;
-  margin-top: 6px;
-  font-size: 14px;
+canvas {
+  display: block;
+  margin: auto;
+  background: radial-gradient(circle at center, #050505, #000);
 }
 
 .info-box {
-  position: absolute;
-  top: 15px;
-  right: 15px;
+  position: fixed;
+  top: 120px;
+  right: 20px;
   width: 260px;
+  padding: 15px;
   background: rgba(0,0,0,0.85);
-  color: #fff;
-  padding: 12px;
-  border-radius: 8px;
+  border: 1px solid #555;
+  border-radius: 10px;
   display: none;
-  font-size: 14px;
-  border: 1px solid #444;
+}
+
+.info-box h3 {
+  margin-top: 0;
+  color: gold;
 }
