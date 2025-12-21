@@ -1,49 +1,80 @@
 body {
   margin: 0;
   background: #000;
-  color: white;
+  color: #fff;
   font-family: Arial, sans-serif;
-  overflow: hidden;
 }
 
-.site-header, .site-footer {
-  text-align: center;
+/* Layout */
+.sim-wrapper {
+  max-width: 1200px;
+  margin: 20px auto;
   padding: 10px;
-  background: #111;
 }
 
 .controls {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  padding: 10px;
-  background: #111;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-button {
-  padding: 6px 12px;
+.controls button,
+.controls label {
+  background: #1c1c1c;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px 12px;
+  border-radius: 8px;
   cursor: pointer;
 }
 
+/* Canvas */
 canvas {
-  display: block;
-  margin: auto;
-  background: radial-gradient(circle at center, #050505, #000);
+  width: 100%;
+  background: #000;
+  border: 1px solid #333;
+  border-radius: 12px;
 }
 
+/* Info box */
 .info-box {
   position: fixed;
-  top: 120px;
-  right: 20px;
+  right: 15px;
+  top: 100px;
   width: 260px;
-  padding: 15px;
   background: rgba(0,0,0,0.85);
-  border: 1px solid #555;
+  border: 1px solid #444;
   border-radius: 10px;
+  padding: 12px;
   display: none;
+  z-index: 10;
 }
 
-.info-box h3 {
-  margin-top: 0;
-  color: gold;
+/* Quiz */
+.quiz-box {
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: 1px solid #555;
+  font-size: 14px;
+}
+
+/* Mobile UI */
+@media (max-width: 768px) {
+  .controls {
+    justify-content: center;
+  }
+
+  .info-box {
+    width: 90%;
+    left: 5%;
+    right: auto;
+    top: auto;
+    bottom: 90px;
+  }
 }
