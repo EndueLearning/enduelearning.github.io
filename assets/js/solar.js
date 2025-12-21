@@ -2,160 +2,136 @@ const canvas = document.getElementById("solarCanvas");
 const ctx = canvas.getContext("2d");
 const infoBox = document.getElementById("infoBox");
 
-const zoomInBtn = document.getElementById("zoomIn");
-const zoomOutBtn = document.getElementById("zoomOut");
-const pauseBtn = document.getElementById("pauseBtn");
-const speedControl = document.getElementById("speedControl");
-const toggleLabels = document.getElementById("toggleLabels");
+const center = { x: canvas.width / 2, y: canvas.height / 2 };
 
 let zoom = 1;
 let paused = false;
 let speedMultiplier = 1;
+let hoveredPlanet = null;
+let lockedPlanet = null;
+let teacherMode = true;
 
-const AU = 80; // Scale legend: 1 AU = 80 pixels
-const center = { x: canvas.width / 2, y: canvas.height / 2 };
+const AU = 60; // 1 AU = 60 pixels (scale legend)
 
-const bodies = [
-  {
-    name: "Sun",
-    radius: 28,
-    color: ["#fff59d", "#f57f17"],
-    info: "Sun | Star | Center of our Solar System",
-    x: center.x,
-    y: center.y
-  },
-  {
-    name: "Mercury", a: 0.39*AU, b: 0.32*AU, size: 4, speed: 0.04,
-    color: ["#cfd8dc", "#455a64"],
-    info: "Mercury | Orbit: 88 days | Smallest planet"
-  },
-  {
-    name: "Venus", a: 0.72*AU, b: 0.6*AU, size: 7, speed: 0.032,
-    color: ["#f5deb3", "#c49a6c"],
-    info: "Venus | Orbit: 225 days | Hottest planet"
-  },
-  {
-    name: "Earth", a: 1*AU, b: 0.9*AU, size: 8, speed: 0.025,
-    color: ["#2196f3", "#0d47a1"],
-    info: "Earth | Orbit: 365 days | Our home"
-  },
-  {
-    name: "Mars", a: 1.52*AU, b: 1.3*AU, size: 6, speed: 0.02,
-    color: ["#e53935", "#6d1b1b"],
-    info: "Mars | Orbit: 687 days | Red planet"
-  },
-  {
-    name: "Jupiter", a: 5.2*AU, b: 4.8*AU, size: 16, speed: 0.012,
-    color: ["#ffcc80", "#e65100"],
-    rings: true,
-    info: "Jupiter | Orbit: 12 years | Largest planet"
-  },
-  {
-    name: "Saturn", a: 9.5*AU, b: 8.8*AU, size: 14, speed: 0.009,
-    color: ["#ffe0b2", "#bcaaa4"],
-    rings: true,
-    info: "Saturn | Orbit: 29 years | Ringed planet"
-  },
-  {
-    name: "Uranus", a: 19.2*AU, b: 18*AU, size: 10, speed: 0.006,
-    color: ["#80deea", "#006064"],
-    info: "Uranus | Orbit: 84 years | Sideways rotation"
-  },
-  {
-    name: "Neptune", a: 30*AU, b: 28*AU, size: 10, speed: 0.005,
-    color: ["#64b5f6", "#0d47a1"],
-    info: "Neptune | Orbit: 165 years | Farthest planet"
-  }
+const planets = [
+  { name:"Mercury", a:0.39, b:0.38, size:4, color:"#aaa", orbit:88, rotation:58.6, glow:"#888" },
+  { name:"Venus", a:0.72, b:0.71, size:7, color:"#e1b469", orbit:225, rotation:-243, glow:"#e1b469" },
+  { name:"Earth", a:1, b:0.99, size:8, color:"#3fa9f5", orbit:365, rotation:1, glow:"#3fa9f5" },
+  { name:"Mars", a:1.52, b:1.51, size:6, color:"#c1440e", orbit:687, rotation:1.03, glow:"#c1440e" },
+  { name:"Jupiter", a:5.2, b:5.18, size:18, color:"#d2b48c", orbit:4333, rotation:0.41, glow:"#f5deb3" },
+  { name:"Saturn", a:9.5, b:9.45, size:16, color:"#deb887", orbit:10759, rotation:0.45, glow:"#deb887", rings:true },
+  { name:"Uranus", a:19.2, b:19.1, size:12, color:"#7fffd4", orbit:30687, rotation:-0.72, glow:"#7fffd4" },
+  { name:"Neptune", a:30, b:29.9, size:12, color:"#4169e1", orbit:60190, rotation:0.67, glow:"#4169e1" }
 ];
 
-// Random starting positions
-bodies.forEach(b => b.angle = Math.random() * Math.PI * 2);
+planets.forEach(p => p.angle = Math.random() * Math.PI * 2);
 
-function drawPlanet(x, y, r, colors) {
-  const g = ctx.createRadialGradient(x-r/3, y-r/3, r/4, x, y, r);
-  g.addColorStop(0, colors[0]);
-  g.addColorStop(1, colors[1]);
-  ctx.fillStyle = g;
-  ctx.beginPath();
-  ctx.arc(x, y, r, 0, Math.PI*2);
-  ctx.fill();
-}
+// ---------------- CONTROLS ----------------
+zoomIn.onclick = () => zoom *= 1.1;
+zoomOut.onclick = () => zoom /= 1.1;
+pause.onclick = () => paused = !paused;
+speed.oninput = e => speedMultiplier = e.target.value;
+teacherMode.onchange = e => teacherMode = e.target.checked;
 
-function animate() {
-  if (!paused) {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
+// ---------------- INTERACTION ----------------
+canvas.addEventListener("click", () => {
+  lockedPlanet = hoveredPlanet;
+});
 
-    // Sun
-    drawPlanet(center.x, center.y, bodies[0].radius*zoom, bodies[0].color);
-
-    bodies.slice(1).forEach(p => {
-      p.angle += p.speed * speedMultiplier;
-
-      p.x = center.x + p.a * Math.cos(p.angle) * zoom;
-      p.y = center.y + p.b * Math.sin(p.angle) * zoom;
-
-      // Orbit
-      ctx.strokeStyle = "rgba(255,255,255,0.15)";
-      ctx.beginPath();
-      ctx.ellipse(center.x, center.y, p.a*zoom, p.b*zoom, 0, 0, Math.PI*2);
-      ctx.stroke();
-
-      // Rings
-      if (p.rings) {
-        ctx.strokeStyle = "rgba(255,255,255,0.4)";
-        ctx.beginPath();
-        ctx.ellipse(p.x, p.y, (p.size+6)*zoom, (p.size-2)*zoom, 0, 0, Math.PI*2);
-        ctx.stroke();
-      }
-
-      drawPlanet(p.x, p.y, p.size*zoom, p.color);
-
-      // Labels
-      if (toggleLabels.checked) {
-        ctx.fillStyle = "#fff";
-        ctx.font = "12px Arial";
-        ctx.fillText(p.name, p.x+5, p.y-5);
-      }
-    });
-  }
-
-  requestAnimationFrame(animate);
-}
-
-// Hover detection
 canvas.addEventListener("mousemove", e => {
+  if (lockedPlanet) return;
+
   const rect = canvas.getBoundingClientRect();
   const mx = e.clientX - rect.left;
   const my = e.clientY - rect.top;
 
-  let found = null;
+  hoveredPlanet = null;
 
-  bodies.forEach(p => {
-    const px = p.x || center.x;
-    const py = p.y || center.y;
-    const r = (p.radius || p.size) * zoom;
+  planets.forEach(p => {
+    const a = p.a * AU * zoom;
+    const b = p.b * AU * zoom;
 
-    if (Math.hypot(mx-px, my-py) < r+4) found = p;
+    const dx = (mx - center.x) / a;
+    const dy = (my - center.y) / b;
+    const ellipseCheck = dx*dx + dy*dy;
+
+    if (ellipseCheck > 0.95 && ellipseCheck < 1.05) hoveredPlanet = p;
+
+    const px = center.x + a * Math.cos(p.angle);
+    const py = center.y + b * Math.sin(p.angle);
+
+    if (Math.hypot(mx - px, my - py) < p.size * zoom + 4) hoveredPlanet = p;
   });
-
-  if (found) {
-    infoBox.style.display = "block";
-    infoBox.innerHTML = `<strong>${found.name}</strong><br>${found.info}`;
-  } else {
-    infoBox.style.display = "none";
-  }
 });
 
-// Controls
-zoomInBtn.onclick = () => zoom *= 1.1;
-zoomOutBtn.onclick = () => zoom /= 1.1;
+// ---------------- DRAW LOOP ----------------
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
 
-pauseBtn.onclick = () => {
-  paused = !paused;
-  pauseBtn.textContent = paused ? "▶ Play" : "⏸ Pause";
-};
+  // Sun
+  ctx.beginPath();
+  ctx.arc(center.x, center.y, 25*zoom, 0, Math.PI*2);
+  ctx.fillStyle = "yellow";
+  ctx.fill();
 
-speedControl.oninput = e => speedMultiplier = e.target.value;
+  planets.forEach(p => {
+    const a = p.a * AU * zoom;
+    const b = p.b * AU * zoom;
 
-animate();
+    // Orbit
+    ctx.beginPath();
+    ctx.ellipse(center.x, center.y, a, b, 0, 0, Math.PI*2);
+    ctx.strokeStyle = (hoveredPlanet===p || lockedPlanet===p) ? p.glow : "rgba(255,255,255,0.15)";
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
 
+    if (!paused) p.angle += (2*Math.PI / p.orbit) * speedMultiplier * 0.5;
+
+    const x = center.x + a * Math.cos(p.angle);
+    const y = center.y + b * Math.sin(p.angle);
+
+    // Planet
+    ctx.beginPath();
+    ctx.arc(x, y, p.size*zoom, 0, Math.PI*2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+
+    // Saturn Rings
+    if (p.rings) {
+      ctx.beginPath();
+      ctx.ellipse(x, y, p.size*zoom*1.8, p.size*zoom*0.8, 0, 0, Math.PI*2);
+      ctx.strokeStyle = "#c2b280";
+      ctx.stroke();
+    }
+
+    // Label
+    if (teacherMode || hoveredPlanet===p || lockedPlanet===p) {
+      ctx.fillStyle = "white";
+      ctx.font = "12px Arial";
+      ctx.fillText(p.name, x+8, y-8);
+    }
+
+    p.x = x;
+    p.y = y;
+  });
+
+  // Info Box
+  const target = lockedPlanet || hoveredPlanet;
+  if (target) {
+    infoBox.style.display = "block";
+    infoBox.innerHTML = `
+      <h3>${target.name}</h3>
+      <p><b>Distance:</b> ${target.a} AU</p>
+      <p><b>Orbit:</b> ${target.orbit} Earth days</p>
+      <p><b>Rotation:</b> ${target.rotation} days</p>
+    `;
+  } else infoBox.style.display = "none";
+
+  // Scale Legend
+  ctx.fillStyle = "white";
+  ctx.fillText("Scale: 1 AU ≈ 60 pixels", 20, canvas.height-20);
+
+  requestAnimationFrame(draw);
+}
+
+draw();
