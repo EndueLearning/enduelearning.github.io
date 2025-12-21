@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Solar System Simulation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solar System Simulation | Endue Learning</title>
 
-  <!-- Your existing site CSS -->
+  <!-- Existing site styles -->
   <link rel="stylesheet" href="/assets/css/main.css">
   <link rel="stylesheet" href="/assets/css/header.css">
   <link rel="stylesheet" href="/assets/css/footer.css">
 
-  <!-- Solar system CSS -->
-  <link rel="stylesheet" href="/assets/css/solar.css">
+  <!-- Simulation styles -->
+  <link rel="stylesheet" href="/assets/css/solar_system.css">
 
   <!-- Header & Footer -->
   <script src="/assets/js/header.js" defer></script>
@@ -20,38 +20,38 @@
 
 <body>
 
-  <!-- HEADER (existing site header loads here) -->
-  
-<header class="site-header">
-  <h2>🌞 Solar System – Interactive Simulation</h2>
-</header>
+<div id="header-placeholder"></div>
 
-<div class="controls">
-  <button id="zoomIn">＋ Zoom</button>
-  <button id="zoomOut">－ Zoom</button>
-  <button id="pause">⏸ Pause</button>
+<main class="sim-wrapper">
 
-  <label>
-    Speed
-    <input type="range" id="speed" min="0.2" max="3" step="0.1" value="1">
-  </label>
+  <!-- Controls -->
+  <section class="controls">
+    <button id="resetBtn">🧭 Reset View</button>
+    <button id="teacherBtn">👩‍🏫 Teacher Mode</button>
+    <button id="pauseBtn">⏸ Pause</button>
 
-  <label>
-    <input type="checkbox" id="teacherMode" checked>
-    Teacher Mode (Labels ON)
-  </label>
+    <label>
+      Speed
+      <input type="range" id="speedControl" min="0.2" max="3" step="0.2" value="1">
+    </label>
+  </section>
+
+  <!-- Canvas -->
+  <canvas id="solarCanvas" width="1200" height="700"></canvas>
+
+</main>
+
+<!-- Info Panel -->
+<div id="infoBox" class="info-box"></div>
+
+<!-- Quiz -->
+<div id="quizBox" class="quiz-box">
+  🎮 Quiz: <strong id="quizQuestion">Find Jupiter</strong>
+  <span id="quizResult"></span>
 </div>
 
-<canvas id="solarCanvas" width="1200" height="700"></canvas>
+<div id="footer-placeholder"></div>
 
-<div class="info-box" id="infoBox"></div>
-
-<footer class="site-footer">
-  <p>Endue Learning © Interactive Science</p>
-</footer>
-  
-  <!-- FOOTER (existing site footer loads here) -->
-
-  <script src="/assets/js/solar.js"></script>
+<script src="/assets/js/solar_system.js"></script>
 </body>
 </html>
