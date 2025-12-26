@@ -119,5 +119,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (e.key === "ArrowLeft") prev();
     if (e.key === " ") { e.preventDefault(); flip(); }
   });
+/* ==========================
+   Mobile Swipe Support
+========================== */
 
+let startX = 0;
+let endX = 0;
+
+card.addEventListener("touchstart", e => {
+  startX = e.changedTouches[0].screenX;
+});
+
+card.addEventListener("touchend", e => {
+  endX = e.changedTouches[0].screenX;
+  handleSwipe();
+});
+
+function handleSwipe() {
+  const diff = endX - startX;
+  if (Math.abs(diff) < 40) return; // ignore small swipes
+
+  if (diff < 0) next();     // swipe left
+  else prev();              // swipe right
+}
+
+  
 });
