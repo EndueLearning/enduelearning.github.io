@@ -1,31 +1,18 @@
-/* ======================
-        FOOTER BASE
-   ====================== */
 .site-footer {
-  background: #0A2640;
-  color: #fff;
-  padding: 40px 0 20px 0;
+  background: #0a2640;
+  color: #ffffff;
+  padding: 40px 0 20px;
   position: relative;
+  font-size: 15px;
 }
 
-.fade-in {
-  animation: fadeIn 0.7s ease-in;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ======================
-        GRID LAYOUT
-   ====================== */
-.footer-grid {
+.footer-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: auto;
   display: flex;
-  justify-content: space-between;
   gap: 40px;
-  padding: 0 8%;
-  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .footer-col {
@@ -35,129 +22,127 @@
 
 .footer-col h3 {
   margin-bottom: 10px;
+  color: #a8d3ff;
 }
 
-.footer-col ul {
-  padding: 0;
-  margin: 0;
+.footer-col p {
+  line-height: 1.6;
+  color: #d6ecff;
+}
+
+/* Links */
+.footer-links {
   list-style: none;
+  padding: 0;
 }
 
-.footer-col ul li {
+.footer-links li {
   margin-bottom: 6px;
 }
 
-.footer-col a {
+.footer-links a {
   color: #cfe9ff;
   text-decoration: none;
 }
 
-.footer-col a:hover {
+.footer-links a:hover {
   color: #ffffff;
 }
 
-/* ======================
-      FOOTER MASCOT
-   ====================== */
-.footer-mascot {
-  width: 120px;
-  margin-bottom: 12px;
-  animation: float 3s ease-in-out infinite;
-}
-
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
-  100% { transform: translateY(0px); }
-}
-
-/* ======================
-      SOCIAL ICONS
-   ====================== */
-.social-row {
+/* Social icons */
+.social-icons {
   display: flex;
-  gap: 16px;
+  gap: 14px;
+  margin: 10px 0 14px;
+}
+
+.social-icons img {
+  width: 26px;
+  height: 26px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.3s ease;
+}
+
+.social-icons img:hover {
+  transform: scale(1.15);
+}
+
+/* Subscribe */
+.subscribe-box {
   margin-top: 10px;
 }
 
-.social-row svg {
-  width: 26px;
-  height: 26px;
-  color: #ffffff;
-  transition: 0.3s;
-}
-
-.social-row svg:hover {
-  color: #fff;
-  transform: scale(1.2);
-}
-
-/* ======================
-        SUBSCRIBE BOX
-   ====================== */
-#subscribeForm input {
+.subscribe-box input {
   padding: 8px;
+  width: 65%;
   border-radius: 6px;
   border: none;
-  width: 70%;
 }
 
-#subscribeForm button {
-  padding: 8px 10px;
+.subscribe-box button {
+  padding: 8px 12px;
+  margin-left: 6px;
   border-radius: 6px;
   border: none;
   background: #2b9cff;
-  color: white;
+  color: #fff;
   cursor: pointer;
-  margin-top: 8px;
 }
 
-/* ======================
-          BACK TO TOP
-   ====================== */
+/* Mascot */
+.footer-mascot {
+  width: 90px;
+  margin-bottom: 10px;
+  animation: float 3s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  from { transform: translateY(4px); }
+  to { transform: translateY(-6px); }
+}
+
+/* Bottom */
+.footer-bottom {
+  text-align: center;
+  margin-top: 25px;
+  font-size: 14px;
+  color: #a7cbe8;
+}
+
+/* Back to top */
 .back-top {
   position: fixed;
-  bottom: 18px;
-  right: 18px;
+  bottom: 20px;
+  right: 20px;
   background: #2b9cff;
   color: #fff;
   border: none;
-  padding: 10px 14px;
   border-radius: 50%;
-  cursor: pointer;
+  padding: 10px 14px;
   font-size: 18px;
+  cursor: pointer;
   display: none;
-  transition: 0.3s;
+  z-index: 999;
 }
 
-.back-top:hover {
-  background: #187acc;
-}
-
-.back-top.show {
-  display: block;
-}
-
-/* ======================
-         COPYRIGHT
-   ====================== */
-.copyright {
-  text-align: center;
-  padding-top: 20px;
-  color: #a7cbe8;
-  font-size: 14px;
-}
-
-/* ======================
-     RESPONSIVE MOBILE
-   ====================== */
-@media(max-width: 900px) {
-  .footer-grid {
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-container {
     flex-direction: column;
     text-align: center;
-    gap: 28px;
   }
-  .social-row {
+
+  .social-icons {
     justify-content: center;
+  }
+
+  .subscribe-box input {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .subscribe-box button {
+    margin-left: 0;
+    width: 100%;
   }
 }
