@@ -33,13 +33,6 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
 }
 
 
-/* Page container like games page */
-.sim-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 30px;
-}
-
 /* Grid for cards */
 .sim-grid {
   display: grid;
@@ -61,4 +54,12 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
   transform: translateY(-4px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
+
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 20px;
+}
+
 
