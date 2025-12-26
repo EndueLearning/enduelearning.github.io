@@ -1,0 +1,5 @@
+[
+  { "front": "Area of Square", "back": "side × side" },
+  { "front": "Perimeter of Rectangle", "back": "2 × (l + b)" },
+  { "front": "Speed Formula", "back": "Distance ÷ Time" }
+]
