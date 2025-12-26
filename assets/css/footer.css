@@ -1,3 +1,5 @@
+/* ================= FOOTER BASE ================= */
+
 .site-footer {
   background: #0a2640;
   color: #ffffff;
@@ -5,6 +7,17 @@
   position: relative;
   font-size: 15px;
 }
+
+.fade-in-footer {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= GRID ================= */
 
 .footer-container {
   width: 90%;
@@ -17,27 +30,27 @@
 
 .footer-col {
   flex: 1;
-  min-width: 240px;
+  min-width: 260px;
 }
 
 .footer-col h3 {
-  margin-bottom: 10px;
   color: #a8d3ff;
+  margin-bottom: 10px;
 }
 
 .footer-col p {
   line-height: 1.6;
-  color: #d6ecff;
 }
 
-/* Links */
+/* ================= LINKS ================= */
+
 .footer-links {
   list-style: none;
   padding: 0;
 }
 
 .footer-links li {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .footer-links a {
@@ -49,100 +62,86 @@
   color: #ffffff;
 }
 
-/* Social icons */
+/* ================= SOCIAL ================= */
+
 .social-icons {
   display: flex;
   gap: 14px;
-  margin: 10px 0 14px;
+  margin-top: 10px;
 }
 
 .social-icons img {
   width: 26px;
-  height: 26px;
   filter: brightness(0) invert(1);
-  transition: transform 0.3s ease;
+  transition: transform 0.3s;
 }
 
 .social-icons img:hover {
   transform: scale(1.15);
 }
 
-/* Subscribe */
-.subscribe-box {
-  margin-top: 10px;
-}
+/* ================= SUBSCRIBE ================= */
 
-.subscribe-box input {
+#subscribeForm input {
   padding: 8px;
-  width: 65%;
+  width: 70%;
   border-radius: 6px;
   border: none;
 }
 
-.subscribe-box button {
+#subscribeForm button {
   padding: 8px 12px;
-  margin-left: 6px;
   border-radius: 6px;
   border: none;
   background: #2b9cff;
-  color: #fff;
+  color: white;
   cursor: pointer;
 }
 
-/* Mascot */
+/* ================= MASCOT ================= */
+
 .footer-mascot {
   width: 90px;
-  margin-bottom: 10px;
-  animation: float 3s ease-in-out infinite alternate;
+  animation: floatMascot 3s ease-in-out infinite alternate;
 }
 
-@keyframes float {
-  from { transform: translateY(4px); }
-  to { transform: translateY(-6px); }
+@keyframes floatMascot {
+  from { transform: translateY(6px); }
+  to   { transform: translateY(-6px); }
 }
 
-/* Bottom */
-.footer-bottom {
+/* ================= COPYRIGHT ================= */
+
+.copyright {
   text-align: center;
-  margin-top: 25px;
-  font-size: 14px;
+  margin-top: 20px;
   color: #a7cbe8;
 }
 
-/* Back to top */
+/* ================= BACK TO TOP ================= */
+
 .back-top {
   position: fixed;
   bottom: 20px;
   right: 20px;
   background: #2b9cff;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 50%;
   padding: 10px 14px;
   font-size: 18px;
-  cursor: pointer;
   display: none;
-  z-index: 999;
+  cursor: pointer;
 }
 
-/* Responsive */
+/* ================= RESPONSIVE ================= */
+
 @media (max-width: 768px) {
   .footer-container {
     flex-direction: column;
     text-align: center;
   }
-
   .social-icons {
     justify-content: center;
-  }
-
-  .subscribe-box input {
-    width: 100%;
-    margin-bottom: 8px;
-  }
-
-  .subscribe-box button {
-    margin-left: 0;
-    width: 100%;
   }
 }
