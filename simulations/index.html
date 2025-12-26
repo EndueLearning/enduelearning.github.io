@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Light Simulations — Concave/Convex Mirrors & Lenses</title>
+  <title>Simulations</title>
 
   <!-- Favicon -->
     <link rel="icon" type="image/png" href="/assets/images/favicon.png">
@@ -25,52 +25,33 @@
   <script src="/assets/js/simulation.js" defer></script>
 </head>
 <body>
-  <div id="header"></div>
+   <div id="header"></div>
 
-  <main class="sim-container">
-    <h1>Simulations — Mirrors & Lenses</h1>
+  <main class="container" style="margin-top:28px;">
+    <h1>Simulations</h1>
+    <p class="small"> <div id="header"></div>
 
-    <div class="sim-top">
-      <div class="tabs">
-        <button data-topic="concave-mirror" class="tab active">Concave Mirror</button>
-        <button data-topic="convex-mirror" class="tab">Convex Mirror</button>
-        <button data-topic="convex-lens" class="tab">Convex Lens</button>
-        <button data-topic="concave-lens" class="tab">Concave Lens</button>
+  <main class="container" style="margin-top:28px;">
+    <h1>Games</h1>
+    <p class="small">Interactive visual explaination of Science/Maths concepts.</p>
+
+    <div class="sim-grid" style="margin-top:18px;">
+      <div class="card">
+        <h3>Light Simulations</h3>
+        <p class="small">Mirror • Lens • Concave • Convex </p>
+        <a class="btn" href="/simulations/mirror-simulation.html">Show</a>
       </div>
 
-      <div class="controls">
-        <label>Focal length (f): <input id="focal" type="range" min="20" max="200" value="80"></label>
-        <label>Object distance (u): <input id="objectDist" type="range" min="20" max="400" value="250"></label>
-        <label>Animate Rays: <input id="animateToggle" type="checkbox" checked></label>
+      <div class="card">
+        <h3>Solar System</h3>
+        <p class="small">Planets around the Sun</p>
+        <a class="btn" href="/simulations/solar_system.html">Show</a>
       </div>
-    </div>
 
-    <section class="sim-stage">
-      <canvas id="simCanvas" width="900" height="420"></canvas>
-      <aside class="sim-info">
-        <div id="formulaBox" class="info-card">
-          <h3>Formula</h3>
-          <div id="formulaText">—</div>
-        </div>
-
-        <div id="mcqLinks" class="info-card">
-          <h3>Practice MCQs</h3>
-          <ul>
-            <li><a href="/games/quizsets/science/physics/light_concave-mirror.html">Concave Mirror (MCQs)</a></li>
-            <li><a href="/games/quizsets/science/physics/light_convex-mirror.html">Convex Mirror (MCQs)</a></li>
-            <li><a href="/games/quizsets/science/physics/light_convex-lens.html">Convex Lens (MCQs)</a></li>
-            <li><a href="/games/quizsets/science/physics/light_concave-lens.html">Concave Lens (MCQs)</a></li>
-          </ul>
-        </div>
-
-        <div id="downloadBox" class="info-card">
-          <h3>Download Notes</h3>
-          <p><a href="/assets/docs/Light_Optics_Notes.pdf" download>Light_Optics_Notes.pdf</a></p>
-        </div>
-      </aside>
-    </section>
+      </div>
   </main>
 
-  <div id="footer"></div>
+  <div id="footer"></div></p>
+
 </body>
 </html>
