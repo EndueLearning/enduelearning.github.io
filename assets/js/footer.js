@@ -39,17 +39,17 @@ document.addEventListener("DOMContentLoaded", () => {
    BACK TO TOP FUNCTIONALITY
 ================================ */
 
-const backToTopBtn = document.getElementById("backToTop");
+const backToTop = document.getElementById("backToTop");
 
 window.addEventListener("scroll", () => {
   if (window.scrollY > 300) {
-    backToTopBtn.classList.add("show");
+    backToTop.classList.add("visible");
   } else {
-    backToTopBtn.classList.remove("show");
+    backToTop.classList.remove("visible");
   }
 });
 
-backToTopBtn.addEventListener("click", () => {
+backToTop.addEventListener("click", () => {
   window.scrollTo({
     top: 0,
     behavior: "smooth"
