@@ -1,172 +1,76 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mirror Simulator - Endue Learning</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Light Simulations — Concave/Convex Mirrors & Lenses</title>
+
   <!-- Favicon -->
     <link rel="icon" type="image/png" href="/assets/images/favicon.png">
-  
-  <!-- Main Styles -->
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/assets/css/header.css" />
-    <link rel="stylesheet" href="/assets/css/footer.css" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
 
-    <!-- Header + Footer Scripts -->
-    <script src="/assets/js/header.js" defer></script>
-    <script src="/assets/js/footer.js" defer></script>
+ <!-- IMPORTANT: use absolute paths (leading slash) -->
+  <link rel="stylesheet" href="/assets/css/header.css">
+  <link rel="stylesheet" href="/assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="/assets/css/quiz.css">
+  <link rel="stylesheet" href="/assets/css/simulation.css">
+  <link rel="stylesheet" href="/assets/css/footer.css" />
   
-  <style>
-    .sim-container{max-width:980px;margin:18px auto;padding:14px}
-    canvas{display:block;border:1px solid #ccc;border-radius:8px; background:#fff; width:100%; height:auto;}
-    .controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-  </style>
+   <!-- header/footer loaders and common scripts -->
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
+  <script src="/assets/js/main.js" defer></script>
+  
+  
+  <script src="/assets/js/simulation.js" defer></script>
 </head>
 <body>
   <div id="header"></div>
 
-  <main class="container sim-container card">
-    <h1>Mirror Simulator</h1>
-    <div class="controls">
-      <label>Mirror Type:
-        <select id="mirrorType"><option value="concave">Concave</option><option value="convex">Convex</option><option value="plane">Plane</option></select>
-      </label>
+  <main class="sim-container">
+    <h1>Simulations — Mirrors & Lenses</h1>
 
-      <label>Object Position:
-        <select id="objectPreset">
-          <option value="custom">Custom</option>
-          <option value="infinity">At Infinity</option>
-          <option value="beyondC">Beyond C</option>
-          <option value="atC">At C</option>
-          <option value="betweenCF">Between C & F</option>
-          <option value="atF">At F</option>
-          <option value="betweenFandP">Between F & Pole</option>
-        </select>
-      </label>
+    <div class="sim-top">
+      <div class="tabs">
+        <button data-topic="concave-mirror" class="tab active">Concave Mirror</button>
+        <button data-topic="convex-mirror" class="tab">Convex Mirror</button>
+        <button data-topic="convex-lens" class="tab">Convex Lens</button>
+        <button data-topic="concave-lens" class="tab">Concave Lens</button>
+      </div>
 
-      <label>Distance:
-        <input id="objectDistance" type="range" min="1" max="200" value="100" />
-      </label>
-      <span id="distanceValue">100</span>
+      <div class="controls">
+        <label>Focal length (f): <input id="focal" type="range" min="20" max="200" value="80"></label>
+        <label>Object distance (u): <input id="objectDist" type="range" min="20" max="400" value="250"></label>
+        <label>Animate Rays: <input id="animateToggle" type="checkbox" checked></label>
+      </div>
     </div>
 
-    <canvas id="mirrorCanvas" aria-label="Mirror simulation canvas"></canvas>
+    <section class="sim-stage">
+      <canvas id="simCanvas" width="900" height="420"></canvas>
+      <aside class="sim-info">
+        <div id="formulaBox" class="info-card">
+          <h3>Formula</h3>
+          <div id="formulaText">—</div>
+        </div>
+
+        <div id="mcqLinks" class="info-card">
+          <h3>Practice MCQs</h3>
+          <ul>
+            <li><a href="/games/quizsets/science/physics/light_concave-mirror.html">Concave Mirror (MCQs)</a></li>
+            <li><a href="/games/quizsets/science/physics/light_convex-mirror.html">Convex Mirror (MCQs)</a></li>
+            <li><a href="/games/quizsets/science/physics/light_convex-lens.html">Convex Lens (MCQs)</a></li>
+            <li><a href="/games/quizsets/science/physics/light_concave-lens.html">Concave Lens (MCQs)</a></li>
+          </ul>
+        </div>
+
+        <div id="downloadBox" class="info-card">
+          <h3>Download Notes</h3>
+          <p><a href="/assets/docs/Light_Optics_Notes.pdf" download>Light_Optics_Notes.pdf</a></p>
+        </div>
+      </aside>
+    </section>
   </main>
 
   <div id="footer"></div>
-
-  <script>
-  const canvas = document.getElementById('mirrorCanvas');
-  const ctx = canvas.getContext('2d');
-  const mirrorTypeSelect = document.getElementById('mirrorType');
-  const objectDistanceSlider = document.getElementById('objectDistance');
-  const objectPreset = document.getElementById('objectPreset');
-  const distanceValue = document.getElementById('distanceValue');
-
-  let poleX, focalLength, radius;
-
-  function fitCanvasResponsive(){
-    const container = document.querySelector('.sim-container') || document.body;
-    const cssW = Math.min(980, Math.max(340, container.clientWidth - 40));
-    const aspect = 0.5;
-    const cssH = Math.round(cssW * aspect);
-    const dpr = window.devicePixelRatio || 1;
-    canvas.style.width = cssW + 'px';
-    canvas.style.height = cssH + 'px';
-    canvas.width = Math.round(cssW * dpr);
-    canvas.height = Math.round(cssH * dpr);
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(dpr,dpr);
-  }
-
-  function drawSetup(mirrorType, objectDistance){
-    const cssW = parseInt(canvas.style.width || canvas.width);
-    const cssH = parseInt(canvas.style.height || canvas.height);
-    poleX = cssW/2;
-    focalLength = Math.round(cssW * 0.10);
-    radius = 2 * focalLength;
-
-    ctx.clearRect(0,0,cssW,cssH);
-    // principal axis
-    ctx.beginPath(); ctx.moveTo(0,cssH/2); ctx.lineTo(cssW,cssH/2); ctx.strokeStyle='#000'; ctx.stroke();
-
-    // object
-    const objX = poleX - objectDistance;
-    ctx.beginPath(); ctx.moveTo(objX, cssH/2); ctx.lineTo(objX, cssH/2 - 80); ctx.strokeStyle='green'; ctx.stroke();
-    ctx.fillText('Object', objX - 10, cssH/2 - 90);
-
-    // mirror drawing
-    ctx.beginPath();
-    if(mirrorType === 'concave'){ ctx.arc(poleX, cssH/2, 80, Math.PI/2, 3*Math.PI/2); }
-    else if(mirrorType === 'convex'){ ctx.arc(poleX, cssH/2, 80, -Math.PI/2, Math.PI/2); }
-    else { ctx.moveTo(poleX, cssH/2 - 120); ctx.lineTo(poleX, cssH/2 + 120); }
-    ctx.strokeStyle='black'; ctx.stroke();
-
-    ctx.fillText('P', poleX - 5, cssH/2 + 15);
-    if(mirrorType !== 'plane'){
-      ctx.fillText('F', poleX - (mirrorType === 'concave' ? focalLength : -focalLength) -5, cssH/2 + 15);
-      ctx.fillText('C', poleX - (mirrorType === 'concave' ? radius : -radius) -5, cssH/2 + 15);
-    }
-
-    calculateAndDrawImage(mirrorType, objectDistance, cssW, cssH);
-  }
-
-  function calculateAndDrawImage(mirrorType, objectDistance, cssW, cssH){
-    let u = -objectDistance; let f;
-    if(mirrorType === 'concave') f = -focalLength; else if(mirrorType === 'convex') f = focalLength; else f = Infinity;
-    let v;
-    if(mirrorType === 'plane') v = -u; else v = (f * u) / (u - f);
-    // clamp v to canvas reasonable bounds to avoid drawing offscreen crazily
-    if(!isFinite(v)) v = u * 0.5;
-    if(Math.abs(v) > cssW * 2) v = Math.sign(v) * cssW * 0.9;
-
-    const imgX = poleX + v;
-    const isVirtual = mirrorType !== 'plane' ? v > 0 : false;
-    const imgHeight = (u !== 0) ? Math.abs(80 * (v / u)) : 80;
-
-    ctx.beginPath(); ctx.moveTo(imgX, cssH/2); ctx.lineTo(imgX, cssH/2 - imgHeight);
-    ctx.strokeStyle = isVirtual ? 'blue' : 'red';
-    ctx.setLineDash(isVirtual ? [5,5] : []);
-    ctx.stroke(); ctx.setLineDash([]);
-    ctx.fillText('Image', Math.max(8, Math.min(cssW-60, imgX - 10)), cssH/2 - imgHeight - 10);
-
-    // ray 1: parallel -> focus (simple portrayal)
-    ctx.beginPath(); ctx.moveTo(poleX - objectDistance, cssH/2 - 80); ctx.lineTo(poleX, cssH/2 - 80); ctx.strokeStyle='#999'; ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(poleX, cssH/2 - 80); ctx.lineTo(poleX + (isFinite(v) ? v : 40), cssH/2); ctx.stroke();
-
-    // ray 2: through F -> parallel
-    const fX = poleX + (mirrorType === 'concave' ? f : -f);
-    ctx.beginPath(); ctx.moveTo(poleX - objectDistance, cssH/2 - 80); ctx.lineTo(fX, cssH/2); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(poleX, cssH/2); ctx.lineTo(poleX + v, cssH/2 - imgHeight); ctx.setLineDash([5,5]); ctx.stroke(); ctx.setLineDash([]);
-  }
-
-  function update(){
-    const mirrorType = mirrorTypeSelect.value;
-    const objectDistance = parseInt(objectDistanceSlider.value,10);
-    distanceValue.textContent = objectDistance;
-    drawSetup(mirrorType, objectDistance);
-  }
-
-  objectDistanceSlider.addEventListener('input', ()=>{ objectPreset.value='custom'; update(); });
-  mirrorTypeSelect.addEventListener('change', ()=>{ objectPreset.value='custom'; update(); });
-
-  objectPreset.addEventListener('change', ()=>{
-    const mirrorType = mirrorTypeSelect.value;
-    if(objectPreset.value === 'custom') return;
-    const presets = {
-      concave: { infinity: 200, beyondC: radius+30, atC: radius, betweenCF: Math.round((radius+focalLength)/2), atF: focalLength, betweenFandP: Math.round(focalLength/2) },
-      convex: { infinity: 200, beyondC: 150, atC: 100, betweenCF: 80, atF: 60, betweenFandP: 40 },
-      plane:  { infinity: 200, beyondC: 150, atC: 100, betweenCF: 70, atF: 50, betweenFandP: 30 }
-    };
-    const distance = presets[mirrorType][objectPreset.value] || 100;
-    objectDistanceSlider.value = distance;
-    distanceValue.textContent = distance;
-    update();
-  });
-
-  function onResizeAndDraw(){ fitCanvasResponsive(); update(); }
-  window.addEventListener('resize', onResizeAndDraw);
-  onResizeAndDraw();
-  </script>
 </body>
 </html>
