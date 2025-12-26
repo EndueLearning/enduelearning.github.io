@@ -28,12 +28,6 @@ function initFooter() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  /* VIEW COUNTER (local demo) */
-  let views = localStorage.getItem("endue_views") || 0;
-  views++;
-  localStorage.setItem("endue_views", views);
-  document.getElementById("viewCount").textContent = views;
-
   /* SUBSCRIBE → GOOGLE SHEETS */
   document.getElementById("subscribeForm").addEventListener("submit", e => {
     e.preventDefault();
