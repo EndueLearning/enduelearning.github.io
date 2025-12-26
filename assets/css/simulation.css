@@ -33,12 +33,9 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
 }
 
 .sim-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
   padding: 20px;
-  align-items: start;
 }
+
 
 .sim-card {
   background: #fff;
@@ -47,6 +44,13 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
   padding: 14px;
   transition: 0.3s ease;
 }
+
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
 
 .sim-card:hover {
   transform: translateY(-4px);
