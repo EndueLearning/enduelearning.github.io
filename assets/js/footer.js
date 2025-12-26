@@ -1,37 +1,32 @@
-// assets/js/footer.js
-document.addEventListener("DOMContentLoaded", async () => {
-  const footerContainer = document.getElementById("footer");
-  if (!footerContainer) return;
+document.addEventListener("DOMContentLoaded", () => {
 
-  // Load footer.html
-  const res = await fetch("/components/footer.html");
-  const html = await res.text();
-  footerContainer.innerHTML = html;
+  fetch("/components/footer.html")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("footer").innerHTML = html;
 
-  /* YEAR */
-  const yr = document.getElementById("yr");
-  if (yr) yr.textContent = new Date().getFullYear();
+      // Year
+      document.getElementById("footerYear").textContent =
+        new Date().getFullYear();
 
-  /* BACK TO TOP */
-  const topBtn = document.getElementById("backToTop");
-  if (topBtn) {
-    window.addEventListener("scroll", () => {
-      topBtn.classList.toggle("visible", window.scrollY > 300);
+      // Subscribe
+      const form = document.getElementById("subscribeForm");
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const email = document.getElementById("subEmail").value.trim();
+        if (!email) return alert("Please enter a valid email");
+        alert("Thank you for subscribing!");
+        form.reset();
+      });
+
+      // Back to top
+      const btn = document.getElementById("backTop");
+      window.addEventListener("scroll", () => {
+        btn.style.display = window.scrollY > 300 ? "block" : "none";
+      });
+      btn.addEventListener("click", () =>
+        window.scrollTo({ top: 0, behavior: "smooth" })
+      );
     });
-    topBtn.addEventListener("click", () =>
-      window.scrollTo({ top: 0, behavior: "smooth" })
-    );
-  }
 
-  /* SUBSCRIBE */
-  const form = document.getElementById("subscribeForm");
-  if (form) {
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      const email = document.getElementById("subEmail").value.trim();
-      if (!email) return alert("Enter a valid email");
-      alert("Thank you for subscribing!");
-      form.reset();
-    });
-  }
 });
