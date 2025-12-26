@@ -32,11 +32,6 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
   canvas#simCanvas { width:100%; height:auto; }
 }
 
-.sim-container {
-  padding: 20px;
-}
-
-
 .sim-card {
   background: #fff;
   border-radius: 12px;
@@ -51,8 +46,6 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
   gap: 20px;
   margin-top: 20px;
 }
-
-
 
 .sim-card:hover {
   transform: translateY(-4px);
