@@ -34,9 +34,11 @@ document.addEventListener("DOMContentLoaded", () => {
       order = deck.map((_, i) => i);
       render();
     })
-    .catch(() => {
-      cardFront.textContent = "Unable to load cards";
-    });
+    .catch(err => {
+  console.error("Flashcards error:", err);
+  cardFront.textContent = "⚠ Flashcards not found";
+  cardBack.textContent = "Check JSON path";
+});
 
   function render() {
     const item = deck[order[index]];
