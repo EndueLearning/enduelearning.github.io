@@ -32,22 +32,33 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
   canvas#simCanvas { width:100%; height:auto; }
 }
 
+
+/* Page container like games page */
+.sim-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Grid for cards */
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Cards */
 .sim-card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  padding: 14px;
+  padding: 16px;
   transition: 0.3s ease;
-}
-
-.sim-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
 }
 
 .sim-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
+
