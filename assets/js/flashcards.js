@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const studyGrid = document.getElementById("studyGrid");
 
   const flipSound = new Audio("/assets/sounds/flip.mp3");
+  const starBtn = document.getElementById("starBtn");
+  const STAR_KEY = "endue_starred_cards";
+
+  let starred = JSON.parse(localStorage.getItem(STAR_KEY)) || {};
+
 
   let deck = [];
   let order = [];
@@ -46,6 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
     cardBack.textContent = item.back;
     card.classList.remove("flipped");
     progressText.textContent = `${index + 1} / ${order.length}`;
+
+    const cardId = order[index];
+    starBtn.classList.toggle("active", starred[cardId]);
+    starBtn.textContent = starred[cardId] ? "★" : "☆";
+
   }
 
   function flip() {
@@ -142,6 +152,13 @@ function handleSwipe() {
   if (diff < 0) next();     // swipe left
   else prev();              // swipe right
 }
+
+  starBtn.addEventListener("click", () => {
+  const cardId = order[index];
+  starred[cardId] = !starred[cardId];
+  localStorage.setItem(STAR_KEY, JSON.stringify(starred));
+  render();
+});
 
   
 });
