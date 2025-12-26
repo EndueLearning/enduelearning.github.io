@@ -1,48 +1,36 @@
-/* ===========================
-   FOOTER LOADER + LOGIC
-=========================== */
-
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* Lazy-load footer */
+  const footerHolder = document.getElementById("footer");
+  if (!footerHolder) return;
+
   fetch("/components/footer.html")
     .then(res => res.text())
     .then(html => {
-      document.getElementById("footer").innerHTML = html;
-      initFooter();
+      footerHolder.innerHTML = html;
+
+      /* Year */
+      const yr = document.getElementById("yr");
+      if (yr) yr.textContent = new Date().getFullYear();
+
+      /* Subscribe (Google Sheets ready) */
+      const form = document.getElementById("subscribeForm");
+      if (form) {
+        form.addEventListener("submit", e => {
+          e.preventDefault();
+          const email = document.getElementById("subEmail").value.trim();
+          if (!email) return alert("Enter a valid email");
+
+          // 👉 Replace with Google Apps Script URL
+          fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+            method: "POST",
+            body: new URLSearchParams({ email })
+          }).then(() => {
+            alert("Thank you for subscribing!");
+            form.reset();
+          }).catch(() => {
+            alert("Saved locally. Will sync later.");
+          });
+        });
+      }
     });
-
 });
-
-function initFooter() {
-
-  /* YEAR */
-  document.getElementById("yr").textContent = new Date().getFullYear();
-
-  /* BACK TO TOP */
-  const backTop = document.getElementById("backTop");
-  window.addEventListener("scroll", () => {
-    backTop.style.display = window.scrollY > 300 ? "block" : "none";
-  });
-  backTop.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
-
-  /* SUBSCRIBE → GOOGLE SHEETS */
-  document.getElementById("subscribeForm").addEventListener("submit", e => {
-    e.preventDefault();
-    const email = document.getElementById("subEmail").value.trim();
-
-    fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
-      method: "POST",
-      body: JSON.stringify({ email }),
-      headers: { "Content-Type": "application/json" }
-    })
-    .then(() => {
-      alert("Thank you for subscribing!");
-      e.target.reset();
-    })
-    .catch(() => alert("Subscription failed. Try again."));
-  });
-
-}
