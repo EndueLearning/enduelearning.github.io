@@ -1,12 +1,4 @@
 /* simulation.css */
-.sim-container {
-  width: 94%;
-  max-width: 1200px;
-  margin: 28px auto;
-  font-family: 'Poppins', sans-serif;
-  color: #222;
-}
-
 .sim-top {
   display:flex;
   align-items:center;
@@ -38,4 +30,25 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
   .sim-stage { flex-direction:column; align-items:center; }
   .sim-info { width:100%; }
   canvas#simCanvas { width:100%; height:auto; }
+}
+
+.sim-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  align-items: start;
+}
+
+.sim-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  padding: 14px;
+  transition: 0.3s ease;
+}
+
+.sim-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
 }
