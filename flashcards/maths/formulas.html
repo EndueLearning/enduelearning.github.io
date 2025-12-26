@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Maths Formulae — Flashcards</title>
+
+  <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+  
+  <!-- Main Styles -->
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/header.css" />
+    <link rel="stylesheet" href="/assets/css/footer.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
+
+    <!-- Header + Footer Scripts -->
+    <script src="/assets/js/header.js" defer></script>
+    <script src="/assets/js/footer.js" defer></script>
+
+  <!-- Main Flashcards styles -->
+  <link rel="stylesheet" href="/assets/css/flashcards.css">
+
+  <!-- header/footer -->
+  <script src="/components/header.js" defer></script>
+  <script src="/components/footer.js" defer></script>
+
+  <!-- Flashcards engine -->
+  <script src="/assets/js/flashcards.js" defer></script>
+</head>
+<body>
+  <div id="header"></div>
+
+   <main class="fc-player-root" style="margin-top:28px;">
+    <div class="fc-breadcrumb">
+      <a href="/flashcards.html">Flashcards</a> › <a href="/flashcards/maths/index.html">Maths</a> › Formulas
+    </div>
+
+    <section class="fc-player" data-json="/assets/data/flashcards/maths/formulas.json">
+      <!-- Top controls -->
+      <div class="fc-top">
+        <h1 class="fc-title">Formulas</h1>
+        <div class="fc-top-right">
+          <button id="shuffleBtn" class="small">Shuffle</button>
+          <button id="autoplayBtn" class="small">Auto-play</button>
+          <button id="studyBtn" class="small">Study view</button>
+        </div>
+      </div>
+
+      <!-- Card area -->
+      <div class="fc-center">
+        <div id="cardStage" class="card-stage">
+          <div id="card" class="card">
+            <div class="card-inner">
+              <div class="card-front" id="cardFront"></div>
+              <div class="card-back" id="cardBack"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="fc-info">
+          <div id="progressText" class="progress-text">1 / 10</div>
+          <div class="star-box">
+          <span id="starBtn" class="star">☆</span>
+</div>
+
+        </div>
+       
+      <!-- Bottom navigation -->
+      <div class="fc-nav">
+        <button id="prevBtn" class="nav-btn">⟵ Prev</button>
+        <button id="nextBtn" class="nav-btn">Next ⟶</button>
+      </div>
+
+      <!-- Study grid (hidden by default) -->
+      <div id="studyGrid" class="study-grid hide"></div>
+
+      <!-- Score modal (hidden initially) -->
+      <div id="scoreModal" class="score-modal hide">
+        <div class="score-card">
+          <h2>Results</h2>
+          <div id="scoreText">0 / 0</div>
+          <div id="remarkText"></div>
+          <div class="score-actions">
+            <button id="retryBtn" class="small">Retry</button>
+            <button id="backDeckBtn" class="small">Back</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>
