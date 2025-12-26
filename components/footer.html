@@ -1,17 +1,16 @@
-<footer class="site-footer">
+<footer class="site-footer fade-in-footer">
 
   <div class="footer-container">
 
-    <!-- Column 1 -->
+    <!-- COLUMN 1 -->
     <div class="footer-col">
-      <img src="/assets/mascots/footer-mascot.png" class="footer-mascot" alt="Endue Learning Mascot">
+      <img src="/assets/mascots/footer_mascot.png" class="footer-mascot" alt="Endue  Learning Mascot">
       <h3>Endue Learning</h3>
-      <p>
-        Fun learning anywhere — Practice Sets, Games, Flash Cards & Interactive Simulations.
-      </p>
+      <p>Fun learning anywhere — Games, Flash Cards, Simulations & Practice Sets.</p>
+      <p class="view-count">👀 Views: <span id="viewCount">—</span></p>
     </div>
 
-    <!-- Column 2 -->
+    <!-- COLUMN 2 -->
     <div class="footer-col">
       <h3>Quick Links</h3>
       <ul class="footer-links">
@@ -20,14 +19,10 @@
         <li><a href="/games.html">Games</a></li>
         <li><a href="/simulations/index.html">Simulations</a></li>
         <li><a href="/worksheets.html">Worksheets</a></li>
-        <li><a href="/store.html">Store</a></li>
+        <li><a href="/contact.html">Contact</a></li>
       </ul>
-    </div>
 
-    <!-- Column 3 -->
-    <div class="footer-col">
-      <h3>Connect</h3>
-
+      <h3 class="mt">Follow Us</h3>
       <div class="social-icons">
         <a href="https://www.youtube.com/@enduelearning" target="_blank" rel="noopener">
           <img src="/assets/icons/youtube.svg" alt="YouTube">
@@ -35,21 +30,26 @@
         <a href="https://www.instagram.com/enduelearning" target="_blank" rel="noopener">
           <img src="/assets/icons/instagram.svg" alt="Instagram">
         </a>
-        <a href="https://x.com" target="_blank" rel="noopener">
+        <a href="#" target="_blank" rel="noopener">
           <img src="/assets/icons/x.svg" alt="X">
         </a>
       </div>
+    </div>
 
-      <form id="subscribeForm" class="subscribe-box">
+    <!-- COLUMN 3 -->
+    <div class="footer-col">
+      <h3>Subscribe</h3>
+      <form id="subscribeForm">
         <input type="email" id="subEmail" placeholder="Your email" required>
         <button type="submit">Subscribe</button>
       </form>
+      <p class="small-note">No spam. Only learning updates.</p>
     </div>
 
   </div>
 
-  <div class="footer-bottom">
-    © <span id="footerYear"></span> Endue Learning. All rights reserved.
+  <div class="copyright">
+    © <span id="yr"></span> Endue Learning — All rights reserved.
   </div>
 
   <button id="backTop" class="back-top">↑</button>
