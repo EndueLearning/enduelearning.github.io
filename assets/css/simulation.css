@@ -37,7 +37,7 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
 .sim-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
 }
 
 /* Grid for cards */
