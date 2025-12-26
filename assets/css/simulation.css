@@ -41,14 +41,14 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
   margin-top: 20px;
 }
 
-/* Cards */
+/* Cards 
 .sim-card {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
   padding: 16px;
   transition: 0.3s ease;
-}
+}*/
 
 .sim-card:hover {
   transform: translateY(-4px);
@@ -57,9 +57,14 @@ canvas#simCanvas { background: linear-gradient(180deg,#fff,#f8fbff); border-radi
 
 .sim-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
   margin-top: 20px;
 }
 
+.sim-card {
+  background: #ffffff;
+  color: #123;
+  opacity: 1;               /* force */
+}
 
