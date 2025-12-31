@@ -107,7 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="score-circle">${score}/${quiz.length}</div>
         <h2>Your Result</h2>
         <p>${getRemark()}</p>
-        <button onclick="location.reload()">Retry</button>
+        <button onclick="location.reload()">🔁 Retry</button>
+        <button onclick="window.location='/games/quizsets.html'">⬅ Back</button>
       </div>
     `;
     if (window.confetti) confetti({ particleCount: 120, spread: 90 });
