@@ -1,5 +1,6 @@
-/* FINAL QUIZ ENGINE - single file */
+/* FINAL QUIZ ENGINE — URL-based JSON loading */
 document.addEventListener("DOMContentLoaded", () => {
+
   const qBox = document.getElementById("quiz-box");
   const progressEl = document.getElementById("progress");
   const questionEl = document.getElementById("question");
@@ -12,106 +13,122 @@ document.addEventListener("DOMContentLoaded", () => {
   let idx = 0;
   let score = 0;
 
+  /* ===============================
+     AUTO-DETECT JSON FROM URL
+     =============================== */
   function jsonPathFromUrl() {
-    // e.g. /games/quizsets/science/physics/light_concave-mirror.html
-    const parts = window.location.pathname.split("/").filter(Boolean);
-    const htmlFile = parts.pop(); // light_concave-mirror.html
-    const jsonFile = htmlFile.replace(/\.html?$/i, ".json");
-    const topic = parts.pop() || "physics";
-    const subject = parts.pop() || "science";
+    // Example:
+    // /games/quizsets/science/biology/life-process.html
+    // → /assets/data/quiz/science/biology/life-process.json
+
+    const path = window.location.pathname;
+    const parts = path.split("/").filter(Boolean);
+
+    const htmlFile = parts[parts.length - 1];
+    const topic = parts[parts.length - 2];
+    const subject = parts[parts.length - 3];
+
+    const jsonFile = htmlFile.replace(/\.html$/i, ".json");
+
     return `/assets/data/quiz/${subject}/${topic}/${jsonFile}`;
   }
 
+  /* ===============================
+     LOAD QUIZ
+     =============================== */
   async function loadQuiz() {
     const path = jsonPathFromUrl();
+
     try {
-      const res = await fetch(path, {cache: "no-store"});
+      const res = await fetch(path, { cache: "no-store" });
       if (!res.ok) throw new Error("Quiz JSON not found: " + path);
+
       const data = await res.json();
-      if (!Array.isArray(data) || data.length === 0) throw new Error("Quiz JSON invalid or empty");
+      if (!Array.isArray(data) || data.length === 0) {
+        throw new Error("Quiz JSON empty or invalid");
+      }
+
       quiz = data;
       renderQuestion();
+
     } catch (err) {
       console.error(err);
-      progressEl.textContent = "Unable to load quiz.";
+      progressEl.textContent = "⚠ Unable to load quiz questions.";
     }
   }
 
+  /* ===============================
+     RENDER QUESTION
+     =============================== */
   function renderQuestion() {
     const item = quiz[idx];
     if (!item) return;
-    progressEl.textContent = `Question ${idx+1} of ${quiz.length}`;
+
+    progressEl.textContent = `Question ${idx + 1} of ${quiz.length}`;
     updateProgressBar(idx, quiz.length);
 
-    // question text
-    const qtext = item.question ?? item.q ?? item.qn ?? "No question text";
-    questionEl.textContent = qtext;
+    questionEl.textContent = item.question || item.q || "Question missing";
 
-    // options array
-    const opts = item.options ?? item.opts ?? [];
     optionsEl.innerHTML = "";
     explanationEl.style.display = "none";
     explanationEl.textContent = "";
 
-    opts.forEach((opt, i) => {
-      const b = document.createElement("button");
-      b.className = "option-btn";
-      b.type = "button";
-      b.textContent = opt;
-      // ensure long text wraps; styling in CSS will handle
-      b.addEventListener("click", () => handleAnswer(b, i, item));
-      optionsEl.appendChild(b);
+    item.options.forEach((opt, i) => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.textContent = opt;
+      btn.onclick = () => handleAnswer(btn, i, item);
+      optionsEl.appendChild(btn);
     });
 
     nextBtn.style.display = "none";
   }
 
+  /* ===============================
+     ANSWER HANDLING
+     =============================== */
   function handleAnswer(button, selectedIndex, item) {
-    // disable further selections
-    const buttons = optionsEl.querySelectorAll(".option-btn");
-    buttons.forEach((btn) => { btn.disabled = true; btn.classList.remove("correct","wrong"); });
+    const buttons = document.querySelectorAll(".option-btn");
+    buttons.forEach(b => b.disabled = true);
 
-    // resolve correct index (allow answer as index or as text)
-    let correctIndex = 0;
-    if (typeof item.answer === "number") correctIndex = item.answer;
-    else if (typeof item.answer === "string") {
-      correctIndex = (item.options ?? []).findIndex(o => (""+o).trim().toLowerCase() === item.answer.trim().toLowerCase());
-      if (correctIndex < 0) correctIndex = 0;
-    } else {
-      // fallback to 0
-      correctIndex = 0;
+    let correctIndex = item.answer;
+
+    if (typeof item.answer === "string") {
+      correctIndex = item.options.findIndex(
+        o => o.trim().toLowerCase() === item.answer.trim().toLowerCase()
+      );
     }
 
-    // apply classes
-    const allBtns = Array.from(buttons);
-    allBtns.forEach((b, i) => {
+    buttons.forEach((b, i) => {
       if (i === correctIndex) b.classList.add("correct");
-      if (i === selectedIndex && selectedIndex !== correctIndex) b.classList.add("wrong");
+      if (i === selectedIndex && i !== correctIndex) b.classList.add("wrong");
     });
 
     if (selectedIndex === correctIndex) {
       score++;
-      if (typeof confetti === "function") confetti({ particleCount: 40, spread: 60, origin: { y: 0.6 }});
+      if (typeof confetti === "function") {
+        confetti({ particleCount: 40, spread: 70, origin: { y: 0.6 } });
+      }
     }
 
-    // show explanation
-    const explanationText = item.explanation ?? item.explain ?? item.exp ?? "";
-    if (explanationText) {
+    if (item.explanation) {
       explanationEl.style.display = "block";
-      explanationEl.innerHTML = `<strong>Explanation:</strong> ${explanationText}`;
+      explanationEl.innerHTML = `<strong>Explanation:</strong> ${item.explanation}`;
     }
 
     nextBtn.style.display = "inline-block";
   }
 
-  nextBtn.addEventListener("click", () => {
+  /* ===============================
+     NEXT / RESULT
+     =============================== */
+  nextBtn.onclick = () => {
     idx++;
-    if (idx >= quiz.length) return showResults();
-    renderQuestion();
-  });
+    if (idx >= quiz.length) showResults();
+    else renderQuestion();
+  };
 
   function showResults() {
-    // show final card (animated in CSS)
     qBox.innerHTML = `
       <div id="score-card">
         <div class="score-circle">${score}/${quiz.length}</div>
@@ -123,7 +140,10 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
     `;
-    if (typeof confetti === "function") confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 }});
+
+    if (typeof confetti === "function") {
+      confetti({ particleCount: 120, spread: 90, origin: { y: 0.6 } });
+    }
   }
 
   function getRemark(s, t) {
@@ -131,17 +151,18 @@ document.addEventListener("DOMContentLoaded", () => {
     if (p === 100) return "🌟 Excellent! Perfect Score!";
     if (p >= 80) return "💚 Great job!";
     if (p >= 50) return "🙂 Good — keep practicing!";
-    return "🔴 Needs more practice — you can do it!";
+    return "🔴 Needs more practice!";
   }
 
+  /* ===============================
+     PROGRESS BAR (FIXED)
+     =============================== */
   function updateProgressBar(index, total) {
-    const bar = document.getElementById("quiz-progress-bar");
-    if (!bar) return;
-    // correct formula → ensures final question shows 100%
-  const percent = Math.round(((index + 1) / total) * 100);
-    bar.style.width = percent + "%";
+    if (!progressBar) return;
+    const percent = Math.round(((index + 1) / total) * 100);
+    progressBar.style.width = percent + "%";
   }
 
-  // start
+  /* START */
   loadQuiz();
 });
