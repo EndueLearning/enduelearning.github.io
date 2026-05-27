@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Learn & Let Learn — Endue Learning</title>
+  
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/header.css" />
+  <link rel="stylesheet" href="/assets/css/footer.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+
+  <!-- Header + Footer Scripts -->
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
+  
+  <style>
+    /* ================================
+       LEARN & LET LEARN REDESIGN
+    ================================ */
+    .pnc-wrapper {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 12px;
+    }
+
+    .pnc-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .pnc-header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      color: #0a2640;
+    }
+
+    .pnc-header p {
+      font-size: 1rem;
+      color: #556;
+      margin: 0;
+    }
+
+    /* Stats Bar */
+    .pnc-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #2b9cff 0%, #1b7edb 100%);
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(43, 156, 255, 0.2);
+    }
+
+    .stat-card.donated {
+      background: linear-gradient(135deg, #90be6d 0%, #6ba54a 100%);
+      box-shadow: 0 4px 12px rgba(144, 190, 109, 0.2);
+    }
+
+    .stat-card.streak {
+      background: linear-gradient(135deg, #f9c74f 0%, #f8b81f 100%);
+      box-shadow: 0 4px 12px rgba(249, 199, 79, 0.2);
+    }
+
+    .stat-card .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.95;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Main Game Area */
+    .pnc-game {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .pnc-difficulty {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #f0f4f8;
+      color: #556;
+    }
+
+    .difficulty-badge.active {
+      background: #2b9cff;
+      color: white;
+    }
+
+    /* Question */
+    .pnc-question {
+      margin-bottom: 28px;
+    }
+
+    .pnc-question-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #0a2640;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .pnc-category {
+      font-size: 0.85rem;
+      color: #999;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    /* Answer Options - 2 or 3 columns */
+    .pnc-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    /* Special handling for 3 or 4 options */
+    .pnc-options[data-count="3"] {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pnc-options[data-count="4"] {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pnc-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 18px;
+      min-height: 56px;
+      text-align: center;
+      border: 2px solid #e4e8ef;
+      border-radius: 12px;
+      background: #f9fbff;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #0a2640;
+      transition: all 0.2s ease;
+      word-wrap: break-word;
+    }
+
+    .pnc-option:hover {
+      border-color: #2b9cff;
+      background: #f0f8ff;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(43, 156, 255, 0.15);
+    }
+
+    .pnc-option:active {
+      transform: translateY(0);
+    }
+
+    .pnc-option.correct {
+      border-color: #90be6d;
+      background: #f0fde8;
+      color: #6ba54a;
+    }
+
+    .pnc-option.incorrect {
+      border-color: #f94144;
+      background: #ffe8e8;
+      color: #c41c1c;
+    }
+
+    /* Controls */
+    .pnc-controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .pnc-btn {
+      padding: 11px 24px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .pnc-btn.primary {
+      background: #2b9cff;
+      color: white;
+    }
+
+    .pnc-btn.primary:hover {
+      background: #1b7edb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(43, 156, 255, 0.3);
+    }
+
+    .pnc-btn.secondary {
+      background: #f9fbff;
+      color: #2b9cff;
+      border: 2px solid #2b9cff;
+    }
+
+    .pnc-btn.secondary:hover {
+      background: #f0f8ff;
+    }
+
+    /* Feedback */
+    .pnc-feedback {
+      min-height: 24px;
+      margin-bottom: 16px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .pnc-feedback.correct {
+      color: #6ba54a;
+    }
+
+    .pnc-feedback.incorrect {
+      color: #c41c1c;
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4000;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .pnc-options {
+        grid-template-columns: 1fr;
+      }
+
+      .pnc-options[data-count="3"] {
+        grid-template-columns: 1fr;
+      }
+
+      .pnc-option {
+        padding: 14px 16px;
+        min-height: 50px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .pnc-wrapper {
+        padding: 0 8px;
+      }
+
+      .pnc-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .pnc-game {
+        padding: 20px;
+      }
+
+      .pnc-question-text {
+        font-size: 1.25rem;
+      }
+
+      .pnc-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 12px;
+      }
+
+      .stat-card .stat-value {
+        font-size: 1.5rem;
+      }
+
+      .pnc-controls {
+        flex-direction: column;
+      }
+
+      .pnc-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="header"></div>
+
+  <div class="pnc-wrapper">
+    <div class="pnc-header">
+      <h1>Learn & Let Learn</h1>
+      <p>Answer questions correctly to help others learn. Every correct answer makes a difference! 📚✨</p>
+    </div>
+
+    <!-- Stats Display -->
+    <div class="pnc-stats">
+      <div class="stat-card">
+        <span class="stat-value" id="coins">0</span>
+        <span class="stat-label">Questions Answered</span>
+      </div>
+      <div class="stat-card donated">
+        <span class="stat-value" id="donated">0</span>
+        <span class="stat-label">Points Earned</span>
+      </div>
+      <div class="stat-card streak">
+        <span class="stat-value" id="streak">0</span>
+        <span class="stat-label">Current Streak</span>
+      </div>
+    </div>
+
+    <!-- Game Area -->
+    <div class="pnc-game">
+      <div class="pnc-difficulty" id="difficultyBar">
+        <span class="difficulty-badge active">Easy</span>
+        <span class="difficulty-badge">Medium</span>
+        <span class="difficulty-badge">Hard</span>
+      </div>
+
+      <div class="pnc-question">
+        <div class="pnc-category" id="category">Category</div>
+        <div class="pnc-question-text" id="questionTitle">Loading question...</div>
+      </div>
+
+      <div class="pnc-options" id="options"></div>
+
+      <div class="pnc-feedback" id="msg"></div>
+
+      <div class="pnc-controls">
+        <button id="skipBtn" class="pnc-btn secondary">Skip</button>
+        <button id="hintBtn" class="pnc-btn secondary">💡 Hint</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <div id="confettiContainer" class="confetti" aria-hidden="true"></div>
+
+  <!-- Load game logic -->
+  <script src="/assets/js/learnletlearn.js" defer></script>
+  
+  <script>
+    // Update grid layout based on number of options
+    const optionsContainer = document.getElementById('options');
+    const observer = new MutationObserver(() => {
+      const count = optionsContainer.children.length;
+      optionsContainer.setAttribute('data-count', count);
+    });
+    
+    observer.observe(optionsContainer, { childList: true });
+  </script>
+</body>
+</html>
