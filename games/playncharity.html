@@ -132,12 +132,21 @@
       margin-bottom: 16px;
     }
 
-    /* Answer Options */
+    /* Answer Options - 2 or 3 columns */
     .pnc-options {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 12px;
       margin-bottom: 24px;
+    }
+
+    /* Special handling for 3 or 4 options */
+    .pnc-options[data-count="3"] {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pnc-options[data-count="4"] {
+      grid-template-columns: repeat(2, 1fr);
     }
 
     .pnc-option {
@@ -251,6 +260,10 @@
         grid-template-columns: 1fr;
       }
 
+      .pnc-options[data-count="3"] {
+        grid-template-columns: 1fr;
+      }
+
       .pnc-option {
         padding: 14px 16px;
         min-height: 50px;
@@ -352,5 +365,16 @@
 
   <!-- Load game logic -->
   <script src="/assets/js/playncharity.js" defer></script>
+  
+  <script>
+    // Update grid layout based on number of options
+    const optionsContainer = document.getElementById('options');
+    const observer = new MutationObserver(() => {
+      const count = optionsContainer.children.length;
+      optionsContainer.setAttribute('data-count', count);
+    });
+    
+    observer.observe(optionsContainer, { childList: true });
+  </script>
 </body>
 </html>
