@@ -3,15 +3,23 @@
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ben's Picnic — Endue Learning</title>
+  
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/header.css" />
+  <link rel="stylesheet" href="/assets/css/footer.css" />
   <link rel="stylesheet" href="/assets/css/style.css">
+  
   <script src="/assets/js/header.js" defer></script>
   <script src="/assets/js/footer.js" defer></script>
+  
   <style>
     .game-wrapper{max-width:1100px;margin:18px auto;padding:12px;}
     .iframe-frame{position:relative;width:100%;padding-top:56.25%;border-radius:10px;overflow:hidden;background:#000;box-shadow:0 10px 30px rgba(12,45,80,0.08);}
     .iframe-frame iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0;}
     .mobile-ctrls{position:fixed;left:12px;bottom:18px;z-index:2200;display:flex;gap:10px;align-items:center;pointer-events:none;}
-    .ctrl-btn{pointer-events:auto;width:60px;height:60px;border-radius:12px;background:rgba(43,156,255,0.95);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;box-shadow:0 8px 18px rgba(11,53,85,0.18)}
+    .ctrl-btn{pointer-events:auto;width:60px;height:60px;border-radius:12px;background:rgba(43,156,255,0.95);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;cursor:pointer;border:none;box-shadow:0 4px 12px rgba(43,156,255,0.3);transition:all 0.2s ease;}
+    .ctrl-btn:active{transform:scale(0.95);box-shadow:0 2px 6px rgba(43,156,255,0.2);}
     @media(min-width:880px){.mobile-ctrls{display:none!important}}
   </style>
 </head>
@@ -101,7 +109,7 @@
     function checkFS(){
       const fs = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement;
       const el = document.getElementById('mobileCtrls');
-      if(fs === document.getElementById('gameIframe') || fs === document.getElementById('gameFrameWrap') || fs === document.body){ el.style.display='flex'; } else { el.style.display = /Android|iPhone|Mobile/i.test(navigator.userAgent) ? 'flex' : 'none'; }
+      if(fs === document.getElementById('gameIframe') || fs === document.getElementById('gameFrameWrap') || fs === document.body){ el.style.display='flex'; } else { el.style.display = 'none'; }
     }
     document.addEventListener('fullscreenchange', checkFS);
     setInterval(checkFS, 300);
