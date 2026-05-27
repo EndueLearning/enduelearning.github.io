@@ -5,70 +5,324 @@
   <title>Play & Charity — Endue Learning</title>
   
   <!-- Main Styles -->
-    <link rel="stylesheet" href="/assets/css/main.css" />
-    <link rel="stylesheet" href="/assets/css/header.css" />
-    <link rel="stylesheet" href="/assets/css/footer.css" />
-    <link rel="stylesheet" href="/assets/css/style.css" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+  <link rel="stylesheet" href="/assets/css/header.css" />
+  <link rel="stylesheet" href="/assets/css/footer.css" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
 
-    <!-- Header + Footer Scripts -->
-    <script src="/assets/js/header.js" defer></script>
-    <script src="/assets/js/footer.js" defer></script>
+  <!-- Header + Footer Scripts -->
+  <script src="/assets/js/header.js" defer></script>
+  <script src="/assets/js/footer.js" defer></script>
   
   <style>
-    .game-shell { max-width:980px; margin:22px auto; }
-    .qa-area { display:flex; gap:18px; flex-wrap:wrap; align-items:flex-start; }
-    .qa-left { flex:1; min-width:280px; }
-    .ad-slot { width:220px; min-height:140px; }
-    .options { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:10px; }
-    .opt-btn{ padding:10px; border-radius:10px; border:1px solid #e4e8ef; background:#f7fbff; cursor:pointer; font-weight:600; }
-    .coin-box{ display:flex; justify-content:space-between; align-items:center; gap:10px; padding:10px; border-radius:10px; background:#fff; }
-    .robot-note{ position:fixed; right:12px; bottom:120px; z-index:3000; background:#fff; padding:10px; border-radius:8px; box-shadow:0 10px 30px rgba(0,0,0,0.12); display:none; width:220px;}
-    .confetti{ position:fixed; inset:0; pointer-events:none; z-index:4000; }
-    @media(max-width:880px){ .qa-area{ flex-direction:column} .ad-slot{ width:100% } }
+    /* ================================
+       PLAY & CHARITY REDESIGN
+    ================================ */
+    .pnc-wrapper {
+      max-width: 900px;
+      margin: 24px auto;
+      padding: 0 12px;
+    }
+
+    .pnc-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .pnc-header h1 {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      color: #0a2640;
+    }
+
+    .pnc-header p {
+      font-size: 1rem;
+      color: #556;
+      margin: 0;
+    }
+
+    /* Stats Bar */
+    .pnc-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #2b9cff 0%, #1b7edb 100%);
+      color: white;
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(43, 156, 255, 0.2);
+    }
+
+    .stat-card.donated {
+      background: linear-gradient(135deg, #90be6d 0%, #6ba54a 100%);
+      box-shadow: 0 4px 12px rgba(144, 190, 109, 0.2);
+    }
+
+    .stat-card.streak {
+      background: linear-gradient(135deg, #f9c74f 0%, #f8b81f 100%);
+      box-shadow: 0 4px 12px rgba(249, 199, 79, 0.2);
+    }
+
+    .stat-card .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      display: block;
+    }
+
+    .stat-card .stat-label {
+      font-size: 0.85rem;
+      opacity: 0.95;
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    /* Main Game Area */
+    .pnc-game {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .pnc-difficulty {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .difficulty-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: #f0f4f8;
+      color: #556;
+    }
+
+    .difficulty-badge.active {
+      background: #2b9cff;
+      color: white;
+    }
+
+    /* Question */
+    .pnc-question {
+      margin-bottom: 28px;
+    }
+
+    .pnc-question-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #0a2640;
+      line-height: 1.5;
+      margin-bottom: 8px;
+    }
+
+    .pnc-category {
+      font-size: 0.85rem;
+      color: #999;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    /* Answer Options */
+    .pnc-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .pnc-option {
+      display: block;
+      width: 100%;
+      padding: 14px 16px;
+      text-align: left;
+      border: 2px solid #e4e8ef;
+      border-radius: 10px;
+      background: #f9fbff;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #0a2640;
+      transition: all 0.2s ease;
+    }
+
+    .pnc-option:hover {
+      border-color: #2b9cff;
+      background: #f0f8ff;
+      transform: translateX(4px);
+    }
+
+    .pnc-option:active {
+      transform: translateX(4px) scale(0.98);
+    }
+
+    .pnc-option.correct {
+      border-color: #90be6d;
+      background: #f0fde8;
+      color: #6ba54a;
+    }
+
+    .pnc-option.incorrect {
+      border-color: #f94144;
+      background: #ffe8e8;
+      color: #c41c1c;
+    }
+
+    /* Controls */
+    .pnc-controls {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .pnc-btn {
+      padding: 11px 20px;
+      border-radius: 10px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .pnc-btn.primary {
+      background: #2b9cff;
+      color: white;
+    }
+
+    .pnc-btn.primary:hover {
+      background: #1b7edb;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(43, 156, 255, 0.3);
+    }
+
+    .pnc-btn.secondary {
+      background: #f9fbff;
+      color: #2b9cff;
+      border: 2px solid #2b9cff;
+    }
+
+    .pnc-btn.secondary:hover {
+      background: #f0f8ff;
+    }
+
+    /* Feedback */
+    .pnc-feedback {
+      min-height: 24px;
+      margin-top: 12px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .pnc-feedback.correct {
+      color: #6ba54a;
+    }
+
+    .pnc-feedback.incorrect {
+      color: #c41c1c;
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4000;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .pnc-wrapper {
+        padding: 0 8px;
+      }
+
+      .pnc-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .pnc-game {
+        padding: 20px;
+      }
+
+      .pnc-question-text {
+        font-size: 1.25rem;
+      }
+
+      .pnc-stats {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 12px;
+      }
+
+      .stat-card .stat-value {
+        font-size: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
   <div id="header"></div>
 
-  <main class="container game-shell card">
-    <h1>Play & Charity — Learn + Give</h1>
-    <p class="small">Answer questions correctly to earn knowledge coins and donate virtual books. Learn + Charity!</p>
-
-    <div class="coin-box" style="margin-top:12px;">
-      <div><span id="mascot" style="font-size:30px">📘</span> <strong id="coins">0</strong> coins</div>
-      <div>Donated: <strong id="donated">0</strong> books</div>
+  <div class="pnc-wrapper">
+    <div class="pnc-header">
+      <h1>Play & Charity</h1>
+      <p>Answer questions correctly to donate virtual books. Learn while making a difference! 📚💝</p>
     </div>
 
-    <div class="qa-area" style="margin-top:16px;">
-      <div class="qa-left card" id="qaCard">
-        <div id="questionTitle"><strong>Loading question...</strong></div>
-        <div class="options" id="options"></div>
-        <div style="margin-top:8px;">
-          <button id="skipBtn" class="btn">Skip</button>
-          <button id="hintBtn" class="btn" style="background:#6bcf7a">Hint</button>
-        </div>
-        <div id="msg" class="small" style="margin-top:8px;color:#2b9cff"></div>
+    <!-- Stats Display -->
+    <div class="pnc-stats">
+      <div class="stat-card">
+        <span class="stat-value" id="coins">0</span>
+        <span class="stat-label">Coins Earned</span>
       </div>
-
-      <div class="ad-slot card" id="adSlot">
-        <div><strong>Sponsored</strong></div>
-        <img id="adImg" src="https://via.placeholder.com/200x100?text=Ad" style="width:100%; border-radius:8px; margin-top:8px;" alt="ad">
-        <p class="small">Ad placeholder</p>
+      <div class="stat-card donated">
+        <span class="stat-value" id="donated">0</span>
+        <span class="stat-label">Books Donated</span>
+      </div>
+      <div class="stat-card streak">
+        <span class="stat-value" id="streak">0</span>
+        <span class="stat-label">Current Streak</span>
       </div>
     </div>
 
-    <div style="margin-top:12px;">
-      <a class="btn" target="_blank" href="/games/playncharity.html">Open full</a>
+    <!-- Game Area -->
+    <div class="pnc-game">
+      <div class="pnc-difficulty" id="difficultyBar">
+        <span class="difficulty-badge active">Easy</span>
+        <span class="difficulty-badge">Medium</span>
+        <span class="difficulty-badge">Hard</span>
+      </div>
+
+      <div class="pnc-question">
+        <div class="pnc-category" id="category">Category</div>
+        <div class="pnc-question-text" id="questionTitle">Loading question...</div>
+      </div>
+
+      <div class="pnc-options" id="options"></div>
+
+      <div class="pnc-feedback" id="msg"></div>
+
+      <div class="pnc-controls">
+        <button id="skipBtn" class="pnc-btn secondary">Skip</button>
+        <button id="hintBtn" class="pnc-btn secondary">💡 Hint</button>
+      </div>
     </div>
-  </main>
+  </div>
 
   <div id="footer"></div>
-
-  <div id="robot" class="robot-note" aria-hidden="true">
-    <div style="font-weight:700">Robot helper 🤖</div>
-    <div class="small" id="robotText">Here's a fun fact!</div>
-    <a id="robotVideo" class="small" href="https://www.youtube.com/" target="_blank">Watch lesson</a>
-  </div>
 
   <div id="confettiContainer" class="confetti" aria-hidden="true"></div>
 
