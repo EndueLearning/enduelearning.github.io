@@ -21,6 +21,62 @@
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
+    /* Header Navigation */
+    .navbar {
+      background: rgba(20, 20, 30, 0.95);
+      border-bottom: 1px solid #333;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .navbar-brand {
+      font-size: 18px;
+      font-weight: bold;
+      color: #4a9fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar-brand:hover {
+      color: #fff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #4a9fff;
+    }
+
+    .nav-links .back-btn {
+      background: linear-gradient(135deg, #1c1c2c 0%, #2d3d4d 100%);
+      border: 1px solid #555;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links .back-btn:hover {
+      border-color: #4a9fff;
+      box-shadow: 0 0 10px rgba(74, 159, 255, 0.5);
+    }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -163,27 +219,6 @@
       }
     }
 
-    .quiz-box {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0, 0, 0, 0.95);
-      padding: 16px 24px;
-      border-radius: 10px;
-      border: 2px solid #4a9fff;
-      font-size: 15px;
-      font-weight: 500;
-      box-shadow: 0 0 20px rgba(74, 159, 255, 0.4);
-      z-index: 99;
-    }
-
-    #quizResult {
-      margin-left: 10px;
-      font-weight: 700;
-      color: #4a9fff;
-    }
-
     .instructions {
       background: rgba(74, 159, 255, 0.1);
       border-left: 4px solid #4a9fff;
@@ -194,7 +229,21 @@
       color: #bbb;
     }
 
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+      color: #888;
+      font-size: 12px;
+    }
+
     @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        gap: 10px;
+      }
+
       .controls {
         flex-direction: column;
       }
@@ -210,7 +259,7 @@
         right: auto;
         transform: translateX(-50%);
         top: auto;
-        bottom: 100px;
+        bottom: 20px;
         max-width: 300px;
       }
 
@@ -244,16 +293,27 @@
         padding: 14px;
       }
 
-      .quiz-box {
-        font-size: 13px;
-        padding: 12px 16px;
-        bottom: 15px;
+      .nav-links {
+        gap: 10px;
+      }
+
+      .nav-links a {
+        font-size: 12px;
       }
     }
   </style>
 </head>
 
 <body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+  <a href="/" class="navbar-brand">🌍 Endue Learning</a>
+  <div class="nav-links">
+    <a href="/simulations/index.html">← Back to Simulations</a>
+    <a href="/" class="back-btn">🏠 Home</a>
+  </div>
+</div>
 
 <div class="container">
   <h1>🪐 Solar System Educational Simulation</h1>
@@ -283,15 +343,16 @@
   <div class="instructions">
     💡 <strong>How to use:</strong> Hover over planets to see details • Click Teacher Mode for educational info • Use Speed to adjust animation • Zoom to get closer view
   </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>🪐 Solar System Simulation - Interactive learning tool for understanding planetary motion</p>
+    <p><a href="/simulations/index.html" style="color: #4a9fff; text-decoration: none;">View all simulations →</a></p>
+  </div>
 </div>
 
 <!-- Info Panel -->
 <div id="infoBox" class="info-box"></div>
-
-<!-- Quiz -->
-<div id="quizBox" class="quiz-box">
-  🎯 <strong id="quizQuestion">Find Jupiter</strong><span id="quizResult"></span>
-</div>
 
 <script>
   const canvas = document.getElementById("solarCanvas");
@@ -303,7 +364,6 @@
   let paused = false;
   let teacherMode = false;
   let hovered = null;
-  let quizTarget = "Jupiter";
 
   const center = { x: canvas.width / 2, y: canvas.height / 2 };
 
@@ -587,14 +647,6 @@
     if (!hovered) return;
     const utter = new SpeechSynthesisUtterance(hovered.name);
     speechSynthesis.speak(utter);
-
-    if (hovered.name === quizTarget) {
-      document.getElementById("quizResult").textContent = " ✅ Correct!";
-      setTimeout(() => { document.getElementById("quizResult").textContent = ""; }, 2000);
-    } else {
-      document.getElementById("quizResult").textContent = " ❌ Try again!";
-      setTimeout(() => { document.getElementById("quizResult").textContent = ""; }, 1500);
-    }
   });
 
   document.getElementById("pauseBtn").onclick = () => { paused = true; document.getElementById("pauseBtn").style.opacity = "0.5"; document.getElementById("playBtn").style.opacity = "1"; };
