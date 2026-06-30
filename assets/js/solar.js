@@ -342,7 +342,7 @@ canvas.addEventListener("click", () => {
 
 document.getElementById("resetBtn").onclick = () => zoom = 1;
 document.getElementById("pauseBtn").onclick = () => paused = !paused;
-document.getElementById("teacheBtn").onclick = () => teacherMode = !teacherMode;
+document.getElementById("teacherBtn").onclick = () => teacherMode = !teacherMode;
 document.getElementById("speedControl").oninput = e => speed = e.target.value;
 
 draw();
