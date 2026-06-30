@@ -307,19 +307,11 @@
 
   const center = { x: canvas.width / 2, y: canvas.height / 2 };
 
-  function loadImg(name) {
-    const img = new Image();
-    img.src = `/assets/images/planets/${name}.jpg`;
-    img.onerror = () => console.log(`Image not found: ${name}.jpg`);
-    return img;
-  }
-
-  // Realistic planet data
+  // Realistic planet data with colors
   const planets = [
     { 
       name: "Sun", 
       size: 40, 
-      img: loadImg("sun"),
       rotationPeriod: 609.12,
       revolutionPeriod: 0,
       distanceFromSun: 0,
@@ -329,7 +321,6 @@
     { 
       name: "Mercury", 
       a: 70, b: 60, size: 5, period: 4, 
-      img: loadImg("mercury"),
       rotationPeriod: 1407.6,
       revolutionPeriod: 88,
       distanceFromSun: 57.9,
@@ -339,7 +330,6 @@
     { 
       name: "Venus", 
       a: 100, b: 85, size: 8, period: 7, 
-      img: loadImg("venus"),
       rotationPeriod: 5832.5,
       revolutionPeriod: 225,
       distanceFromSun: 108.2,
@@ -349,7 +339,6 @@
     { 
       name: "Earth", 
       a: 130, b: 110, size: 9, period: 10, 
-      img: loadImg("earth"),
       rotationPeriod: 24,
       revolutionPeriod: 365.25,
       distanceFromSun: 149.6,
@@ -359,7 +348,6 @@
     { 
       name: "Mars", 
       a: 160, b: 135, size: 7, period: 15, 
-      img: loadImg("mars"),
       rotationPeriod: 24.6,
       revolutionPeriod: 687,
       distanceFromSun: 227.9,
@@ -369,7 +357,6 @@
     { 
       name: "Jupiter", 
       a: 210, b: 180, size: 18, period: 25, 
-      img: loadImg("jupiter"),
       rotationPeriod: 9.9,
       revolutionPeriod: 4333,
       distanceFromSun: 778.5,
@@ -379,7 +366,6 @@
     { 
       name: "Saturn", 
       a: 250, b: 210, size: 16, period: 30, 
-      img: loadImg("saturn"),
       rotationPeriod: 10.7,
       revolutionPeriod: 10759,
       distanceFromSun: 1434,
@@ -390,7 +376,6 @@
     { 
       name: "Uranus", 
       a: 290, b: 245, size: 12, period: 35, 
-      img: loadImg("uranus"),
       rotationPeriod: 17.2,
       revolutionPeriod: 30688,
       distanceFromSun: 2871,
@@ -400,7 +385,6 @@
     { 
       name: "Neptune", 
       a: 330, b: 280, size: 12, period: 40, 
-      img: loadImg("neptune"),
       rotationPeriod: 16.1,
       revolutionPeriod: 60182,
       distanceFromSun: 4495.1,
@@ -419,9 +403,8 @@
     radius: 185 + Math.random() * 20
   }));
 
-  function formatNumber(num) {
-    if (num >= 1000) return (num / 1000).toFixed(1) + "k";
-    return num.toFixed(1);
+  function formatDiameter(num) {
+    return num.toLocaleString();
   }
 
   function drawStars() {
@@ -483,13 +466,21 @@
       p.x = x;
       p.y = y;
 
-      // Draw planet
-      ctx.save();
+      // Draw planet as colored circle with glow
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, p.size * zoom);
+      gradient.addColorStop(0, p.color);
+      gradient.addColorStop(1, p.color + "88");
+      ctx.fillStyle = gradient;
       ctx.beginPath();
       ctx.arc(x, y, p.size * zoom, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.drawImage(p.img, x - p.size * zoom, y - p.size * zoom, p.size * 2 * zoom, p.size * 2 * zoom);
-      ctx.restore();
+      ctx.fill();
+
+      // Outer glow
+      ctx.strokeStyle = p.color;
+      ctx.globalAlpha = 0.3;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.globalAlpha = 1;
 
       // Rotation indicators
       if ((teacherMode || hovered === p) && p.a) {
@@ -575,16 +566,16 @@
       let html = `<b>${hovered.name}</b>`;
       
       if (hovered.name !== "Sun") {
-        html += `<div class="info-item">🌍 <strong>Year:</strong> ${hovered.revolutionPeriod} Earth days</div>`;
+        html += `<div class="info-item">🌍 <strong>Year:</strong> ${hovered.revolutionPeriod} days</div>`;
       }
       
       html += `<div class="info-item">🔄 <strong>Day:</strong> ${hovered.rotationPeriod} hours</div>`;
       
       if (hovered.distanceFromSun > 0) {
-        html += `<div class="info-item">📏 <strong>Distance:</strong> ${hovered.distanceFromSun} M km</div>`;
+        html += `<div class="info-item">📏 <strong>Distance:</strong> ${hovered.distanceFromSun} million km</div>`;
       }
       
-      html += `<div class="info-item">⭕ <strong>Diameter:</strong> ${formatNumber(hovered.diameter)} km</div>`;
+      html += `<div class="info-item">⭕ <strong>Diameter:</strong> ${formatDiameter(hovered.diameter)} km</div>`;
       
       infoBox.innerHTML = html;
     } else {
