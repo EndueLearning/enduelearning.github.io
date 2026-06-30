@@ -2,12 +2,12 @@ body {
   margin: 0;
   background: #000;
   color: #fff;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Layout */
 .sim-wrapper {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 20px auto;
   padding: 10px;
 }
@@ -15,66 +15,197 @@ body {
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
+  margin-bottom: 15px;
+  align-items: center;
 }
 
 .controls button,
 .controls label {
-  background: #1c1c1c;
+  background: linear-gradient(135deg, #1c1c1c 0%, #2d2d2d 100%);
   color: #fff;
   border: 1px solid #555;
-  padding: 8px 12px;
+  padding: 10px 16px;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.controls button:hover {
+  background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+  border-color: #77d;
+  box-shadow: 0 0 10px rgba(119, 119, 221, 0.3);
+}
+
+.controls label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.controls input[type="range"] {
+  width: 120px;
+  height: 5px;
+  border-radius: 5px;
+  background: #333;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #77d;
+  cursor: pointer;
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #77d;
+  cursor: pointer;
+  border: none;
 }
 
 /* Canvas */
 canvas {
   width: 100%;
-  background: #000;
-  border: 1px solid #333;
+  max-width: 100%;
+  background: radial-gradient(circle, #0a0a0a 0%, #000 100%);
+  border: 2px solid #333;
   border-radius: 12px;
+  display: block;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
 }
 
 /* Info box */
 .info-box {
   position: fixed;
-  right: 15px;
-  top: 100px;
-  width: 260px;
-  background: rgba(0,0,0,0.85);
-  border: 1px solid #444;
-  border-radius: 10px;
-  padding: 12px;
+  right: 20px;
+  top: 120px;
+  width: 300px;
+  background: rgba(0, 0, 0, 0.92);
+  border: 2px solid #4a9fff;
+  border-radius: 12px;
+  padding: 16px;
   display: none;
   z-index: 10;
+  box-shadow: 0 0 20px rgba(74, 159, 255, 0.3);
+  font-size: 14px;
+  line-height: 1.6;
+  animation: slideIn 0.3s ease;
+}
+
+.info-box b {
+  color: #77d;
+  font-size: 16px;
+  display: block;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.info-item {
+  display: block;
+  margin: 6px 0;
+  color: #ddd;
+}
+
+.info-item strong {
+  color: #4a9fff;
+  font-weight: 600;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Quiz */
 .quiz-box {
   position: fixed;
-  bottom: 15px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #111;
-  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.92);
+  padding: 14px 20px;
   border-radius: 10px;
-  border: 1px solid #555;
+  border: 2px solid #4a9fff;
   font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 0 15px rgba(74, 159, 255, 0.3);
+  z-index: 9;
+}
+
+#quizResult {
+  margin-left: 8px;
+  font-weight: 600;
 }
 
 /* Mobile UI */
 @media (max-width: 768px) {
   .controls {
     justify-content: center;
+    gap: 8px;
+  }
+
+  .controls button,
+  .controls label {
+    padding: 8px 12px;
+    font-size: 12px;
   }
 
   .info-box {
-    width: 90%;
-    left: 5%;
+    width: 85vw;
+    left: 50%;
     right: auto;
+    transform: translateX(-50%);
     top: auto;
     bottom: 90px;
+    max-width: 280px;
+  }
+
+  .quiz-box {
+    bottom: 15px;
+    font-size: 12px;
+    padding: 10px 16px;
+  }
+
+  .sim-wrapper {
+    padding: 8px;
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls {
+    flex-direction: column;
+  }
+
+  .controls button,
+  .controls label {
+    width: 100%;
+    text-align: center;
+  }
+
+  .info-box {
+    width: 90vw;
+    font-size: 13px;
+  }
+
+  canvas {
+    border-radius: 8px;
   }
 }
